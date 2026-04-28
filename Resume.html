@@ -1,227 +1,348 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>William Tucker - Resume</title>
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8"><style>@media print { body { max-width: 100%; } }
+body { font-family: 'Segoe UI', Calibri, sans-serif; max-width: 800px; margin: 1.5rem auto; padding: 0 1.5rem; color: #222; line-height: 1.5; font-size: 0.95rem; }
+h1 { font-size: 1.75rem; margin-bottom: 0.25rem; border-bottom: none; }
+h2 { font-size: 1.15rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #333; }
+h3 { font-size: 1rem; margin-top: 1rem; margin-bottom: 0.35rem; color: #444; }
+p { margin: 0.5rem 0; }
+a { color: #0066cc; text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: none; border-top: 1px solid #ddd; margin: 1.25rem 0; }
+table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+th, td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+th { background: #f5f5f5; font-weight: 600; }
+blockquote { margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: #f9f9f9; border-left: 4px solid #0066cc; font-size: 0.95rem; }
+ul { margin: 0.35rem 0; padding-left: 1.25rem; }
+li { margin: 0.25rem 0; }
+code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.85em; }
+.meta { font-size: 0.9rem; color: #555; margin-top: 0.25rem; }
+/*# sourceURL=.pdf-style.css*/</style><style>pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
 
-<style>
-  @media print { body { max-width: 100%; } }
-  body { font-family: 'Segoe UI', Calibri, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1.5rem; color: #222; line-height: 1.5; }
-  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; border-bottom: none; }
-  h2 { font-size: 1.15rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #333; }
-  h3 { font-size: 1rem; margin-top: 1rem; margin-bottom: 0.35rem; color: #444; }
-  p { margin: 0.5rem 0; }
-  a { color: #0066cc; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  hr { border: none; border-top: 1px solid #ddd; margin: 1.25rem 0; }
-  table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.9rem; }
-  th, td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
-  th { background: #f5f5f5; font-weight: 600; }
-  blockquote { margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: #f9f9f9; border-left: 4px solid #0066cc; font-size: 0.95rem; }
-  ul { margin: 0.35rem 0; padding-left: 1.25rem; }
-  li { margin: 0.25rem 0; }
-  .meta { font-size: 0.9rem; color: #555; margin-top: 0.25rem; }
-</style>
-
-</head>
-<body>
-<h1>William Tucker</h1>
-<h3>AI Solutions Developer &middot; Software Engineer &middot; Kelowna, BC</h3>
-<p><strong>250-619-8900</strong> &middot; <strong><a href="mailto:william@williamtucker.ca">william@williamtucker.ca</a></strong> &middot; <strong><a href="https://williamtucker.ca">williamtucker.ca</a></strong> &middot; <strong><a href="https://www.linkedin.com/in/william-tucker-06203044/">LinkedIn</a></strong> &middot; <strong><a href="https://github.com/billski">GitHub</a></strong></p>
-<hr />
-
-<h2>Professional Summary</h2>
-<p>Software engineer with <strong>12+ years in higher education IT</strong> (Vancouver Island University, Thompson Rivers University), now focused on <strong>AI-powered solutions, automation, and enterprise integrations</strong> that improve the learner and staff digital experience. Currently building AI consulting practice through William Tucker Solutions.</p>
-<p>I design and deploy <strong>conversational AI applications</strong>, automate manual workflows, and integrate AI tools with enterprise platforms &mdash; the same systems I've built and maintained for over a decade. Built and shipped a <strong>production AI chatbot</strong> (williamtucker.ca) using Claude API with custom system prompts, rate limiting, and session management. Used <strong>AI agents to deliver full application modernizations</strong> in days instead of months, with CI/CD and automated tests.</p>
-<p>12+ years of hands-on experience with <strong>relational databases, REST APIs, enterprise system integrations, secure authentication (SSO/SAML), and technical documentation</strong> in post-secondary environments.</p>
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/
+.hljs {
+  color: #24292e;
+  background: #ffffff
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: #d73a49
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: #6f42c1
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: #005cc5
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: #032f62
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: #e36209
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: #6a737d
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: #22863a
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: #24292e
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: #005cc5;
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: #735c0f
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: #24292e;
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: #24292e;
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: #22863a;
+  background-color: #f0fff4
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: #b31d28;
+  background-color: #ffeef0
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}/*# sourceURL=C:\Users\bill\AppData\Local\npm-cache\_npx\55158e48eb5c59f7\node_modules\highlight.js\styles\github.css*/</style></head>
+	<body class="">
+		<h1 id="william-tucker">William Tucker</h1>
+<h3 id="senior-software-engineer-·-ai-engineer-·-kelowna-bc">Senior Software Engineer · AI Engineer · Kelowna, BC</h3>
+<p><strong>250-619-8900</strong> · <strong><a href="mailto:william@williamtucker.ca">william@williamtucker.ca</a></strong> · <strong><a href="https://williamtucker.ca">williamtucker.ca</a></strong> · <strong><a href="https://www.linkedin.com/in/william-tucker-06203044/">LinkedIn</a></strong> · <strong><a href="https://github.com/billski">GitHub</a></strong></p>
+<hr>
+<h2 id="professional-summary">Professional Summary</h2>
+<p>Senior software engineer with <strong>12+ years</strong> designing and shipping backend systems, data pipelines, and full-stack applications, with current focus on AI-native delivery — direct <strong>Anthropic Claude API</strong> integrations, a custom <strong>Oracle MCP server</strong> authored for my team, and AI-augmented modernization shipping in days instead of months.</p>
+<p>Strong in <strong>C#/.NET</strong>, <strong>Oracle</strong>, <strong>REST APIs</strong>, and <strong>CI/CD</strong>; experienced in legacy modernization (Classic ASP to .NET), ETL, and technical leadership. I use AI agents to accelerate delivery: the same modernization work that once took months now ships in days, with full test coverage and CI/CD. On my own time, I built <a href="https://dogmap.ca">dogmap.ca</a> — a production PWA with Next.js, Supabase, PostGIS, OAuth, RLS, and JWT-protected API routes.</p>
+<p>I care about infrastructure, security, and knowledge transfer. I document everything so teams own what gets built.</p>
 <blockquote>
-<p><strong>Core competencies:</strong> AI/LLM integration &amp; conversational AI &middot; Workflow automation &middot; Enterprise system integrations &middot; C#, Python, JavaScript &middot; Oracle &amp; SQL &middot; SSO/SAML authentication &middot; CI/CD &amp; DevOps &middot; Technical documentation &amp; knowledge transfer</p>
+<p><strong>Core competencies:</strong> Backend &amp; integrations · AI-accelerated development · Legacy modernization · CI/CD &amp; DevOps · Security (SSO, OAuth, RLS, JWT) · Oracle &amp; SQL · Cloud (Supabase, Vercel) · Technical leadership &amp; documentation</p>
 </blockquote>
-<hr />
-
-<h2>Technical Skills</h2>
+<hr>
+<h2 id="technical-skills">Technical Skills</h2>
 <table>
 <thead>
 <tr>
-<th>Category</th>
-<th>Technologies</th>
+<th align="left">Category</th>
+<th align="left">Technologies</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><strong>AI &amp; LLMs</strong></td>
-<td>Claude API (Anthropic), OpenAI GPT-5, Claude Code, prompt engineering, AI-agent-driven development, context document design, conversational AI (chatbot design &amp; deployment)</td>
+<tbody><tr>
+<td align="left"><strong>Languages</strong></td>
+<td align="left">C#, Java, JavaScript, TypeScript, Python, SQL, PL/SQL, T-SQL, Groovy, VBScript, PowerShell, XML</td>
 </tr>
 <tr>
-<td><strong>Languages</strong></td>
-<td>C#, Python, JavaScript, TypeScript, SQL, PL/SQL, T-SQL, Java, Groovy, PHP, VBScript, PowerShell, XML</td>
+<td align="left"><strong>Backend / APIs</strong></td>
+<td align="left">.NET 8, ASP.NET Core, Blazor Server, Classic ASP, REST, SOAP, Dapper, Entity Framework, SignalR, Supabase</td>
 </tr>
 <tr>
-<td><strong>Backend / APIs</strong></td>
-<td>.NET 8, ASP.NET Core, Blazor Server, REST, SOAP, Dapper, Entity Framework, SignalR, Express.js, Supabase</td>
+<td align="left"><strong>Data</strong></td>
+<td align="left">Oracle, SQL Server, PostgreSQL, PostGIS (geospatial), stored procedures, schema design, ETL (Talend)</td>
 </tr>
 <tr>
-<td><strong>Data</strong></td>
-<td>Oracle, SQL Server, PostgreSQL, PostGIS, stored procedures, schema design, ETL (Talend), data pipelines</td>
+<td align="left"><strong>Frontend</strong></td>
+<td align="left">Next.js, React, Blazor, TypeScript, TailwindCSS, Bootstrap 4/5, HTML/CSS, jQuery, MapLibre GL</td>
 </tr>
 <tr>
-<td><strong>Cloud &amp; DevOps</strong></td>
-<td>Vercel, Supabase, Railway, Git (multi-repo, 30+ repos), GitLab CI/CD, GitHub Actions, PowerShell, YAML, SSH/SFTP, multi-environment release (dev/test/prod)</td>
+<td align="left"><strong>AI &amp; LLMs</strong></td>
+<td align="left">Anthropic Claude API (direct SDK integration), GPT-5, Claude Code, custom MCP server authoring (TypeScript + <code>oracledb</code>), tool use / function calling, prompt engineering, AI-agent-driven development, context document design</td>
 </tr>
 <tr>
-<td><strong>Frontend</strong></td>
-<td>Next.js, React, Blazor, TypeScript, TailwindCSS, Bootstrap 4/5, HTML/CSS, jQuery</td>
+<td align="left"><strong>Reporting</strong></td>
+<td align="left">QuestPDF, Crystal Reports, PL/SQL, T-SQL</td>
 </tr>
 <tr>
-<td><strong>Security</strong></td>
-<td>SSO/ADFS, SAML, token validation, OAuth (Google, Apple), Row Level Security (RLS), JWT, CORS architecture, role-based access, rate limiting</td>
+<td align="left"><strong>DevOps / Tools</strong></td>
+<td align="left">Git (multi-repo, 30+ repos), GitLab CI/CD, Vercel, PowerShell, YAML, SSH/SFTP, multi-environment release (dev/test/prod)</td>
 </tr>
 <tr>
-<td><strong>Automation</strong></td>
-<td>AI-driven process automation, CI/CD pipeline automation, ETL workflows, automated testing, workflow modernization (manual &rarr; system-driven)</td>
+<td align="left"><strong>Cloud</strong></td>
+<td align="left">Vercel, Supabase (Auth, DB, Storage), cloud ERP integrations (REST/SOAP), env-based config</td>
 </tr>
 <tr>
-<td><strong>Other</strong></td>
-<td>IIS, Windows Server, Agile/Scrum, technical writing, solution architecture diagrams</td>
+<td align="left"><strong>Testing</strong></td>
+<td align="left">Unit testing, integration testing, code review</td>
 </tr>
-</tbody>
-</table>
-<hr />
-
-<h2>Experience</h2>
-
-<h3>Founder &amp; AI Consultant &mdash; William Tucker Solutions</h3>
-<p><em>2026 &ndash; Present &middot; Kelowna, BC (Remote)</em></p>
+<tr>
+<td align="left"><strong>Security</strong></td>
+<td align="left">SSO/ADFS, SAML, token validation, OAuth (Google, Apple), Row Level Security (RLS), JWT, CORS architecture, role-based access, rate limiting</td>
+</tr>
+<tr>
+<td align="left"><strong>Other</strong></td>
+<td align="left">IIS, Windows Server, Grails, Agile/Scrum</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="experience">Experience</h2>
+<h3 id="ai-engineer--independent-developer--william-tucker-solutions">AI Engineer &amp; Independent Developer — William Tucker Solutions</h3>
+<p><em>2026 – Present · Kelowna, BC (Remote)</em></p>
 <ul>
-<li><strong>Built and deployed a production AI chatbot</strong> at williamtucker.ca using Claude API (Anthropic SDK), Express.js, and Railway; custom system prompt with full business context, rate limiting, session management, and markdown rendering.</li>
-<li>Provide AI strategy, implementation, and prototyping services &mdash; assess workflows, identify automation opportunities, and deliver working solutions with full documentation.</li>
-<li>Use AI agents (Claude, GPT-5) to accelerate legacy modernization &mdash; work that previously took months now ships in days with CI/CD and automated tests.</li>
+<li><strong>Built williamtucker.ca production AI chatbot</strong> using the Anthropic Claude API (<code>@anthropic-ai/sdk</code> direct SDK integration) — custom system prompts, rate limiting, session management, Node.js/Express backend, deployed to Railway.</li>
+<li><strong>Built WTSAdmin + client portal</strong> — Next.js 16 (App Router, Turbopack) + Supabase (PostgreSQL + Auth + Storage + Row-Level Security) + Stripe + Resend + React PDF; 9 admin pages, 5 client portal pages, magic-link auth, PDF invoicing, route protection via Next.js 16 <code>proxy.ts</code>. Sole author, 4 days end-to-end.</li>
+<li><strong>AI-augmented delivery practice</strong> with Claude Code, Cursor, and GPT-5 — modernization work that previously took months now ships in days with CI/CD and automated tests; planning, debugging, and design decisions stay with me.</li>
 </ul>
-<hr />
-
-<h3>Programmer/Analyst &mdash; Vancouver Island University</h3>
-<p><em>Jul 2016 &ndash; Present &middot; Nanaimo, BC</em></p>
+<hr>
+<h3 id="programmeranalyst--vancouver-island-university">Programmer/Analyst — Vancouver Island University</h3>
+<p><em>Jul 2016 – Present · Nanaimo, BC</em></p>
 <ul>
-<li><strong>Led full modernization</strong> of the Facilities Information System from Classic ASP to .NET 8 Blazor Server &mdash; sole author, ~7 weeks (66 commits across 14 branches); preserved Oracle backend and cookie-based SSO; GitLab CI with test/build/deploy stages; architecture adopted as institutional conversion guide. Now in production.</li>
-<li><strong>Rebuilt room booking system</strong> as a .NET 8 Blazor Server app &mdash; sole author, 5 days end-to-end (49 commits across 24 branches), replacing a legacy Oracle PL/SQL system (~21K LOC, 14K-line <code>findroom.sql</code>); mobile-responsive with real-time conflict detection. Currently in QA, technically ready for production; go-live pending organizational approval.</li>
-<li><strong>Designed and built enterprise integrations</strong> &mdash; 9 REST API endpoints for a tag/categorization system, connecting Oracle database to a JavaScript front-end with full CRUD, authorization, and JSON/Mermaid export.</li>
-<li><strong>Automated manual workflows</strong> &mdash; replaced server-based development with local feature-branch workflow across 30+ repositories; designed GitLab CI/CD pipelines with health-check gates, automated rollback, and multi-environment release (dev/test/prod).</li>
-<li><strong>Built CDW submission tool</strong> &mdash; .NET web app with SignalR real-time progress, SSH/SFTP file transfer, service account management, and CI pipeline with automated tests; replaced manual file submission process.</li>
-<li><strong>Implemented SSO/SAML authentication</strong> and access control across web and .NET API services; designed dynamic CORS architecture for multi-developer environments; documented auth flows and troubleshooting.</li>
-<li><strong>Authored modernization assessments</strong> with cost-benefit analysis and phased conversion plans for legacy applications; produced reusable institutional conversion guide.</li>
-<li><strong>Developed enterprise integrations</strong> from legacy systems to a modern cloud ERP using REST/SOAP in C# .NET and Entity Framework.</li>
-<li><strong>Delivered compliance automation</strong> &mdash; updated SQL/XML for CRA T4A/T2202A electronic filing (2026 standards); resolved XML output and parsing issues for student and vendor extracts.</li>
-<li><strong>Designed team developer handbook</strong> &mdash; single source of truth for branching strategy, CI/CD pipelines, and onboarding. Collaborate in Agile/Scrum ceremonies, code reviews, and testing.</li>
+<li><strong>Delivered a 3-project sprint in 12 days (2026-04-09 → 2026-04-20)</strong> using parallel AI-agent sessions — greenfield .NET 8 Blazor SSO portal (<del>50 commits; standalone SAML login, impersonation with privilege-check hardening, pen-test pass, CSP compliance), artifact-based SRS deploy pipeline (</del>17 commits; Pester v3 test harness, pre-deploy snapshot retention, manual prod gate, Teams Adaptive Card notify), and a team-wide Obsidian documentation vault (~40 commits; Oracle SSO-chain schema reference, Classic ASP shared-includes reference, end-to-end SSO traces with mermaid diagrams). See <a href="PROFILE.md">PROFILE.md</a> for full breakdown and independent git verification.</li>
+<li><strong>Led full modernization</strong> of Facilities Information System from Classic ASP to .NET 8 Blazor Server — sole author, ~7 weeks (66 commits across 14 branches); preserved Oracle backend and cookie-based SSO; GitLab CI with test/build/deploy stages; architecture adopted as institutional conversion guide. Now in production.</li>
+<li><strong>Rebuilt room booking system</strong> as a .NET 8 Blazor Server app — sole author, 5 days end-to-end (49 commits across 24 branches), replacing a legacy Oracle PL/SQL system (~21K LOC, 14K-line <code>findroom.sql</code>); mobile-responsive with real-time conflict detection. Currently in QA, technically ready for production; go-live pending organizational approval.</li>
+<li><strong>Built SSO landing page tag system</strong> — designed Oracle schema (3 tables, sequences, triggers, cascading deletes), implemented 9 REST API endpoints in C#, and rewrote the entire landing page UI with modern patterns (slide-over panels, toast notifications, inline prompts replacing alert/confirm); includes JSON and Mermaid diagram export.</li>
+<li><strong>Authored a custom Oracle MCP server</strong> in TypeScript (<code>@modelcontextprotocol/sdk</code> + <code>oracledb</code>) extending Claude Code with multi-database Oracle tooling — thick-mode LDAP TNS resolution, per-DB connection pools, read/write separation guardrails, row-limit enforcement; wired into the team's shared <code>.mcp.json</code>. Daily driver against ODEV. (<a href="https://github.com/billski/Claude-Oracle-MCP">github.com/billski/Claude-Oracle-MCP</a>)</li>
+<li><strong>Replaced Crystal Reports with QuestPDF</strong> in the Building Information System; eliminated legacy licensing dependency with a modern .NET-native reporting library.</li>
+<li><strong>Built CDW submission tool</strong> — .NET web app with SignalR real-time progress, SSH/SFTP file transfer via SSH.NET, service account management, and GitLab CI pipeline with automated tests.</li>
+<li><strong>Established local development environment</strong> for a team of six; transitioned from server-based development to local feature-branch workflow across 30+ git repositories; designed whitelist <code>.gitignore</code> strategy, multi-repo rollback procedures, and health-check-gated GitLab CI/CD pipelines across dev, test, and prod.</li>
+<li><strong>Authored modernization assessments</strong> with cost-benefit analysis and phased conversion plans for legacy Classic ASP applications; produced institutional conversion guide used as a reference for future projects.</li>
+<li><strong>Implemented and documented</strong> authentication and access control across web and .NET API services (SSO/ADFS, SAML, token validation, privilege checks); designed dynamic CORS architecture enabling multi-developer local development.</li>
+<li><strong>Designed team developer handbook</strong> with stakeholder input; single source of truth for branching strategy, pipelines, and onboarding.</li>
+<li><strong>Developed integrations</strong> from legacy systems to a modern cloud ERP using REST/SOAP in C# .NET and Entity Framework.</li>
+<li><strong>Delivered compliance work</strong> — reviewed and updated SQL/XML for CRA T4A/T2202A electronic filing (2026 standards); resolved XML output and parsing issues for student and vendor extracts.</li>
+<li><strong>Participate in Agile/Scrum</strong> ceremonies; contribute to code reviews and unit/integration testing.</li>
 </ul>
-<hr />
-
-<h3>Software Analyst &mdash; Thompson Rivers University</h3>
-<p><em>Jan 2013 &ndash; Jul 2016 &middot; Kamloops, BC</em></p>
+<hr>
+<h3 id="software-analyst--thompson-rivers-university">Software Analyst — Thompson Rivers University</h3>
+<p><em>Jan 2013 – Jul 2016 · Kamloops, BC</em></p>
 <ul>
 <li><strong>Designed and built</strong> the T.R.U. Student ID Card system in Java; used by thousands of students, integrated with BC Transit buses and City of Kamloops.</li>
 <li><strong>Created</strong> Employee Survey system on Groovy Grails stack with Oracle; comprehensive reports and ETL jobs across Finance, HR, Payroll, and Student departments.</li>
 <li><strong>Delivered</strong> Groovy Grails presentation at BCNET Conference 2015; trained staff on institutional reporting, code review, and SQL tuning.</li>
 </ul>
-<hr />
-
-<h3>Institutional Data Analyst &mdash; Thompson Rivers University</h3>
-<p><em>Sep 2012 &ndash; Mar 2013 &middot; Kamloops, BC</em></p>
+<hr>
+<h3 id="institutional-data-analyst--thompson-rivers-university">Institutional Data Analyst — Thompson Rivers University</h3>
+<p><em>Sep 2012 – Mar 2013 · Kamloops, BC</em></p>
 <ul>
 <li>Reporting on Oracle data using SQL and PL/SQL.</li>
 </ul>
-<hr />
-
-<h3>Institutional Report Coordinator (Co-op) &mdash; Thompson Rivers University</h3>
-<p><em>May 2012 &ndash; Dec 2012 &middot; Kamloops, BC</em></p>
+<hr>
+<h3 id="institutional-report-coordinator-co-op--thompson-rivers-university">Institutional Report Coordinator (Co-op) — Thompson Rivers University</h3>
+<p><em>May 2012 – Dec 2012 · Kamloops, BC</em></p>
 <ul>
 <li>SQL, PL/SQL, and PHP development for institutional reporting.</li>
 </ul>
-<hr />
-
-<h2>Education</h2>
+<hr>
+<h2 id="education">Education</h2>
 <table>
 <thead>
 <tr>
-<th>Degree</th>
-<th>Institution &middot; Years</th>
+<th align="left">Degree</th>
+<th align="left">Institution · Years</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><strong>Computer Science Diploma</strong></td>
-<td>Thompson Rivers University &middot; 2010 &ndash; 2013</td>
+<tbody><tr>
+<td align="left"><strong>Computer Science Diploma</strong></td>
+<td align="left">Thompson Rivers University · 2010 – 2013</td>
 </tr>
 <tr>
-<td></td>
-<td><em>Computer Systems: Operations &amp; Management, Computer Science</em></td>
+<td align="left"></td>
+<td align="left"><em>Computer Systems: Operations &amp; Management, Computer Science</em></td>
 </tr>
 <tr>
-<td><strong>Journeyman Marine Technician</strong></td>
-<td>British Columbia Institute of Technology &middot; 2003 &ndash; 2007</td>
+<td align="left"><strong>Journeyman Marine Technician</strong></td>
+<td align="left">British Columbia Institute of Technology · 2003 – 2007</td>
 </tr>
-</tbody>
-</table>
-<hr />
-
-<h2>Certifications</h2>
+</tbody></table>
+<hr>
+<h2 id="certifications">Certifications</h2>
 <table>
 <thead>
 <tr>
-<th>Certification</th>
-<th>Issuer</th>
-<th>Date</th>
+<th align="left">Certification</th>
+<th align="left">Issuer</th>
+<th align="left">Date</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>Java and Hibernate</td>
-<td>TestDome</td>
-<td>Aug 2021</td>
+<tbody><tr>
+<td align="left">Java and Hibernate</td>
+<td align="left">TestDome</td>
+<td align="left">Aug 2021</td>
 </tr>
 <tr>
-<td>SQL (Intermediate)</td>
-<td>HackerRank</td>
-<td>Aug 2021</td>
+<td align="left">SQL (Intermediate)</td>
+<td align="left">HackerRank</td>
+<td align="left">Aug 2021</td>
 </tr>
-</tbody>
-</table>
-<hr />
-
-<h2>Key Projects</h2>
+</tbody></table>
+<hr>
+<h2 id="key-projects">Key Projects</h2>
 <table>
 <thead>
 <tr>
-<th>Project</th>
-<th>Outcome</th>
+<th align="left">Project</th>
+<th align="left">Outcome</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><strong>AI chatbot</strong> (<a href="https://williamtucker.ca">williamtucker.ca</a>)</td>
-<td>Production conversational AI using Claude API, Express.js, Railway. Custom system prompt, rate limiting, session management, markdown rendering.</td>
+<tbody><tr>
+<td align="left"><strong>Facilities Information System modernization</strong></td>
+<td align="left">Classic ASP → .NET 8 Blazor Server; same Oracle schema and SSO; sole-author ~7 weeks (66 commits, 14 branches); in production; reference implementation for institutional conversion guide.</td>
 </tr>
 <tr>
-<td><strong>Facilities Information System modernization</strong></td>
-<td>Classic ASP &rarr; .NET 8 Blazor Server; sole-author ~7 weeks (66 commits, 14 branches); in production; institutional reference implementation.</td>
+<td align="left"><strong>Room booking system</strong></td>
+<td align="left">Legacy Oracle PL/SQL room booking system (~21K LOC, 14K-line <code>findroom.sql</code>) → .NET 8 Blazor Server; sole author, 5 days end-to-end; mobile-responsive, real-time conflict detection; in QA, blocked on org approval.</td>
 </tr>
 <tr>
-<td><strong>Room booking system</strong></td>
-<td>Legacy Oracle PL/SQL (~21K LOC, 14K-line <code>findroom.sql</code>) &rarr; .NET 8 Blazor Server; sole author, 5 days end-to-end; mobile-responsive, real-time conflict detection; in QA, blocked on org approval.</td>
+<td align="left"><strong>SSO landing page + tag system</strong></td>
+<td align="left">Rewrote SSO landing page UI; designed and built database-backed tag/layer system (Oracle schema, 9 REST endpoints, 12 SQL migrations, JSON/Mermaid export); modern UI with slide-over panels and toast notifications.</td>
 </tr>
 <tr>
-<td><strong>Enterprise integration (tag system)</strong></td>
-<td>Oracle schema + 9 REST API endpoints + JavaScript UI; full CRUD, authorization, JSON/Mermaid export for app categorization across the institution.</td>
+<td align="left"><strong>Crystal Reports → QuestPDF</strong></td>
+<td align="left">Replaced legacy licensed reporting in BIS with .NET-native QuestPDF; eliminated licensing dependency.</td>
 </tr>
 <tr>
-<td><strong>CI/CD &amp; workflow automation</strong></td>
-<td>Transitioned 30+ repos from manual to automated; GitLab pipelines with health-check gates, rollback automation, multi-environment release.</td>
+<td align="left"><strong>Local dev environment &amp; CI/CD</strong></td>
+<td align="left">Transitioned 30+ repos from server-based to local feature-branch development; GitLab pipelines with health-check gates, rollback automation, and multi-environment release.</td>
 </tr>
 <tr>
-<td><strong><a href="https://dogmap.ca">dogmap.ca</a></strong> <em>(side project)</em></td>
-<td>Full-stack PWA: Next.js, TypeScript, Supabase (PostgreSQL, PostGIS, Auth, Storage), Vercel. OAuth, RLS, JWT, admin dashboard, moderation queue.</td>
+<td align="left"><strong>Developer handbook</strong></td>
+<td align="left">Designed with team input; central resource for workflow, branching, pipelines, and onboarding.</td>
 </tr>
-</tbody>
-</table>
-<hr />
-</body>
-</html>
+<tr>
+<td align="left"><strong><a href="https://dogmap.ca">dogmap.ca</a></strong> <em>(side project)</em></td>
+<td align="left">PWA for BC dog owners. Next.js, TypeScript, Supabase (PostgreSQL, PostGIS, Auth, Storage), Vercel. RLS on all tables, OAuth (Google, Apple), JWT in API routes, role-based access, admin dashboard, moderation queue. Live at <a href="https://dogmap.ca">dogmap.ca</a>.</td>
+</tr>
+<tr>
+<td align="left"><strong><a href="https://williamtucker.ca">williamtucker.ca</a></strong></td>
+<td align="left">Production website with <strong>live AI chatbot built directly on the Anthropic Claude API</strong> (<code>@anthropic-ai/sdk</code>) — custom system prompts, rate limiting, session management, Node.js/Express backend; Tailwind CSS, deployed to Railway.</td>
+</tr>
+<tr>
+<td align="left"><strong>WTSAdmin + client portal</strong></td>
+<td align="left">Full-stack SaaS shipped in 4 days, sole author. Next.js 16 (App Router, Turbopack) + Supabase (PostgreSQL + Auth + Storage + RLS) + Stripe + Resend + React PDF. 9 admin pages, 5 client portal pages, magic-link auth, PDF invoicing, route protection via Next.js 16 <code>proxy.ts</code>.</td>
+</tr>
+<tr>
+<td align="left"><strong>Oracle MCP server</strong></td>
+<td align="left">Custom MCP server in TypeScript (<code>@modelcontextprotocol/sdk</code> + <code>oracledb</code>) giving Claude Code first-class Oracle tools across multiple databases — thick-mode LDAP, multi-DB connection pools, read/write separation, row-limit guardrails. Authored in a day, daily driver against ODEV. <a href="https://github.com/billski/Claude-Oracle-MCP">github.com/billski/Claude-Oracle-MCP</a></td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Last updated: April 2026</em></p>
+
+	
+
+</body></html>
