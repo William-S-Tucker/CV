@@ -2,7 +2,7 @@
 
 **Purpose:** Comprehensive, evidence-backed reference for all job-application work. Every claim below is verified against local repositories or live sites — no resume-optimized embellishment. When tailoring a resume or cover letter, cherry-pick from here and preserve the honesty. When asked "am I qualified for X?", read this first.
 
-**Last verified:** 2026-04-20 (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history).
+**Last verified:** 2026-04-20 (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history. §5.3 (AscendAI), §6.2 (wts-ai-docs), and the §6.1 Python-pipeline / §8 Python-honesty notes added 2026-05-29, verified against `D:\code\ascendai` git history, the `billski/wts-ai-docs` repo, and `D:\code\DogMap/scripts`).
 
 ---
 
@@ -254,6 +254,21 @@ Registered business with license; no clients yet. Infrastructure is built in adv
   - Route protection via Next.js 16's new `proxy.ts` (replaces `middleware.ts`)
 - **Significance:** Full-stack SaaS end-to-end — schema, migrations, RLS, auth, UI, PDF generation, Stripe billing, transactional email. Shipped in 4 days solo.
 
+### 5.3 AscendAI — production RAG feasibility agent (pro-bono client build + WTS portfolio)
+
+- **Repo:** `D:\code\ascendai` (deployed to Vercel)
+- **Timeline:** 2026-04-25 → ongoing, **173 commits, sole author** (verified 2026-05-29)
+- **Client:** Ascend Land Development (Erika Kretchmer, CEO), Kelowna — a custom AI agent that turns a BC address into an 11-section land-development feasibility memo. Pro-bono build; doubles as a WTS portfolio piece.
+- **Stack:** Next.js 16 + TypeScript + **Supabase + pgvector (HNSW index)** + **Vercel AI SDK v6** (via AI Gateway) + **Claude Sonnet 4.6** + **Voyage `voyage-3-lite` embeddings** (512 dims); zod schemas; Vitest.
+- **Architecture — hybrid retrieval, not naive RAG:**
+  - Pipeline: BC address → **ArcGIS cadastral lookup** (lot geometry, PID, zoning) → **structured zoning-rules YAML** for hard dimensional numbers → **RAG over a 12-PDF bylaw corpus** for interpretive questions → 11-section memo with inline citations.
+  - Ingestion pipeline (`scripts/ingest.ts`), agent tool layer (`lib/tools`, `lib/ai.ts`), zod-typed schemas, system-prompt module with tests.
+  - **Eval discipline:** golden-file YAML validation tests, mixed-tier synthetic tests, on-demand fallback for zones missing from the rules cache.
+  - **Tier-aware trust system** (`reviewed` vs `draft` zones) and **explicit escalation triggers** when the reasoning runs out and a human planner is needed.
+  - Two delivery surfaces share one core: an installable **Claude skill** (`SKILL.md`) for power users, and the Next.js web app (authenticated shell, magic-link auth, sections for feasibility / memos / jurisdictions / 3d-massing).
+- **Status:** Actively built; Phase 1+2 RAG shipped (HNSW retrieval, `zoning_rules_cache`). Pilot / investor-demo phase — not yet publicly launched. *(README front-matter still reads "design phase"; it is stale — git history shows the RAG pipeline implemented and tested.)*
+- **Significance:** The closest analog in the inventory to "build production AI features — a coaching context system *and the evals that keep it honest*." Demonstrates **retrieval architecture (pgvector/HNSW, embeddings), AI SDK v6, agent tool design, and eval/golden-file discipline** — not a chatbot wrapper.
+
 ---
 
 ## 6. Independent projects
@@ -266,6 +281,21 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **Stack:** Next.js 16 + React 19 + TypeScript + **Supabase (PostgreSQL + PostGIS + Auth + Storage)** + MapLibre GL + react-map-gl + supercluster + Zustand + @tanstack/react-query + Sharp, deployed to Vercel
 - **Scope:** PWA for BC dog owners. Map-based. Geospatial (PostGIS). OAuth (Google, Apple). JWT-protected API routes. RLS on all tables. Role-based access, admin dashboard, moderation queue.
 - **Significance:** Long-running side project demonstrating depth — 6 months of disciplined iteration (not a hackathon). Full verification script in `package.json` (`lint + typecheck + test + build`). Real test coverage via Vitest.
+- **Python data pipeline (verified, William-authored):** `DogMap/scripts/*.py` — ~13 sole-authored Python scripts doing real **ETL / geospatial data engineering**: OSM tag discovery (`discover-osm-tags.py`), Overture Maps BC place import (`overture_bc_import.py`, `load-overture-places.py`), municipal parks / DOLA fetching (`fetch-municipal-parks.py`, `fetch-municipal-dolas.py`), OSM/parks SQL-batch building, and loading places into **PostGIS** (`load-osm-places.py`). This is the most defensible Python in the inventory: William-authored, in service of a live production app, doing ingestion-pipeline work. **It is data-pipeline scripting, not a Python web service** (see §8 Python honesty note).
+
+### 6.2 wts-ai-docs — agent-first documentation system (reusable tooling)
+
+- **Repo:** [github.com/billski/wts-ai-docs](https://github.com/billski/wts-ai-docs) (private)
+- **Timeline:** created 2026-05-07, last pushed 2026-05-24. JavaScript + Shell.
+- **What it is:** An opinionated, **AI-agent-first documentation system** for codebases — docs written for the *agent reading them cold* (Karpathy "software 3.0" framing). Generalized from real production vaults (**DogMap, WTSAdmin, WTS**).
+- **Ships:**
+  - **Two Claude Code skills** — `vault-aware` (consumer: routes Claude to the right domain doc, enforces conventions before doc edits) and `vault-init` (producer: bootstraps a vault into a fresh repo).
+  - **Bootstrap CLI** (`npx wts-ai-docs init`) — scaffolds a vault in seconds.
+  - **Change-routing script** (`match-docs.mjs`) — tells you which docs a diff affects, routing by path glob, content keyword, **and parsed DB objects** (CREATE/ALTER/DROP TABLE, CREATE FUNCTION, CREATE/ALTER/DROP POLICY in each migration).
+  - **Vault linter** (`vault-doctor.mjs`) — audits frontmatter, freshness, wikilinks, and doc-to-code coverage; exits non-zero so CI can block stale vaults.
+  - **Pre-commit drift gate** (`check-docs-freshness.mjs`) — blocks commits that touch vault-owned code without refreshing the owning doc's `last-reviewed`.
+  - **CI templates** — drop-in GitHub Actions workflow + pre-commit hook.
+- **Significance:** The single strongest artifact for the "**force multiplier / build the systems that prevent the next question**" competency — a reusable system that routes code changes to docs, self-verifies claims against ground truth, detects drift before it becomes hallucination, and gates CI. It is, almost verbatim, "turn one-off requests into repeatable patterns and build the tooling that prevents the next question."
 
 ---
 
@@ -287,7 +317,7 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **Databases:** Oracle (primary, ~99K LOC PL/SQL), **PostgreSQL via Supabase (Auth + RLS + Storage + PostGIS)**
 - **Auth/Security:** ADFS, SAML, cookie-based SSO, JWT, OAuth (Google, Apple), magic-link auth, Row-Level Security, CORS architecture, CSP hardening, privilege-class enforcement, impersonation with safety checks
 - **Infrastructure:** IIS (appcmd, web.config, URL rewrite), GitLab CI/CD, Vercel, Railway, PowerShell deploy + rollback scripts, robocopy /MIR patterns, SSH/SFTP (SSH.NET, ED25519 keys)
-- **AI/LLM:** Anthropic Claude API (direct SDK integration in production), Claude Code (custom hooks, shared `CLAUDE.md`, planning + spec workflows), **custom MCP server authored in TypeScript** (`@modelcontextprotocol/sdk` + `oracledb`, see §4.6) extending Claude with multi-DB Oracle tools, prompt engineering, context-document design
+- **AI/LLM:** Anthropic Claude API (direct SDK integration in production), **Vercel AI SDK v6** (via AI Gateway, see §5.3), Claude Code (custom hooks, shared `CLAUDE.md`, planning + spec workflows, parallel sessions), **custom MCP server authored in TypeScript** (`@modelcontextprotocol/sdk` + `oracledb`, see §4.6) extending Claude with multi-DB Oracle tools, **RAG / retrieval architecture** (Supabase pgvector + HNSW, Voyage embeddings, hybrid structured-rules + retrieval — see §5.3), **eval discipline** (golden-file + synthetic tier tests), agent tool design, **agent-first documentation tooling** (`wts-ai-docs` — §6.2), prompt engineering, context-document design
 - **Reporting:** QuestPDF, React PDF Renderer, Crystal Reports (legacy)
 - **Workflow:** Git (multi-repo, 30+ repos), branch-per-feature, merge requests, spec-before-implementation, trace-and-reference documentation
 
@@ -295,7 +325,7 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **SQL Server** (T-SQL): read-only integration with Raiser's Edge RE7 in VIUWEB/award
 - **Java + Hibernate** (2021 cert + earlier Java work at TRU)
 - **Groovy Grails** (2013–2015 at TRU)
-- **Python** (listed; not verified in recent repos)
+- **Python** — *honest scope:* William-authored **data-pipeline / ETL scripting** in DogMap (`scripts/*.py`: OSM + Overture ingestion into PostGIS — see §6.1) and a small personal app with tests (`D2chedit`, 12 commits). **No production Python web service, and no FastAPI / SQLAlchemy / Alembic / Pydantic experience.** Do not claim "Python services in production." The honest claim is: writes Python pipeline code when a real app needs it; the production-service muscle is C#/.NET and TypeScript.
 - **SOAP** (referenced in integrations; primary work is REST)
 - **Entity Framework** (used in older APIAuthorize / DBConnection services)
 - **ETL** — Talend listed; not recent
@@ -325,6 +355,8 @@ These are specific skills the git history proves, useful as concrete interview t
 9. **Supabase RLS policies + helper functions** for admin/client split.
 10. **Supercluster + MapLibre** rendering with React for geospatial PWA (dogmap).
 11. **Custom MCP server authoring** — built an Oracle MCP server in TypeScript (stdio transport, thick-mode LDAP init, multi-DB connection pooling, read/write separation, row-limit guardrails) and wired it into the team's `webroot_dev/.mcp.json`. Demonstrates extending AI tooling, not just consuming it.
+12. **Production RAG with evals** — hybrid retrieval (structured rules YAML + pgvector/HNSW over a bylaw corpus), Voyage embeddings, AI SDK v6, golden-file + synthetic-tier eval tests, tier-aware trust and explicit escalation triggers (AscendAI, §5.3). Retrieval architecture and honesty-by-design, not a chatbot wrapper.
+13. **Agent-first documentation system as reusable tooling** — `wts-ai-docs` (§6.2): routes diffs to the right docs (path/keyword/DB-object), self-verifies claims, gates drift in CI. A "prevent-the-next-question" system generalized from three production vaults.
 
 ---
 
@@ -367,6 +399,10 @@ When asked about a role, map these capabilities against the posting:
 | Senior / staff software engineer (8+ yrs) | ✅ 12+ years; meets seniority |
 | AI-accelerated delivery / Claude / agents | ✅ Direct Claude API + Claude Code + shipped AI-augmented modernizations |
 | Building AI tooling (MCP servers / agent tools) | ✅ Authored a custom TypeScript MCP server for Oracle (see §4.6) — not just using agents, extending them |
+| RAG / embeddings / retrieval architecture | ✅ AscendAI (§5.3): pgvector/HNSW, Voyage embeddings, hybrid rules+retrieval, AI SDK v6 |
+| LLM eval / "keeping it honest" | ✅ AscendAI golden-file + synthetic-tier evals, tier-aware trust, escalation triggers (§5.3) |
+| Force-multiplier / "prevent the next question" tooling | ✅ wts-ai-docs (§6.2) + es-handbook + led 6-person team migration (§4.4) |
+| Python services in production (e.g. FastAPI) | ⚠️ **Gap.** William-authored Python is ETL/pipeline scripting (DogMap §6.1), not a web service. No FastAPI/SQLAlchemy. Frame as fast-acquire, not held experience. |
 | Legacy modernization | ✅ Strong; catalogued ~90-app inventory + authored playbook + shipped 6 conversions |
 | .NET / C# backend | ✅ Strong; .NET 8 and .NET 10 in production |
 | Full-stack (Next.js / React / TypeScript) | ✅ Strong; shipped two production apps + dogmap |
