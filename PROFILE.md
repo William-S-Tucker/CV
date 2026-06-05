@@ -30,7 +30,7 @@
 | May 2012 – Dec 2012 | Institutional Report Coordinator (Co-op) | TRU | Kamloops, BC |
 
 **Total professional software experience:** ~12 years (since 2013, excluding co-op).
-**Pre-software:** Journeyman Marine Technician (BCIT, 2003–2007). This is not typically relevant for software roles but demonstrates hands-on troubleshooting background.
+**Pre-software (prior trade career):** Journeyman Marine Technician (BCIT, 2003–2007) — worked on **marine engines and drives**, not software. List once as a neutral factual "previous career" line only. Do **not** frame it as relevant to software, an "engineering mindset," domain insight, or transferable troubleshooting. It is biography, not a software asset. See §10 framing rule.
 
 ---
 
@@ -373,6 +373,9 @@ Earlier drafts of the resume claimed "2 days with AI agents" for BIS. That is **
 
 ### Stack gaps
 Do not infer transferable skills from adjacent tech. PostgreSQL is not MySQL. Vercel is not AWS. Next.js is not CakePHP. Acknowledge gaps upfront in cover letters — it builds credibility for the claims that are strong.
+
+### Marine technician background (do not inflate)
+William's pre-software career was a Journeyman Marine Technician trade ticket (BCIT, 2003–2007) — he worked on **marine engines and drives**, not software. List it exactly once, as a neutral factual "previous career" line (e.g. *"Journeyman Marine Technician (prior trade career, pre-software)"*). **Never** frame it as giving an "engineering mindset," "build-things-that-work discipline," maritime-domain insight, or transferable troubleshooting skill — not even when applying to maritime/industrial software companies (William's explicit directive, 2026-06-05). It is biography, not a qualification. Do not put it in a resume header, summary, cover-letter hook, or "core competencies" line.
 
 ### Date accuracy
 Always audit all files for stale dates before delivering. Convert relative dates ("last week", "yesterday") to absolute dates when writing.

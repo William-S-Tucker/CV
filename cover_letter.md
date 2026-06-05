@@ -25,7 +25,7 @@ I'm a software engineer with 12 years of experience building and modernizing ent
 
 **I automate manual processes.** I replaced a manual file submission workflow with a .NET web application featuring real-time progress (SignalR) and SSH/SFTP transfer. I transitioned an entire development team from server-based manual workflows to automated feature-branch development with CI/CD. I've automated compliance reporting, ETL pipelines, and deployment processes. When I see a manual, email-driven process, I see an automation opportunity — and I have the track record of delivering on it.
 
-I hold a Computer Science diploma from Thompson Rivers University and a journeyman marine technician certification from BCIT, which gave me a "build things that have to work" engineering mindset that I carry into every project. Combined with 12 years of hands-on delivery, I bring both the technical depth and practical discipline this work demands.
+I hold a Computer Science diploma from Thompson Rivers University, and behind it 12 years of hands-on delivery — I bring both the technical depth and practical discipline this work demands.
 
 I'm based in Kelowna and available for remote or hybrid work. I would welcome the chance to discuss how my experience maps to your needs.
 

@@ -95,7 +95,7 @@ I care about infrastructure, security, and knowledge transfer. I document everyt
 |:--|:--|
 | **Computer Science Diploma** | Thompson Rivers University · 2010 – 2013 |
 | | *Computer Systems: Operations & Management, Computer Science* |
-| **Journeyman Marine Technician** | British Columbia Institute of Technology · 2003 – 2007 |
+| **Journeyman Marine Technician** *(prior trade career, pre-software)* | British Columbia Institute of Technology · 2003 – 2007 |
 
 ---
 
