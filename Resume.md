@@ -9,7 +9,7 @@
 
 Senior software engineer with **12+ years** designing and shipping backend systems, data pipelines, and full-stack applications, with current focus on AI-native delivery — direct **Anthropic Claude API** integrations, a custom **Oracle MCP server** authored for my team, and AI-augmented modernization shipping in days instead of months.
 
-Strong in **C#/.NET**, **Oracle**, **REST APIs**, and **CI/CD**; experienced in legacy modernization (Classic ASP to .NET), ETL, and technical leadership. I use AI agents to accelerate delivery: the same modernization work that once took months now ships in days, with full test coverage and CI/CD. On my own time, I built [dogmap.ca](https://dogmap.ca) — a production PWA with Next.js, Supabase, PostGIS, OAuth, RLS, and JWT-protected API routes.
+Strong in **C#/.NET**, **Oracle**, **REST APIs**, and **CI/CD**; experienced in legacy modernization (Classic ASP to .NET), ETL, and technical leadership. I use AI agents to accelerate delivery: the same modernization work that once took months now ships in days, with full test coverage and CI/CD.
 
 I care about infrastructure, security, and knowledge transfer. I document everything so teams own what gets built.
 
@@ -118,7 +118,6 @@ I care about infrastructure, security, and knowledge transfer. I document everyt
 | **Crystal Reports → QuestPDF** | Replaced legacy licensed reporting in BIS with .NET-native QuestPDF; eliminated licensing dependency. |
 | **Local dev environment & CI/CD** | Transitioned 30+ repos from server-based to local feature-branch development; GitLab pipelines with health-check gates, rollback automation, and multi-environment release. |
 | **Developer handbook** | Designed with team input; central resource for workflow, branching, pipelines, and onboarding. |
-| **[dogmap.ca](https://dogmap.ca)** *(side project)* | PWA for BC dog owners. Next.js, TypeScript, Supabase (PostgreSQL, PostGIS, Auth, Storage), Vercel. RLS on all tables, OAuth (Google, Apple), JWT in API routes, role-based access, admin dashboard, moderation queue. Live at [dogmap.ca](https://dogmap.ca). |
 | **[williamtucker.ca](https://williamtucker.ca)** | Production website with **live AI chatbot built directly on the Anthropic Claude API** (`@anthropic-ai/sdk`) — custom system prompts, rate limiting, session management, Node.js/Express backend; Tailwind CSS, deployed to Railway. |
 | **WTSAdmin + client portal** | Full-stack SaaS shipped in 4 days, sole author. Next.js 16 (App Router, Turbopack) + Supabase (PostgreSQL + Auth + Storage + RLS) + Stripe + Resend + React PDF. 9 admin pages, 5 client portal pages, magic-link auth, PDF invoicing, route protection via Next.js 16 `proxy.ts`. |
 | **Oracle MCP server** | Custom MCP server in TypeScript (`@modelcontextprotocol/sdk` + `oracledb`) giving Claude Code first-class Oracle tools across multiple databases — thick-mode LDAP, multi-DB connection pools, read/write separation, row-limit guardrails. Authored in a day, daily driver against ODEV. [github.com/billski/Claude-Oracle-MCP](https://github.com/billski/Claude-Oracle-MCP) |

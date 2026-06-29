@@ -276,12 +276,12 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 ### 6.1 dogmap.ca
 
 - **Repo:** `C:\code\dogmap`
-- **Live:** [dogmap.ca](https://dogmap.ca)
-- **Timeline:** 2025-10-09 → ongoing, **376 commits** (v2.0.0)
+- **Status:** **Retired June 2026** — was live at dogmap.ca; no longer deployed. The engineering record below still stands as real, verifiable experience.
+- **Timeline:** 2025-10-09 → June 2026 (retired), **376 commits** (v2.0.0)
 - **Stack:** Next.js 16 + React 19 + TypeScript + **Supabase (PostgreSQL + PostGIS + Auth + Storage)** + MapLibre GL + react-map-gl + supercluster + Zustand + @tanstack/react-query + Sharp, deployed to Vercel
 - **Scope:** PWA for BC dog owners. Map-based. Geospatial (PostGIS). OAuth (Google, Apple). JWT-protected API routes. RLS on all tables. Role-based access, admin dashboard, moderation queue.
 - **Significance:** Long-running side project demonstrating depth — 6 months of disciplined iteration (not a hackathon). Full verification script in `package.json` (`lint + typecheck + test + build`). Real test coverage via Vitest.
-- **Python data pipeline (verified, William-authored):** `DogMap/scripts/*.py` — ~13 sole-authored Python scripts doing real **ETL / geospatial data engineering**: OSM tag discovery (`discover-osm-tags.py`), Overture Maps BC place import (`overture_bc_import.py`, `load-overture-places.py`), municipal parks / DOLA fetching (`fetch-municipal-parks.py`, `fetch-municipal-dolas.py`), OSM/parks SQL-batch building, and loading places into **PostGIS** (`load-osm-places.py`). This is the most defensible Python in the inventory: William-authored, in service of a live production app, doing ingestion-pipeline work. **It is data-pipeline scripting, not a Python web service** (see §8 Python honesty note).
+- **Python data pipeline (verified, William-authored):** `DogMap/scripts/*.py` — ~13 sole-authored Python scripts doing real **ETL / geospatial data engineering**: OSM tag discovery (`discover-osm-tags.py`), Overture Maps BC place import (`overture_bc_import.py`, `load-overture-places.py`), municipal parks / DOLA fetching (`fetch-municipal-parks.py`, `fetch-municipal-dolas.py`), OSM/parks SQL-batch building, and loading places into **PostGIS** (`load-osm-places.py`). This is the most defensible Python in the inventory: William-authored, in service of a production app (dogmap, since retired), doing ingestion-pipeline work. **It is data-pipeline scripting, not a Python web service** (see §8 Python honesty note).
 
 ### 6.2 wts-ai-docs — agent-first documentation system (reusable tooling)
 
@@ -353,7 +353,7 @@ These are specific skills the git history proves, useful as concrete interview t
 7. **Whitelist `.gitignore`** for a base-repo that hosts sibling app repos without tracking them.
 8. **Planning-first AI workflow** — `docs/superpowers/plans/` and `specs/` directories in CDWTool show spec → implementation → iteration, not one-shot.
 9. **Supabase RLS policies + helper functions** for admin/client split.
-10. **Supercluster + MapLibre** rendering with React for geospatial PWA (dogmap).
+10. **Supercluster + MapLibre** rendering with React for geospatial PWA (dogmap, since retired).
 11. **Custom MCP server authoring** — built an Oracle MCP server in TypeScript (stdio transport, thick-mode LDAP init, multi-DB connection pooling, read/write separation, row-limit guardrails) and wired it into the team's `webroot_dev/.mcp.json`. Demonstrates extending AI tooling, not just consuming it.
 12. **Production RAG with evals** — hybrid retrieval (structured rules YAML + pgvector/HNSW over a bylaw corpus), Voyage embeddings, AI SDK v6, golden-file + synthetic-tier eval tests, tier-aware trust and explicit escalation triggers (AscendAI, §5.3). Retrieval architecture and honesty-by-design, not a chatbot wrapper.
 13. **Agent-first documentation system as reusable tooling** — `wts-ai-docs` (§6.2): routes diffs to the right docs (path/keyword/DB-object), self-verifies claims, gates drift in CI. A "prevent-the-next-question" system generalized from three production vaults.
@@ -408,8 +408,8 @@ When asked about a role, map these capabilities against the posting:
 | Python services in production (e.g. FastAPI) | ⚠️ **Gap.** William-authored Python is ETL/pipeline scripting (DogMap §6.1), not a web service. No FastAPI/SQLAlchemy. Frame as fast-acquire, not held experience. |
 | Legacy modernization | ✅ Strong; catalogued ~90-app inventory + authored playbook + shipped 6 conversions |
 | .NET / C# backend | ✅ Strong; .NET 8 and .NET 10 in production |
-| Full-stack (Next.js / React / TypeScript) | ✅ Strong; shipped two production apps + dogmap |
-| PostgreSQL / Supabase | ✅ Three apps using it in production (wtsadmin, dogmap, williamtucker.ca indirectly) |
+| Full-stack (Next.js / React / TypeScript) | ✅ Strong; shipped multiple production apps (WTSAdmin, AscendAI); dogmap retired |
+| PostgreSQL / Supabase | ✅ Strong; WTSAdmin + AscendAI in production (incl. pgvector); dogmap (PostGIS) retired |
 | Oracle DBA-lite / PL/SQL | ✅ Deep; packages, stored procs, credential vault, 99K+ LOC |
 | CI/CD / DevOps | ✅ GitLab pipelines across 30+ repos + Vercel + Railway |
 | IIS / Windows infra | ✅ Strong; appcmd, app pools, robocopy patterns |
