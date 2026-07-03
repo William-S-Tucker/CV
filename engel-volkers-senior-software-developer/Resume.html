@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><title>William Tucker - Resume</title><meta charset="utf-8"><style>@media print { body { max-width: 100%; } h1, h2, h3 { page-break-after: avoid; break-after: avoid; } li, tr { page-break-inside: avoid; break-inside: avoid; } blockquote { page-break-inside: avoid; break-inside: avoid; } p { orphans: 2; widows: 2; } }
+body { font-family: 'Segoe UI', Calibri, sans-serif; max-width: 800px; margin: 1.5rem auto; padding: 0 1.5rem; color: #222; line-height: 1.5; font-size: 0.95rem; }
+h1 { font-size: 1.75rem; margin-bottom: 0.25rem; border-bottom: none; }
+h2 { font-size: 1.15rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #333; }
+h3 { font-size: 1rem; margin-top: 1rem; margin-bottom: 0.35rem; color: #444; }
+p { margin: 0.5rem 0; }
+a { color: #0066cc; text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: none; border-top: 1px solid #ddd; margin: 1.25rem 0; }
+table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+th, td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+th { background: #f5f5f5; font-weight: 600; }
+blockquote { margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: #f9f9f9; border-left: 4px solid #0066cc; font-size: 0.95rem; }
+ul { margin: 0.35rem 0; padding-left: 1.25rem; }
+li { margin: 0.25rem 0; }
+code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.85em; }
+.meta { font-size: 0.9rem; color: #555; margin-top: 0.25rem; }</style></head>
+<body>
+<h1>William Tucker</h1>
+<h3>Senior Software Developer · TypeScript, Next.js &amp; AI-First Engineering · Kelowna, BC</h3>
+<p><strong>250-619-8900</strong> · <strong><a href="mailto:william@williamtucker.ca">william@williamtucker.ca</a></strong> · <strong><a href="https://williamtucker.ca">williamtucker.ca</a></strong> · <strong><a href="https://www.linkedin.com/in/william-tucker-06203044/">LinkedIn</a></strong> · <strong><a href="https://github.com/billski">GitHub</a></strong></p>
+<hr>
+<h2>Professional Summary</h2>
+<p>Senior software developer with <strong>12+ years</strong> owning production systems end to end. I work AI-first, using Claude Code and Cursor as real leverage, and I do the design, debugging, testing, and review myself. My core stack is TypeScript, Next.js, React, and Node.js, front to back, on top of real databases.</p>
+<p>I'm at my best taking over systems other people built: learning unfamiliar code, improving it carefully, and keeping it consistent while still shipping. I've modernized mature production applications, built REST APIs and typed schemas with runtime validation, handled authentication and secure secrets, and set up the CI/CD, testing, and documentation that keep a team from depending on any one person.</p>
+<blockquote>
+<p><strong>Core competencies:</strong> AI-first development with real engineering depth · TypeScript / Next.js / Node.js full-stack · React, SSR and server components · Owning and modernizing mature production systems · REST APIs, typed schemas, runtime validation · Auth and secure secret handling · CI/CD, testing, and documentation · Mentoring and shared standards</p>
+</blockquote>
+<hr>
+<h2>Technical Skills</h2>
+<table>
+<thead><tr><th>Category</th><th>Technologies</th></tr></thead>
+<tbody>
+<tr><td><strong>Languages</strong></td><td>TypeScript, JavaScript, C#, Python, SQL, PL/SQL, T-SQL, Java, PowerShell</td></tr>
+<tr><td><strong>Frontend</strong></td><td>Next.js 16, React 19, SSR / server components, TypeScript, Tailwind CSS, Radix UI, HTML/CSS, Blazor</td></tr>
+<tr><td><strong>Backend / APIs</strong></td><td>Node.js / Express, Next.js API routes, REST API design, API contracts, zod runtime validation, ASP.NET Core, .NET 8 / 10, Dapper, Entity Framework</td></tr>
+<tr><td><strong>Databases</strong></td><td>PostgreSQL, pgvector, Oracle, SQL Server, schema design, migrations, stored procedures</td></tr>
+<tr><td><strong>AI &amp; LLMs</strong></td><td>Claude Code, Cursor, Anthropic Claude API (direct SDK), Vercel AI SDK v6, custom MCP server authoring, RAG / pgvector, agents with guardrails + citations, golden-file / eval tests</td></tr>
+<tr><td><strong>Cloud / DevOps</strong></td><td>Vercel (serverless functions), Supabase, Railway, CI/CD (GitLab, GitHub Actions), health-check gating, rollback automation, multi-environment release, Git (30+ repos)</td></tr>
+<tr><td><strong>Auth / Security</strong></td><td>SSO/SAML, ADFS, OAuth, JWT, Row-Level Security, secure secret handling (env config, Oracle credential vault), CORS</td></tr>
+<tr><td><strong>Testing</strong></td><td>Vitest, Pester, golden-file / eval tests, unit &amp; integration testing, code review</td></tr>
+<tr><td><strong>Other</strong></td><td>IIS, Windows Server, Agile/Scrum, legacy modernization (Classic ASP, server-rendered UIs)</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>Experience</h2>
+<h3>Independent AI &amp; Full-Stack Development, William Tucker Solutions</h3>
+<p><em>2026 – Present · Kelowna, BC (Remote)</em></p>
+<ul>
+<li><strong>Built AscendAI</strong>, an AI agent for real-estate feasibility on Next.js and TypeScript (Vercel AI SDK with Claude). It turns a property address into a zoning and feasibility report using hybrid retrieval over Postgres/pgvector plus structured rules, cites its sources, and hands off to a human when its confidence is low. Uses zod schemas for runtime validation and golden-file eval tests. Sole author.</li>
+<li><strong>Built WTSAdmin</strong>, a full-stack SaaS on Next.js 16 and Supabase (PostgreSQL, Auth, Storage, Row-Level Security) with Stripe and React PDF. I designed the database schema and access policies, the auth, and the PDF generation. Sole author.</li>
+<li><strong>Shipped a production chatbot</strong> on the Anthropic Claude API (<code>@anthropic-ai/sdk</code> directly) with a Node.js/Express backend, custom system prompts, guardrails, rate limiting, and secure API-key handling. Deployed to Railway.</li>
+<li><strong>Work AI-first</strong> with Claude Code and Cursor as real leverage to prototype, refactor, and ship quickly, while keeping the design, debugging, testing, and review myself.</li>
+</ul>
+<hr>
+<h3>Programmer/Analyst, Vancouver Island University</h3>
+<p><em>Jul 2016 – Present · Nanaimo, BC</em></p>
+<ul>
+<li><strong>Own and modernize mature production systems.</strong> I take on unfamiliar legacy code (Classic ASP, server-rendered UIs, older deployment models), learn how it actually works, and improve it into maintainable .NET 8 applications that are now in production, including the Facilities Information System, which became the institutional reference for later conversions.</li>
+<li><strong>Reduced single-person knowledge risk</strong> by moving a team of 12 off server-based editing onto feature-branch development, with health-check-gated CI/CD, rollback automation, multi-environment release, and a developer handbook I wrote so the process does not live in one person's head.</li>
+<li><strong>Designed database schemas and built REST APIs in C#</strong>, including an Oracle-backed SSO tag system with 9 REST endpoints and 12 SQL migrations.</li>
+<li><strong>Implemented authentication and access control</strong> across web and API services (SSO/ADFS, SAML, token validation, privilege checks) with secure secret handling through a credential vault, plus a CORS setup that let the whole team develop locally.</li>
+<li><strong>Authored a custom MCP server</strong> in TypeScript (<code>@modelcontextprotocol/sdk</code> and <code>oracledb</code>) that gives Claude Code multi-database tooling, with read/write separation guardrails and row-limit enforcement. I build the agent tooling, not just use it. (<a href="https://github.com/billski/Claude-Oracle-MCP">github.com/billski/Claude-Oracle-MCP</a>)</li>
+<li><strong>Built REST/SOAP integrations</strong> from legacy systems into a modern cloud ERP using C# .NET and Entity Framework.</li>
+<li><strong>Mentor teammates</strong> and partner with others on pragmatic technical standards, code reviews, and unit and integration testing in an Agile/Scrum team.</li>
+</ul>
+<hr>
+<h3>Software Analyst, Thompson Rivers University</h3>
+<p><em>Jan 2013 – Jul 2016 · Kamloops, BC</em></p>
+<ul>
+<li><strong>Designed and built</strong> the TRU Student ID Card system in Java. It was used by thousands of students and integrated with BC Transit buses and the City of Kamloops.</li>
+<li><strong>Created</strong> the Employee Survey system on a Groovy Grails and Oracle stack, with reports and ETL jobs across Finance, HR, Payroll, and Student departments.</li>
+<li><strong>Presented</strong> on Groovy Grails at the BCNET 2015 conference, and trained staff on institutional reporting, code review, and SQL tuning.</li>
+</ul>
+<hr>
+<h3>Institutional Reporting, Thompson Rivers University</h3>
+<p><em>2012 – 2013 · Kamloops, BC</em></p>
+<ul>
+<li>Oracle SQL and PL/SQL reporting, plus PHP development, for institutional reporting (as Institutional Data Analyst, and earlier as Report Coordinator co-op).</li>
+</ul>
+<hr>
+<h2>Education</h2>
+<table>
+<thead><tr><th>Degree</th><th>Institution · Years</th></tr></thead>
+<tbody>
+<tr><td><strong>Computer Science Diploma</strong></td><td>Thompson Rivers University · 2010 – 2013</td></tr>
+<tr><td></td><td><em>Computer Systems: Operations &amp; Management, Computer Science</em></td></tr>
+<tr><td><strong>Journeyman Marine Technician</strong> <em>(prior trade career, pre-software)</em></td><td>British Columbia Institute of Technology · 2003 – 2007</td></tr>
+</tbody>
+</table>
+<hr>
+<p><em>Last updated: July 2026</em></p>
+</body></html>
