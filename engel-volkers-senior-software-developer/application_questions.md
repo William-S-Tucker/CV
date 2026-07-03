@@ -1,4 +1,4 @@
-# Engel & Völkers — Supplemental Application Answers
+# Engel & Völkers Supplemental Application Answers
 
 ## Q1. Tell us about a production system you inherited but didn't build. Maybe it had sparse docs, unfamiliar patterns, or choices you wouldn't have made yourself. What did you change, what did you deliberately leave alone, and how did you decide?
 
