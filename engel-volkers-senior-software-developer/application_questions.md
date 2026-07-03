@@ -1,0 +1,19 @@
+# Engel & Völkers — Supplemental Application Answers
+
+## Q1. Tell us about a production system you inherited but didn't build. Maybe it had sparse docs, unfamiliar patterns, or choices you wouldn't have made yourself. What did you change, what did you deliberately leave alone, and how did you decide?
+
+The clearest example is our Facilities Information System at the university. It was a Classic ASP app written in VBScript years before I got there, with almost no documentation and the original author long gone. It ran facilities' day to day, so stopping it and starting over was never an option.
+
+The first thing I did was resist changing anything until I understood it. I traced how it actually worked and, more importantly, what depended on it. Two things were load-bearing: it sat on an Oracle backend that other applications also used, and it authenticated through a cookie-based single sign-on shared across the whole web platform. So I deliberately left those alone. I modernized the app to .NET 8 but kept the same Oracle schema and reused the exact same SSO cookies, so nothing else on the platform had to change and there was no second auth system to babysit.
+
+What I did change was the part that was the real liability. The unmaintainable VBScript became a proper .NET application, and I replaced Crystal Reports with a .NET-native reporting library to get rid of a licensing dependency. There was plenty in the old code I wouldn't have chosen, but I didn't treat "I wouldn't have done it this way" as a reason to rewrite it. The test was always whether a piece was actually causing pain or risk, or whether it just looked unfamiliar. I verified behaviour against the live system as I went, and the modernized version went into production and became the reference other people here now follow when they convert the next old app.
+
+## Q2. An AI coding tool gives you a change that passes the existing tests, but you're not fully confident it's correct. Walk us through how you'd verify it before shipping.
+
+Passing tests don't move me much on their own. Green only means the change didn't break what was already covered, and the thing I'm unsure about is almost always the thing that isn't covered yet. A green run on a change I don't trust usually tells me the tests are thin right where it matters.
+
+First I read the diff and make myself explain, in plain terms, why it's correct. If I can't say why it works, I don't ship it, no matter how confident the tool sounds. Then I check whether the existing tests actually exercise the path I'm worried about. Usually they don't, so I write one that targets exactly my doubt and confirm it fails without the change and passes with it. That turns a vague "I'm not sure" into something I can prove or disprove. After that I trace the real code path by hand and poke at the boundaries AI tends to get subtly wrong: empty and null inputs, off-by-one, the error path, anything concurrent. And I run it against real data, not just fixtures, because fixtures are where wrong code hides.
+
+This is the same discipline I built into AscendAI, my AI agent. It never takes the model's word for a number. Every value has to come back from a real tool with a citation, or it doesn't go in the document. I pin the facts that matter with golden-file tests that hit the live data source and assert exact known values, like a specific parcel's legal plan, PID, and zoning, so a plausible-but-wrong answer fails loudly instead of sliding through. I validate every structured output with zod so a bad shape throws instead of sneaking past. And when the system isn't sure, it's built to hedge or hand off to a person rather than assert.
+
+I treat AI-written code the same way. The tool makes me faster, but it doesn't get to make the call. The judgment and the accountability stay with me, and "the tests were green" is not the same as "I know this is right."
