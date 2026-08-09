@@ -2,7 +2,7 @@
 
 **Purpose:** Comprehensive, evidence-backed reference for all job-application work. Every claim below is verified against local repositories or live sites — no resume-optimized embellishment. When tailoring a resume or cover letter, cherry-pick from here and preserve the honesty. When asked "am I qualified for X?", read this first.
 
-**Last verified:** 2026-04-20 (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history. §5.3 (AscendAI), §6.2 (wts-ai-docs), and the §6.1 Python-pipeline / §8 Python-honesty notes added 2026-05-29, verified against `D:\code\ascendai` git history, the `billski/wts-ai-docs` repo, and `D:\code\DogMap/scripts`).
+**Last verified:** 2026-04-20 (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history. §5.3 (AscendAI), §6.2 (wts-ai-docs), and the §6.1 Python-pipeline / §8 Python-honesty notes added 2026-05-29, verified against `D:\code\ascendai` git history, the `billski/wts-ai-docs` repo, and `D:\code\DogMap/scripts`. §5.4 (EA n8n automation stack) added 2026-08-09, verified against `D:\code\ea` git history, working tree, and workflow JSON exports.)
 
 ---
 
@@ -269,6 +269,25 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **Status:** Actively built; Phase 1+2 RAG shipped (HNSW retrieval, `zoning_rules_cache`). Pilot / investor-demo phase — not yet publicly launched. *(README front-matter still reads "design phase"; it is stale — git history shows the RAG pipeline implemented and tested.)*
 - **Significance:** The closest analog in the inventory to "build production AI features — a coaching context system *and the evals that keep it honest*." Demonstrates **retrieval architecture (pgvector/HNSW, embeddings), AI SDK v6, agent tool design, and eval/golden-file discipline** — not a chatbot wrapper.
 
+### 5.4 EA — n8n workflow-automation stack (internal business ops)
+
+- **Repo:** `D:\code\ea` (GitHub `William-S-Tucker/ExecutiveAssistant`, private)
+- **Timeline:** 2026-08-01 → ongoing (36 commits in the first 6 days, sole author, 17 feature branches with merge discipline — verified 2026-08-09)
+- **What it is:** Personal/business operations hub automating oversight of the WTS + AscendAI infrastructure inventory: an **n8n** automation stack plus the service/access/credential documentation around it. Chosen deliberately (recorded decision, 2026-08-02) because **n8n is the standard tool of the SMB AI-automation market** — every workflow doubles as billable consulting practice; Zapier/Make kept at awareness level.
+- **Stack & deployment:**
+  - **Docker Compose, 5 services:** n8n main + dedicated n8n worker in **queue mode** (Redis/BullMQ job queue, concurrency 10), **Postgres 17** as system of record, **Caddy** reverse proxy with TLS + security headers. Pinned image tags; healthcheck-gated startup ordering; execution-history pruning.
+  - **Security posture:** everything bound to `127.0.0.1`, Postgres/Redis/worker unpublished; pinned `N8N_ENCRYPTION_KEY` with documented backup/restore; **proven migration** SQLite → Postgres with all six OAuth credentials surviving intact (2026-08-03).
+- **Workflows (config-as-code — JSON exports tracked in git):**
+  - **Morning brief** — schedule trigger fans out to 5 Gmail nodes (one OAuth2 credential per inbox), merge + Code node composes a single digest. Verified against the real inboxes; **delivery node deliberately disabled pending sign-off** — read-only until trusted.
+  - **Ops console** — a 19-node workflow that *is* the dashboard app: webhook trigger fans out to **14 data sources** (5 Gmail inboxes, Google Calendar, 3 production-site health checks, Vercel deployments, HubSpot contacts, GitHub Actions run history, Jira JQL search, n8n's own executions API), merges, and serves rendered HTML from a `Respond to Webhook` node — no separate app to host. Per-node retry with backoff plus `neverError`/`alwaysOutputData`, so a dead source degrades one tile instead of killing the page. Alert thresholds chosen against observed behaviour (e.g. cron flagged critical at 30h because GitHub's free scheduler drifts).
+  - **Site health check** — 3 production sites every 15 minutes.
+  - **Global error handler** — catches failures from all workflows; **verified with a deliberate-failure canary**, which surfaced two non-obvious n8n behaviours now documented in the runbook (error workflows don't fire on manual/CLI executions; an inactive error workflow silently drops alerts).
+- **Workflow-as-code deployment:** `dashboard/build.py` (~270 lines, Python) *generates the 19-node workflow JSON programmatically* — nodes, connections, credentials, retry policy — inlines the CSS/JS renderer, and deploys idempotently (create-or-update) through **n8n's REST API**. The n8n UI is a render target; git is the source of truth.
+- **Integration & credential engineering:** stood up the Google Cloud OAuth app (consent screen in production mode specifically to avoid 7-day refresh-token expiry), wired 5 Gmail + 1 Calendar OAuth2 credentials, **each verified by a live Gmail API profile call** after catching Google silently binding a credential to the wrong signed-in account. Read-only/least-privilege API tokens for Vercel, HubSpot (diagnosed and fixed a `MISSING_SCOPES` failure), and Jira; GitHub access root-caused across three failed tokens (GitHub's 404s are ambiguous — resolved by triangulating which *identity* could see the repo via `git ls-remote` vs `/user/repos`), with the interim token recorded explicitly as technical debt.
+- **Ops documentation:** `RUNBOOK.md` written for a non-author operator (architecture, backup/restore, failure table), plus living `SERVICES.md` / `ACCESS.md` / `INFRA-WIRING.md` inventories.
+- **Honest scope (do not inflate):** this is an **internal stack on a local workstation**, not hosted production — it runs only while the PC and Docker are up (VPS move is the recorded next step). Outbound delivery/alert nodes are disabled pending sign-off; single environment, no dev/prod split; all integrations read-only by design. Built AI-accelerated in Claude Code sessions under the §10 framing — William directed, reviewed, and operates it.
+- **Significance:** The most direct "AI automation" artifact in the inventory — real n8n workflow design (queue mode, webhook apps, error handling), multi-service Docker deployment, OAuth2 and least-privilege API wiring across 8 external services, and workflow-as-code discipline that most n8n practitioners don't have.
+
 ---
 
 ## 6. Independent projects
@@ -316,8 +335,8 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **Node / Web:** Next.js 16 (App Router + Turbopack), React 19, Express.js, Tailwind v4
 - **Databases:** Oracle (primary, ~99K LOC PL/SQL), **PostgreSQL via Supabase (Auth + RLS + Storage + PostGIS)**
 - **Auth/Security:** ADFS, SAML, cookie-based SSO, JWT, OAuth (Google, Apple), magic-link auth, Row-Level Security, CORS architecture, CSP hardening, privilege-class enforcement, impersonation with safety checks
-- **Infrastructure:** IIS (appcmd, web.config, URL rewrite), GitLab CI/CD, Vercel, Railway, PowerShell deploy + rollback scripts, robocopy /MIR patterns, SSH/SFTP (SSH.NET, ED25519 keys)
-- **AI/LLM:** Anthropic Claude API (direct SDK integration in production), **Vercel AI SDK v6** (via AI Gateway, see §5.3), Claude Code (custom hooks, shared `CLAUDE.md`, planning + spec workflows, parallel sessions), **custom MCP server authored in TypeScript** (`@modelcontextprotocol/sdk` + `oracledb`, see §4.6) extending Claude with multi-DB Oracle tools, **RAG / retrieval architecture** (Supabase pgvector + HNSW, Voyage embeddings, hybrid structured-rules + retrieval — see §5.3), **eval discipline** (golden-file + synthetic tier tests), agent tool design, **agent-first documentation tooling** (`wts-ai-docs` — §6.2), prompt engineering, context-document design
+- **Infrastructure:** IIS (appcmd, web.config, URL rewrite), GitLab CI/CD, Vercel, Railway, PowerShell deploy + rollback scripts, robocopy /MIR patterns, SSH/SFTP (SSH.NET, ED25519 keys), **Docker Compose multi-service stack** (n8n queue mode: main + worker, Postgres 17, Redis/BullMQ, Caddy reverse proxy — internal/workstation deployment, see §5.4)
+- **AI/LLM:** Anthropic Claude API (direct SDK integration in production), **Vercel AI SDK v6** (via AI Gateway, see §5.3), Claude Code (custom hooks, shared `CLAUDE.md`, planning + spec workflows, parallel sessions), **custom MCP server authored in TypeScript** (`@modelcontextprotocol/sdk` + `oracledb`, see §4.6) extending Claude with multi-DB Oracle tools, **RAG / retrieval architecture** (Supabase pgvector + HNSW, Voyage embeddings, hybrid structured-rules + retrieval — see §5.3), **eval discipline** (golden-file + synthetic tier tests), agent tool design, **agent-first documentation tooling** (`wts-ai-docs` — §6.2), prompt engineering, context-document design, **n8n workflow automation** (queue-mode stack, webhook-served apps, error-handler design, OAuth2 credential wiring, workflow-as-code deployment via the n8n REST API — §5.4)
 - **Reporting:** QuestPDF, React PDF Renderer, Crystal Reports (legacy)
 - **Workflow:** Git (multi-repo, 30+ repos), branch-per-feature, merge requests, spec-before-implementation, trace-and-reference documentation
 
@@ -336,7 +355,8 @@ Registered business with license; no clients yet. Infrastructure is built in adv
 - **AWS** — no direct experience. Cloud infra is Vercel + Railway + Supabase.
 - **Salesforce / Apex / Flows** — no experience.
 - **Mobile native (iOS/Android Swift/Kotlin)** — no experience. PWA exposure only.
-- **Kubernetes / Docker-in-production** — supabase local uses docker but not orchestrated.
+- **Kubernetes / Docker-in-production** — the EA stack (§5.4) is a real multi-service Docker Compose deployment, but it runs on a local workstation, not a hosted production environment. No Kubernetes, no orchestration, no container hosting at scale.
+- **Zapier / Make** — awareness level only (deliberate: n8n chosen as the hands-on tool, §5.4). Do not claim hands-on Zapier/Make builds.
 
 ---
 
@@ -357,6 +377,9 @@ These are specific skills the git history proves, useful as concrete interview t
 11. **Custom MCP server authoring** — built an Oracle MCP server in TypeScript (stdio transport, thick-mode LDAP init, multi-DB connection pooling, read/write separation, row-limit guardrails) and wired it into the team's `webroot_dev/.mcp.json`. Demonstrates extending AI tooling, not just consuming it.
 12. **Production RAG with evals** — hybrid retrieval (structured rules YAML + pgvector/HNSW over a bylaw corpus), Voyage embeddings, AI SDK v6, golden-file + synthetic-tier eval tests, tier-aware trust and explicit escalation triggers (AscendAI, §5.3). Retrieval architecture and honesty-by-design, not a chatbot wrapper.
 13. **Agent-first documentation system as reusable tooling** — `wts-ai-docs` (§6.2): routes diffs to the right docs (path/keyword/DB-object), self-verifies claims, gates drift in CI. A "prevent-the-next-question" system generalized from three production vaults.
+14. **Workflow-as-code n8n deployment** — a Python generator builds the workflow JSON (nodes, connections, credentials, retry policy) and deploys it idempotently through n8n's REST API; workflow sources live in git and the n8n UI is treated as a render target (§5.4). Most n8n practice is click-built and unversioned — this is the differentiator.
+15. **Deliberate-failure canary for alert paths** — never trust an error handler until a rigged failure has actually traversed it; the canary surfaced two silent-drop modes in n8n's error-workflow semantics (§5.4).
+16. **Verify OAuth bindings by API call, not UI badge** — a "connected" badge proves a handshake completed, not which account it bound to; fetch the profile and check the returned identity (§5.4, caught a silently mis-bound Google credential).
 
 ---
 
@@ -405,6 +428,10 @@ When asked about a role, map these capabilities against the posting:
 | RAG / embeddings / retrieval architecture | ✅ AscendAI (§5.3): pgvector/HNSW, Voyage embeddings, hybrid rules+retrieval, AI SDK v6 |
 | LLM eval / "keeping it honest" | ✅ AscendAI golden-file + synthetic-tier evals, tier-aware trust, escalation triggers (§5.3) |
 | Force-multiplier / "prevent the next question" tooling | ✅ wts-ai-docs (§6.2) + es-handbook + led 6-person team migration (§4.4) |
+| Workflow automation / n8n | ✅ Built and operates an n8n queue-mode stack: 4 workflows, 14-source ops dashboard, global error handler, workflow-as-code (§5.4). Internal/self-hosted-local, not client-deployed — say so if asked |
+| API integration / OAuth wiring | ✅ Strong: 8 external services wired read-only into n8n (Gmail ×5, Calendar, Vercel, HubSpot, GitHub, Jira) with least-privilege tokens + verified OAuth bindings (§5.4); plus ADFS/SAML/OAuth history (§4, §6) |
+| Zapier / Make | ⚠️ Awareness only — n8n was the deliberate hands-on choice (§5.4). Frame as fast-acquire, same category of tool |
+| Docker / containers | ⚠️ Multi-service Docker Compose stack running daily (§5.4), but local workstation — no hosted container prod, no K8s |
 | Python services in production (e.g. FastAPI) | ⚠️ **Gap.** William-authored Python is ETL/pipeline scripting (DogMap §6.1), not a web service. No FastAPI/SQLAlchemy. Frame as fast-acquire, not held experience. |
 | Legacy modernization | ✅ Strong; catalogued ~90-app inventory + authored playbook + shipped 6 conversions |
 | .NET / C# backend | ✅ Strong; .NET 8 and .NET 10 in production |
@@ -452,6 +479,9 @@ cat C:/code/wtsadmin/package.json
 
 # Oracle MCP server scope + commit
 cd C:/code/OraclePlugin && git log --all --oneline && cat package.json
+
+# EA automation stack (§5.4): commits, workflows, compose services
+cd D:/code/ea && git log --all --oneline | wc -l && ls workflows/ && grep -E "image:|EXECUTIONS_MODE" docker-compose.yml
 ```
 
 When a memory file or resume line says something concrete, verify before recommending it. Memory captures what was true when written; code is the source of truth for what is true now.
