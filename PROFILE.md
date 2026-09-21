@@ -57,7 +57,7 @@ VIU's web platform lives in `C:\code\webroot_dev` (the "base repo" for shared we
 | **RoomBooking** (legacy Oracle PL/SQL app → .NET 8 Blazor) | `src/roombooking_source` | 2026-02-27 → 2026-03-03 | **5 days** | 49/49 | 24 | In QA, technically ready; go-live blocked on organizational approval (boss will vouch) |
 | **VIUPortal** (Classic ASP SSO landing → .NET 8 Blazor Server) | `src/portal` | 2026-04-09 → 2026-04-20 | 12 days | ~50/~50 | 18 | Active development |
 | **SABC SIMS integration** | `src/sabc_source` | 2026-04-10 → 2026-04-11 | **2 days** | 6/6 | 9 | Shipped |
-| **CDWTool** (Canadian Data Warehouse submission tool) | `src/CDWTool` | 2025-11-20 → ongoing | ~5 months | 60/60 | 18 | In production, pivoting to SharePoint |
+| **CDWTool** (BC Ministry Central Data Warehouse submission tool) | `src/CDWTool` | 2025-11-20 → ongoing | ~5 months | 116/116 (as of 2026-04-23) | 18 | In production, pivoting to SharePoint |
 | **project-template** (scaffold for future modernizations) | `src/project-template` | 2026-04-11 | 1 day | 3/3 | 6 | Reference template |
 
 **Notable technical depth per project (all verified in source):**
@@ -95,6 +95,8 @@ VIU's web platform lives in `C:\code\webroot_dev` (the "base repo" for shared we
 - Deploy excludes `Config/` from robocopy mirror to preserve SAML certs
 
 **CDWTool:**
+- **What it moves (verified 2026-09-21 against `src/CDWTool` README + `docs/submission_guide_text.txt`):** VIU's student-level submission to the **BC post-secondary ministry's Central Data Warehouse (CDW)**. Pipeline: SSH to the Oracle server → **Oracle Data Pump (`expdp`) export of the 14 DDEF2000 tables** (students, course registrations/achievements/transfers, credentials, session registrations, plus `STUDENT_PERSONAL_DATA`) → compress → SFTP to the Ministry → archive. Duplicate-export prevention per reporting period, job queue + history, SSO + privilege-class gating. This is **regulated student PII / PEN data** handled end to end.
+- **Security hardening (2026-04-23):** removed committed secrets, added CSRF protection, locked down the SignalR hub, sanitized filenames; moved the SSH identity from a personal account to the Ministry service account.
 - .NET web app with SignalR real-time progress (`JobProgressHub`)
 - **SSH to Linux** file transfer via SSH.NET (`Services/SshService.cs`, ED25519 key in `App_Data/id_ed25519`)
 - Originally SFTP-based; pivoting to SharePoint transition (April 2026) — commits show refactor removing `SftpService`, `EmailService`, `MailKit`
