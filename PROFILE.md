@@ -151,7 +151,7 @@ These services pre-existed (some since 2017–2018). William's contributions wer
 - Authored the es-handbook onboarding docs so the rest of the team could adopt the new model
 - Set up branch protection on `main` and `develop` (GitLab-side, plus repo-side Claude settings for agent safety)
 
-This is a **culture + infrastructure migration**, not just a code change. It affected a team of six and 30+ application repositories.
+This is a **culture + infrastructure migration**, not just a code change. It affected a team of six and 30+ application repositories. *(Team size is now **18** after a 2026 re-org, per William 2026-09-21. The migration itself was done with the six-person team; say "my team of 18" for current context and keep the migration tied to the earlier team.)*
 
 ### 4.5 Other VIU work (from Resume / HANDOFF context, not directly verified in webroot_dev)
 
@@ -453,7 +453,7 @@ When asked about a role, map these capabilities against the posting:
 | Python | ⚠️ Listed; unverified in recent repos |
 | Talend / classical ETL | ⚠️ Listed; not recent |
 | Technical writing / knowledge transfer | ✅ Strong; authored es-handbook, modernization playbook, 4 major reference guides |
-| Team leadership / migration | ✅ Led 6-person team from network-drive to local-dev + CI/CD |
+| Team leadership / migration | ✅ Led 6-person team from network-drive to local-dev + CI/CD (team now 18 after 2026 re-org) |
 
 ---
 
