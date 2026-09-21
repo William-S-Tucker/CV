@@ -36,10 +36,10 @@
 4. AI-native honesty: "AI developer who was a programmer first," ownership clause, supervisor vouches.
 5. Availability: lives in Kelowna, in office 3x/week from day one, ready to give VIU notice.
 6. "Why Minga" answer drafted separately (`why_minga.md`), personal and short, per their AI-at-Minga note.
-7. Global preferences: no dogmap, no room booking, no Key Projects table, team of 12, plain human voice, no em dashes, no speed/commit bragging, HTML only.
+7. Global preferences: no dogmap, no room booking, no Key Projects table, team of 18 (current, since a 2026 re-org; the feature-branch migration was led with the earlier six-person team, so the two claims are kept separate), plain human voice, no em dashes, no speed/commit bragging, HTML only.
 
 ## Open questions for William
-- PROFILE.md says the local-dev migration team was **six**; Empire Life and Alchemy (both refined by William) say **12**. Draft uses 12. Confirm, and PROFILE.md should be updated to match.
+- ~~Team size~~ Resolved 2026-09-21: William's VIU team is **18** since a re-org. Resume says "my team of 18" for the handbook and keeps the migration as the team's *earlier* move (it was done with six). PROFILE.md updated on master.
 - DogMap's Python ETL (OSM + Overture into PostGIS) is the strongest Python evidence in the inventory but was excluded by the "no dogmap" preference. Left out; say the word to add one line.
 
 ## TODO

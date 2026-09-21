@@ -51,7 +51,7 @@ I work as an AI developer who was a programmer first. AI tooling writes a large 
 - **Work daily in a large Oracle environment**: schema design, packages and stored procedures, and integration with the institution's credential vault so applications fetch database passwords at runtime instead of storing them. Designed the schema, 12 SQL migrations, and 9 REST endpoints behind the SSO landing page's tag system.
 - **Move legacy systems onto new platforms with their data and sign-on intact.** Catalogued approx. 90 legacy applications with effort estimates and a conversion order, wrote the conversion guide VIU now uses as its reference, and shipped conversions to production, including the Facilities Information System. Built REST and SOAP integrations that feed a modern cloud ERP from legacy systems.
 - **Authored a custom MCP server** that gives AI tools guarded access to VIU's Oracle databases, with read and write access separated and row limits enforced. Wired into the team's shared configuration. ([github.com/billski/Claude-Oracle-MCP](https://github.com/billski/Claude-Oracle-MCP))
-- **Write the documentation people actually use**: runbooks, deployment and troubleshooting guides, architecture references, and the developer handbook my team of 12 onboards with. Moved that team onto feature-branch development with CI/CD and automated tests.
+- **Write the documentation people actually use**: runbooks, deployment and troubleshooting guides, architecture references, and the developer handbook my team of 18 onboards with. Led the team's earlier move onto feature-branch development with CI/CD and automated tests.
 
 ---
 
