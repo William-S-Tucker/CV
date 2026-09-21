@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>William Tucker - Resume</title><meta charset="utf-8"><style>@media print { body { max-width: 100%; } h1, h2, h3 { page-break-after: avoid; break-after: avoid; } li, tr { page-break-inside: avoid; break-inside: avoid; } blockquote { page-break-inside: avoid; break-inside: avoid; } p { orphans: 2; widows: 2; } }
+body { font-family: 'Segoe UI', Calibri, sans-serif; max-width: 800px; margin: 1.5rem auto; padding: 0 1.5rem; color: #222; line-height: 1.5; font-size: 0.95rem; }
+h1 { font-size: 1.75rem; margin-bottom: 0.25rem; border-bottom: none; }
+h2 { font-size: 1.15rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #333; }
+h3 { font-size: 1rem; margin-top: 1rem; margin-bottom: 0.35rem; color: #444; }
+p { margin: 0.5rem 0; }
+a { color: #0066cc; text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: none; border-top: 1px solid #ddd; margin: 1.25rem 0; }
+table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+th, td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+th { background: #f5f5f5; font-weight: 600; }
+blockquote { margin: 0.5rem 0; padding: 0.4rem 0.75rem; background: #f9f9f9; border-left: 4px solid #0066cc; font-size: 0.95rem; }
+ul { margin: 0.35rem 0; padding-left: 1.25rem; }
+li { margin: 0.25rem 0; }
+code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.85em; }
+.meta { font-size: 0.9rem; color: #555; margin-top: 0.25rem; }</style></head>
+<body>
+<h1>William Tucker</h1>
+<h3>Data-Focused Software Engineer · 12+ Years with Student and Institutional Data · Kelowna, BC</h3>
+<p><strong>250-619-8900</strong> · <strong><a href="mailto:william@williamtucker.ca">william@williamtucker.ca</a></strong> · <strong><a href="https://williamtucker.ca">williamtucker.ca</a></strong> · <strong><a href="https://www.linkedin.com/in/william-tucker-06203044/">LinkedIn</a></strong> · <strong><a href="https://github.com/billski">GitHub</a></strong></p>
+<hr>
+<h2>Professional Summary</h2>
+<p>Software engineer with <strong>12+ years</strong> building the systems and data pipelines that BC post-secondary institutions run on, at Vancouver Island University and Thompson Rivers University. Most of that work sits close to student data: regulated submissions to the provincial Central Data Warehouse, tax-slip filings to the CRA, institutional reporting, and the access control that keeps all of it in the right hands. My SQL is deep (Oracle PL/SQL and PostgreSQL), and I write Python when a pipeline calls for it.</p>
+<p>I work as an AI developer who was a programmer first. AI tooling writes a large share of my code, and the design, review, tests, and production accountability stay with me. My VIU supervisor will vouch for what's in production. I document what I build, including runbooks written for whoever operates it next.</p>
+<blockquote>
+<p><strong>Core competencies:</strong> Data pipelines and ingestion · Advanced SQL (Oracle, PostgreSQL) · Sensitive and regulated student data · Access control and privacy · Documentation and runbooks · Working directly with data owners · AI-native development and review</p>
+</blockquote>
+<hr>
+<h2>Technical Skills</h2>
+<table>
+<thead><tr><th>Category</th><th>Technologies</th></tr></thead>
+<tbody>
+<tr><td><strong>Data &amp; SQL</strong></td><td>Oracle (SQL, PL/SQL packages and stored procedures, schema design, Data Pump), PostgreSQL (Supabase, Row-Level Security, pgvector, PostGIS), SQL Server (T-SQL), migrations, query tuning</td></tr>
+<tr><td><strong>Pipelines &amp; Integration</strong></td><td>Oracle export pipelines, SFTP/SSH delivery, REST and SOAP integrations, document ingestion and embedding pipelines, n8n workflows (queue mode, retries, error handling), scheduled jobs</td></tr>
+<tr><td><strong>Languages</strong></td><td>SQL, PL/SQL, Python, C#, TypeScript, PowerShell</td></tr>
+<tr><td><strong>Data Security &amp; Privacy</strong></td><td>Privilege-based access control, Row-Level Security, SSO/SAML/ADFS, OAuth, least-privilege API tokens, secrets management, handling of student personal data</td></tr>
+<tr><td><strong>Business Systems (API)</strong></td><td>HubSpot, Jira, GitHub, Google Workspace APIs, cloud ERP integration</td></tr>
+<tr><td><strong>DevOps</strong></td><td>GitLab CI/CD, GitHub Actions, Docker Compose, health-check gating, rollback automation, Git (30+ repos)</td></tr>
+<tr><td><strong>AI &amp; LLMs</strong></td><td>Claude Code, Anthropic Claude API, custom MCP server authoring, RAG with pgvector, golden-file and eval tests</td></tr>
+<tr><td><strong>Documentation</strong></td><td>Runbooks, troubleshooting guides, architecture references, developer handbook, mermaid diagrams</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>Experience</h2>
+<h3>Independent AI &amp; Data Integration Development, William Tucker Solutions</h3>
+<p class="meta"><em>2026 – Present · Kelowna, BC (Remote)</em></p>
+<ul>
+<li><strong>Built an internal operations dashboard on n8n</strong> that pulls from 14 sources, including HubSpot, Jira, GitHub Actions, Vercel, Gmail, Google Calendar, and site health checks. Each source retries independently, so one failure degrades a single tile instead of the whole page, and the global error handler was proven with a deliberate failure. A Python script builds the workflow and deploys it from git through n8n's REST API. It runs on a Docker Compose stack with Postgres and Redis.</li>
+<li><strong>Built AscendAI</strong>, an AI feasibility tool for land development, now in pilot. Its ingestion pipeline loads a municipal bylaw corpus into PostgreSQL with pgvector alongside structured zoning rules. Golden-file tests validate those rules, and it only reports values it can trace to a source.</li>
+<li><strong>Built WTSAdmin</strong>, a client and billing platform on Supabase. I designed the schema and the Row-Level Security policies that separate what admins and clients can see. Sole author.</li>
+<li><strong>Use AI tooling every day</strong> in Claude Code. The design, review, and correctness of what ships stay with me.</li>
+</ul>
+<hr>
+<h3>Programmer/Analyst, Vancouver Island University</h3>
+<p class="meta"><em>Jul 2016 – Present · Nanaimo, BC</em></p>
+<ul>
+<li><strong>Built and own the pipeline that submits VIU's student data to the BC Ministry's Central Data Warehouse.</strong> It exports 14 student-level tables from Oracle with Data Pump (student records, registrations, achievements, credentials, and personal data), compresses them, delivers them to the Ministry over SFTP, and archives each submission. Duplicate protection per reporting period, a job history, and SSO with privilege checks are built in. As part of production hardening I removed committed secrets, moved it to a dedicated Ministry service account, and added CSRF protection.</li>
+<li><strong>Maintain the SQL and XML behind CRA electronic filing</strong> (T4A and T2202A slips for students and vendors), including data-quality fixes and the update to the 2026 filing standard.</li>
+<li><strong>Implement access control across VIU's web and .NET services</strong>: SSO/ADFS, SAML, token validation, and privilege-class checks, plus a penetration-test hardening pass.</li>
+<li><strong>Work daily in a large Oracle environment</strong>: schema design, packages and stored procedures, and integration with the institution's credential vault so applications fetch database passwords at runtime instead of storing them. Designed the schema, 12 SQL migrations, and 9 REST endpoints behind the SSO landing page's tag system.</li>
+<li><strong>Move legacy systems onto new platforms with their data and sign-on intact.</strong> Catalogued approx. 90 legacy applications with effort estimates and a conversion order, wrote the conversion guide VIU now uses as its reference, and shipped conversions to production, including the Facilities Information System. Built REST and SOAP integrations that feed a modern cloud ERP from legacy systems.</li>
+<li><strong>Authored a custom MCP server</strong> that gives AI tools guarded access to VIU's Oracle databases, with read and write access separated and row limits enforced. Wired into the team's shared configuration. (<a href="https://github.com/billski/Claude-Oracle-MCP">github.com/billski/Claude-Oracle-MCP</a>)</li>
+<li><strong>Write the documentation people actually use</strong>: runbooks, deployment and troubleshooting guides, architecture references, and the developer handbook my team of 12 onboards with. Moved that team onto feature-branch development with CI/CD and automated tests.</li>
+</ul>
+<hr>
+<h3>Software Analyst, Thompson Rivers University</h3>
+<p class="meta"><em>Jan 2013 – Jul 2016 · Kamloops, BC</em></p>
+<ul>
+<li><strong>Built the Employee Survey system</strong> on Groovy Grails and Oracle, including the reports and ETL jobs behind it across Finance, HR, Payroll, and Student departments.</li>
+<li><strong>Designed and built the TRU Student ID Card system</strong> in Java. It was used by thousands of students and integrated with BC Transit buses and the City of Kamloops.</li>
+<li><strong>Trained staff on institutional reporting, code review, and SQL tuning</strong>, and presented on Groovy Grails at the BCNET 2015 conference.</li>
+</ul>
+<hr>
+<h3>Institutional Data Analyst and Report Coordinator (Co-op), Thompson Rivers University</h3>
+<p class="meta"><em>May 2012 – Mar 2013 · Kamloops, BC</em></p>
+<ul>
+<li>Institutional reporting on Oracle data with SQL and PL/SQL, plus PHP development during the co-op term.</li>
+</ul>
+<hr>
+<h2>Education</h2>
+<table>
+<thead><tr><th>Degree</th><th>Institution · Years</th></tr></thead>
+<tbody>
+<tr><td><strong>Computer Science Diploma</strong></td><td>Thompson Rivers University · 2010 – 2013</td></tr>
+<tr><td></td><td><em>Computer Systems: Operations &amp; Management, Computer Science</em></td></tr>
+<tr><td><strong>Journeyman Marine Technician</strong> <em>(prior trade career, pre-software)</em></td><td>British Columbia Institute of Technology · 2003 – 2007</td></tr>
+</tbody>
+</table>
+<hr>
+<p><em>Last updated: September 2026</em></p>
+</body></html>
