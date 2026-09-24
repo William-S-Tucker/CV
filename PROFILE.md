@@ -2,7 +2,7 @@
 
 **Purpose:** Comprehensive, evidence-backed reference for all job-application work. Every claim below is verified against local repositories or live sites — no resume-optimized embellishment. When tailoring a resume or cover letter, cherry-pick from here and preserve the honesty. When asked "am I qualified for X?", read this first.
 
-**Last verified:** 2026-04-20 (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history. §5.3 (AscendAI), §6.2 (wts-ai-docs), and the §6.1 Python-pipeline / §8 Python-honesty notes added 2026-05-29, verified against `D:\code\ascendai` git history, the `billski/wts-ai-docs` repo, and `D:\code\DogMap/scripts`. §5.4 (EA n8n automation stack) added 2026-08-09, verified against `D:\code\ea` git history, working tree, and workflow JSON exports.)
+**Last verified:** 2026-09-24 for §4.8 and §12 additions; 2026-04-20 for the rest (against local working copies of `D:\code\webroot_dev`, `C:\code\williamtucker`, `C:\code\wtsadmin`, `C:\code\dogmap`; §4.1 VIUPortal row and §4.7 re-verified 2026-04-20 by an independent Claude Code agent against `webroot_dev`, `webroot_dev/src/portal`, and `webroot_dev/srs` git history. §5.3 (AscendAI), §6.2 (wts-ai-docs), and the §6.1 Python-pipeline / §8 Python-honesty notes added 2026-05-29, verified against `D:\code\ascendai` git history, the `billski/wts-ai-docs` repo, and `D:\code\DogMap/scripts`. §5.4 (EA n8n automation stack) added 2026-08-09, verified against `D:\code\ea` git history, working tree, and workflow JSON exports.)
 
 ---
 
@@ -227,6 +227,61 @@ Across a 5-week window (2026-03-16 → 2026-04-20), with output concentrated in 
 
 **Interview framing:** The useful observation is not the multiplier number — it is the *parallel-session working pattern*. Serial prompting against one project would have looked like any AI-augmented workflow; running three tracks simultaneously, with a human doing reconciliation and review, is what let a 12-day window cover a greenfield app, a CI/CD rewrite, and a docs platform. Treat the multiplier as an order-of-magnitude observation, not a marketing claim.
 
+### 4.8 May – September 2026 VIU work (verified 2026-09-24)
+
+Surveyed 2026-09-24 by six independent Claude Code agents walking `git log --all`, `git shortlog -sne --all`, `docs/` vaults, `README.md`, `.gitlab-ci.yml`, and `sql/APPLIED.md` in each repo under `C:\code\webroot_dev\src`. Every repo below carries an AI-first docs vault (`docs/` with `verified-against` frontmatter, `docs/superpowers/specs` + `plans`, runbooks) and a GitLab CI pipeline (test → build → auto deploy-dev on `develop`, manual deploy-prod on `main`).
+
+| Project | Repo | Dates | Commits (WT/total) | Status |
+|---|---|---|---|---|
+| **SABC / StudentAid BC SIMS integration** | `src/sabc_source` | 2026-04-10 → 2026-09-03 | 541/544 | **In production** (`isapp.viu.ca/StudentAidBC/`); daily import live since 2026-07-30 |
+| **GenerateT2202** (CRA tuition certificate) | `src/generatet2202` | 2026-07-15 → 2026-09-16 | 86/97 (other 11 are docs-only by RJ Dolamulla) | **M3 in production** since 2026-08-08; M4a on dev |
+| **ApplicantChecklist** (Registrar admissions) | `src/ApplicantChecklist` | 2026-06-05 → 2026-07-24 | 343/354 | Staff app complete on **dev only**; `main` not promoted |
+| **Atlas** (app portfolio + schema dependency map) | `src/atlas` + `DependencyMapper/` | 2026-05-20 → 2026-07-14 | 80/80 | **Dev only**; internal architecture tool |
+| **LaunchPad** (renamed VIUPortal) | `src/LaunchPad` | 2026-04-09 → 2026-07-14 | 324/324 | **Dev only** |
+| **CDWTool** (continued) | `src/CDWTool` | → 2026-09-22 | 222/222 | In production; monitoring + password-reset features on unmerged feature branches |
+| **BIS** (continued) | `src/bis_source` | → 2026-07-16 | 128/146 (Michael Boquist 16) | In production; post-April work is fixes/hardening. **Not sole author** |
+| **WorkloadSAWS** (legacy Classic ASP) | `src/WorkloadSAWS` | 2026-06-19 → 2026-07-15 | 12/13 | Prod app brought under git + CI; docs only, no app code authored |
+| **COATS** | `src/COATS` | 2026-07-15 | 12/12 | Roadmap/spec only. **No application code exists.** Do not claim as built |
+
+**SABC / StudentAid BC (the strongest production data-pipeline evidence in the inventory):**
+- Connects VIU Financial Aid to StudentAid BC after the province retired SFAS for SIMS (2026-06-18). Inbound: daily **IER12** fixed-width file (1,124 chars, 121 fields per record: identity, program, assessment, disbursement amounts and statuses) plus `CON_008.TXT` confirmation queue, pulled over SFTP. Outbound: `CONR_008.TXT` (155-char v1.3 records), VIU's enrolment confirmation that **releases student loan and grant funding**. Holds SIN, DOB, loan/grant dollar amounts by funding type: regulated PII plus financial data.
+- Stack: .NET 8 ASP.NET Core MVC, `Oracle.ManagedDataAccess.Core`, SSH.NET, `DocumentFormat.OpenXml` (added after a written dependency/supply-chain review, `docs/superpowers/specs/2026-08-07-openxml-dependency-review.md`). Owns 4 Oracle tables (`SABC_FILE_LOG`, `SABC_IER12`, `SABC_ECE_REQUEST`, `SABC_ECE_RESPONSE`); reads SRS by reference.
+- **Idempotent daily import** (`Services/Ier12ImportService.cs:90-93`): pulls every file oldest-first, skips already-imported, backfills automatically. Runs as Windows Scheduled Task `SABC-IER12-DailyImport` at 06:00 on prod; first run caught up a 7-day backlog.
+- **Three-layer monitoring:** `/health/ier12` endpoint (200/503), daily dead-man success/failure email, and an independent GitLab-scheduled watchdog pipeline probing prod at 08:03 (README §4.5).
+- **PL/SQL migrations with rollback:** `migrations/feature/sabc-sims/005_process_ece_body_v13.pkb` + `migrations/rollback/`; legacy `FINAID.PROCESS_ECE` engine kept alive by design during cutover.
+- **Tests:** 61 files, ~625 `[Fact]`/`[Theory]`, including **byte-exact golden-file tests** for the CONR_008 output (`EceOutboundArchiveTests.cs`), gating CI.
+- **Production reconciliation incident (Sept 2026):** 13 stranded unsent confirmations in batch 145, diagnosed with prod SQL scripts (`scripts/prod-check-2026-09-*.sql`), an initial collation-bug hypothesis retracted, multi-day cross-check confirmed no funding was stuck (`5abec0f`, `c716442`, `aa01371`).
+- **Security:** hardening commit `42a3bd7` (2026-06-16) addressing a formal viu-security-audit: SFTP path traversal, CSRF, Secure/SameSite cookies, CSP, XSS encoding. **PII scrub commit `aebbecf` (2026-09-02):** removed a real SIN, DOBs, and 24+ real surnames/student numbers from committed SQL, tests, docs, and even class-name vocabulary. SINs masked in UI with per-row reveal.
+- Runbooks: `docs/_ops/prod-ier12-task-runbook.md`, `ece-import-runbook.md`, `credit-gap-runbook.md`, `decision-register.md`.
+
+**GenerateT2202 (CRA T2202 Tuition and Enrolment Certificate):**
+- Blazor Server replacement for the legacy SRS `generatet2202a.htm` staff screen; thin UI in front of the unchanged Oracle engine `SRS.TAX2202A` (~2,700-line PL/SQL package body, `src/T2202A.sql`) called through `SRS.XMLRequest.GetDocument`. Outputs: Excel review sheet (ClosedXML), **CRA e-filing XML** (Original/Amendment, T619/T2202 schema), PDF certificates (QuestPDF). TY2025: 11,097 students in `SRS_TAX2202A`.
+- **CRA 2026 schema fix in the PL/SQL package** (diff `T2202A.sql` vs `t23202a_prod_backup.sql`): optional `GivenName`/`PostalZipCode` omitted when empty instead of faked (new `AppendOptionalXMLToDoc`), `TotalEligibleTuitionFeeAmount` always emitted, ~15 erroneous T5013-FIN partnership namespaces removed.
+- **Query rewrite 75 s → 0.33 s** (`88dc27a`, 2026-09-15): six correlated EXISTS over unindexed tables → one IN over a UNION. **Equivalence proven by hashing every column** of old vs new output (6,350 + 14,149 rows, identical) before promotion (`sql/APPLIED.md`).
+- **Four data-quality defects caught in the extraction SQL** before reviewers saw it (`f3b3d76`): part-time months inflated for 37 students, `MAX()` on status misclassifying approvals, 118 malformed identifiers missed, wrong row key.
+- **Two production privacy over-exposures found and closed:** base-table grants exposing DOB, email, home address, and free-text consent notes naming parents/guardians (3,430 rows) replaced with narrow projected views, raw grants revoked on PROD 2026-09-02; a review view lacking an Accessibility Services predicate showed 1,737 students where 571 was correct, fixed 2026-09-10 (`09d253e`).
+- **Audit table `SRS.T2202_AUDIT`** logs every view/download of disability-related data (actor, event, tax year, row count) and deliberately never the student identifier; fail-closed on downloads.
+- `sql/APPLIED.md` is a hand-kept ledger of every DDL/grant applied to ODEV vs PROD with dates and verification. 162 tests (unit, wire, integration). Segregation of duties: `T2202_SUPER` (Registrar) vs `T2202_AO` (Accessibility Services), nobody holds both in prod.
+
+**ApplicantChecklist (Registrar):**
+- .NET 8 Blazor Server; 46 versioned Oracle migrations under `migrations/feature/*`, each with `_VERIFY` and (where destructive) `_ROLLBACK` scripts, introducing `ACHK_*` tables inside `SRS`; reads SRS master data strictly by reference (decision D8, `CONTINUITY.md`).
+- Fail-closed cached authorization (`Services/Authz/OracleAccessScopeResolver.cs`: resolution error → empty scope → deny). `FormulaGuard.cs` neutralizes formula injection on every Excel export cell. Hardening commit `f292f35`. 317 test cases, 368/369 passing incl. live-Oracle smoke.
+- Documented, against live ODEV, the EducationPlannerBC/ApplyBC PESC XML intake path into `SRS.PASBC_APPLICATION` (118,180 rows), including a disabled legacy scheduled job (README, 2026-07-13).
+
+**Atlas + DependencyMapper:**
+- Read-only .NET 8 Blazor Server tool for architecture/modernization planning: Portfolio Heatmap, Modernization Matrix (live SQL over `V_APP_CATALOG` × 9 tag layers, ~150-170 apps), and a **Schema Dependency Map** cross-referencing every source-code reference to an Oracle schema's objects across the whole webroot down to `file:line`, with read/write classification and confidence scoring. 12 schema scans committed (`DepMap/maps/*.json`; MIS alone 7,152 references). New schema = drop a JSON file, zero code change.
+- Scans produced by **`C:\code\webroot_dev\DependencyMapper`**, a separate Python repo (same author) that statically analyzes Classic ASP + .NET source.
+- Known gap documented, not hidden: read-privilege gate ships fail-open pending an AppSec grant (`docs/auth.md`).
+
+**CDWTool since April 2026:**
+- **Ministry moved intake from SFTP to SharePoint (April 2026).** `SftpService` removed (`3dcd215`, `beb2c2d`). Current flow: app automates SSH → `expdp` → zip → browser download with SignalR live log; **the Ministry upload step is a manual SharePoint drop.** Do not say "delivers over SFTP" any more.
+- Security audit remediation (`f471455`, `b910f6e`): IDORs, CSRF, SignalR lockdown, secrets scrub, response headers.
+- **Sept 2026, on feature branches `feat/cdw-monitoring` / `feat/monitor-dashboard-compact` (not yet merged):** 21 read-only Oracle/SSH health checks with append-only JSONL history and acknowledgements. Motivation recorded in `docs/monitoring.md:45`: "Every failure this department has suffered was silent. The 2026-09-01 `MIS_REFRESH` run lost 1.8M rows and reported SUCCEEDED." Also a schema password rotation tool with allowlist, re-auth, rate limit, audit trail (`feat/cdw-schema-password-reset`).
+
+**LaunchPad (VIUPortal renamed):** 12 SQL migrations for app catalog / announcements / git-events tables; GitLab webhook ingest pipeline into `PORTAL_APP_GIT_EVENTS`; privilege-escalation fix binding identity to the validated SSO token instead of a client-writable cookie (`9b7e03e`, `docs/security-advisory-2026-07-02-persisted-authstate.md`). Dev only.
+
+**Framing notes for this section:** SABC and T2202 are the two to lead with for data roles. Say "in production" only for SABC, T2202 M3, CDWTool, BIS. ApplicantChecklist, Atlas, LaunchPad are dev-deployed. BIS is co-authored. COATS is a roadmap.
+
 ---
 
 ## 5. William Tucker Solutions (WTS) — own business
@@ -435,7 +490,7 @@ When asked about a role, map these capabilities against the posting:
 | Zapier / Make | ⚠️ Awareness only — n8n was the deliberate hands-on choice (§5.4). Frame as fast-acquire, same category of tool |
 | Docker / containers | ⚠️ Multi-service Docker Compose stack running daily (§5.4), but local workstation — no hosted container prod, no K8s |
 | Python services in production (e.g. FastAPI) | ⚠️ **Gap.** William-authored Python is ETL/pipeline scripting (DogMap §6.1), not a web service. No FastAPI/SQLAlchemy. Frame as fast-acquire, not held experience. |
-| Legacy modernization | ✅ Strong; catalogued ~90-app inventory + authored playbook + shipped 6 conversions |
+| Legacy modernization | ✅ Strong; catalogued ~90-app inventory + authored playbook + shipped conversions (BIS, SABC, T2202 in prod; ApplicantChecklist, LaunchPad, Atlas on dev) + Atlas schema dependency map (§4.8) |
 | .NET / C# backend | ✅ Strong; .NET 8 and .NET 10 in production |
 | Full-stack (Next.js / React / TypeScript) | ✅ Strong; shipped multiple production apps (WTSAdmin, AscendAI); dogmap retired |
 | PostgreSQL / Supabase | ✅ Strong; WTSAdmin + AscendAI in production (incl. pgvector); dogmap (PostGIS) retired |
@@ -450,8 +505,10 @@ When asked about a role, map these capabilities against the posting:
 | Mobile native | ❌ No experience. PWA only. |
 | Java backend | ⚠️ Some (TRU-era + cert); not recent |
 | Groovy / Grails | ⚠️ TRU-era only; probably stale |
-| Python | ⚠️ Listed; unverified in recent repos |
-| Talend / classical ETL | ⚠️ Listed; not recent |
+| Python | ⚠️ Pipeline/tooling scripting only: DogMap ETL (§6.1), n8n workflow generator (§5.4), DependencyMapper static scanner (§4.8). No Python web service |
+| Talend / classical ETL | ⚠️ Talend not recent. But production file-based ETL is current: SABC daily IER12 import + CONR_008 export, CDW Data Pump export, T2202 CRA XML (§4.8) |
+| Production data pipelines / data quality / reconciliation | ✅ SABC (idempotent daily import, golden-file tests, 3-layer monitoring, reconciliation incident), T2202 (hash-verified query rewrite, 4 extraction defects caught, 2 privacy over-exposures closed), CDW (§4.8) |
+| Cloud warehouse (Snowflake/BigQuery/Redshift), dbt, Airflow-class orchestration, Stitch/Fivetran, Metabase | ❌ None. Frame as fast-acquire; do not claim |
 | Technical writing / knowledge transfer | ✅ Strong; authored es-handbook, modernization playbook, 4 major reference guides |
 | Team leadership / migration | ✅ Led 6-person team from network-drive to local-dev + CI/CD (team now 18 after 2026 re-org) |
 
