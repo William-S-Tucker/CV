@@ -12,7 +12,7 @@
 **Stretch on the named tools, strong on the hard-to-hire parts.** William's decision (2026-09-21): apply, and pitch fast adaptation on the tool gap.
 
 **Strong / bullseyes:**
-- **Sensitive student data** (required, and stated twice in the posting): CDWTool is William's sole-authored pipeline sending VIU's student-level data (14 DDEF2000 tables incl. `STUDENT_PERSONAL_DATA`) to the BC Ministry's Central Data Warehouse via Oracle Data Pump + SFTP, with production security hardening. Plus CRA T4A/T2202A student and vendor filings, and SSO/SAML/privilege-class access control across VIU services. Verified 2026-09-21 against `src/CDWTool` (PROFILE.md corrected on master, `a54c5f9`).
+- **Sensitive student data** (required, and stated twice in the posting): CDWTool is William's sole-authored pipeline sending VIU's student-level data (14 DDEF2000 tables incl. `STUDENT_PERSONAL_DATA`) to the BC Ministry's Central Data Warehouse via Oracle Data Pump (delivery moved from SFTP to a manual SharePoint drop in April 2026), with production security hardening. Plus CRA T4A/T2202A student and vendor filings, and SSO/SAML/privilege-class access control across VIU services. Verified 2026-09-21 against `src/CDWTool` (PROFILE.md corrected on master, `a54c5f9`).
 - **Strong SQL:** deep Oracle SQL/PL/SQL and PostgreSQL (RLS, pgvector, PostGIS).
 - **Only data engineer / sole ownership:** sole author and owner of CDWTool and several production systems.
 - **Docs, runbooks, saying no kindly:** developer handbook, CDWTool runbooks and troubleshooting guides, EA `RUNBOOK.md`; trained TRU staff on institutional reporting and SQL tuning (maps to "teach analysts to self-serve").
@@ -51,6 +51,9 @@
 - [x] Audit (em dashes, stray tildes, stale dates) + commit
 - [x] 2026-09-24: Resume + letter updated with May–Sept 2026 VIU work (SABC, T2202, CDW SharePoint change, Atlas, ApplicantChecklist) and AscendAI update. PROFILE.md §4.8 + §5.3 written on master and merged in.
 - [x] 2026-09-24: `hiring_manager_pitch.md` added for the intro call with the hiring manager.
-- [ ] Expert review panel (recruiter, hiring manager, peer data engineer, editor) — running 2026-09-24; findings to be applied
+- [x] 2026-09-24: Expert review panel (recruiter, hiring-manager stand-in, peer data engineer, editor). Applied: VIU section first, WTS labelled part-time, new headline/summary, overclaim fixes (12 years of systems not pipelines; CDW upload is manual; T2202 engine predates William; AscendAI is pipeline + schema, not platform; n8n runs on a workstation), orchestration row with stated gap, lineage bullet, ERP REST/SOAP line cut (unverified), letter gap paragraph now promises a Snowflake + dbt demo, pitch expanded (why-leave/WTS answer, review process, likely questions, SRE vocabulary, demo spec, do-not-say list).
+- [ ] **William: build the Snowflake trial + dbt Core demo (spec in `hiring_manager_pitch.md` §8) before the second conversation. The cover letter now promises it.**
+- [ ] William: write the "why leave VIU, why now" answer in his own words (`hiring_manager_pitch.md` §2).
+- [ ] William: decide on the "I treat this work like a hobby" line in `why_minga.md` (recruiter: risky at a company selling sustainability; editor: most human line in the file). Left as is.
 - [ ] William reviews + exports PDFs
 - [ ] Optional before interview: small Snowflake trial + dbt Core project so the fast-ramp claim is demonstrable
