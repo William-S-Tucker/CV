@@ -1,6 +1,6 @@
 # Status: Minga, Senior Data Engineer
 
-- **Status:** drafting
+- **Status:** drafting (intro call with hiring manager pending; he will advance if William sells it)
 - **Created:** 2026-09-21
 - **Branch:** `apply/minga-senior-data-engineer`
 - **Role:** Senior Data Engineer (only data engineer, senior IC) · Kelowna HQ, strong preference for in-office 3x/week, open to remote · $130,000 to $160,000 CAD base · Minga (K-12 Student Behavior Platform, 2,000+ schools)
@@ -49,6 +49,8 @@
 - [x] cover_letter.md + cover_letter.html
 - [x] why_minga.md
 - [x] Audit (em dashes, stray tildes, stale dates) + commit
-- [ ] Expert hiring-agent review (offered)
+- [x] 2026-09-24: Resume + letter updated with May–Sept 2026 VIU work (SABC, T2202, CDW SharePoint change, Atlas, ApplicantChecklist) and AscendAI update. PROFILE.md §4.8 + §5.3 written on master and merged in.
+- [x] 2026-09-24: `hiring_manager_pitch.md` added for the intro call with the hiring manager.
+- [ ] Expert review panel (recruiter, hiring manager, peer data engineer, editor) — running 2026-09-24; findings to be applied
 - [ ] William reviews + exports PDFs
 - [ ] Optional before interview: small Snowflake trial + dbt Core project so the fast-ramp claim is demonstrable
