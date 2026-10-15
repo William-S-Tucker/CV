@@ -1,0 +1,336 @@
+<title>Airflow Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="study.css">
+<script src="chat.js" defer></script>
+
+<div class="page af">
+<aside class="rail">
+  <nav aria-label="Contents">
+    <p class="rail-title">On this page</p>
+    <ol>
+      <li><a href="#minga">Where it sits at Minga</a></li>
+      <li><a href="#why">The problem it solves</a></li>
+      <li><a href="#concepts">Core ideas</a></li>
+      <li><a href="#example">A DAG for Minga</a></li>
+      <li><a href="#architecture">How it runs</a></li>
+      <li><a href="#reliable">Reliable pipelines</a></li>
+      <li><a href="#n8n">From n8n to Airflow</a></li>
+      <li><a href="#options">Airflow or something else</a></li>
+      <li><a href="#interview">Interview answers</a></li>
+      <li><a href="#cards">Flashcards</a></li>
+      <li><a href="#handson">Try it yourself</a></li>
+    </ol>
+    <div class="series">
+      <p class="rail-title">Study series</p>
+      <a data-link="snowflake" target="_top" href="https://claude.ai/artifact/7nrAJwp8UCbk8djSNKn2rW">1 · Snowflake</a>
+      <a data-link="dbt" target="_top" href="https://claude.ai/artifact/FSdz6ncB9Q3rTYCWj3ATnm">2 · dbt</a>
+      <a class="here" href="#top" aria-current="page">3 · Airflow</a>
+    </div>
+  </nav>
+</aside>
+
+<main>
+<header class="top" id="top">
+  <p class="eyebrow">Minga prep · Study guide 3 of 3</p>
+  <h1>Airflow Field Guide</h1>
+  <p class="lede">Apache Airflow is the best-known orchestration tool, the thing that runs each pipeline step in the right order and tells you when one fails. The posting says Minga's stack "runs on good intentions today." This guide explains what orchestration would change.</p>
+</header>
+
+<section class="tldr" aria-labelledby="tldr">
+  <h2 id="tldr">The one-minute version</h2>
+  <ul>
+    <li>You write workflows in <strong>Python</strong> as <strong>DAGs</strong> (directed acyclic graphs): a set of tasks plus the order they run in.</li>
+    <li>Airflow's <strong>scheduler</strong> starts each run on time, runs each task once the tasks before it succeed, retries failures, and records every run's state.</li>
+    <li>It's a conductor, not an engine. Tasks tell other systems (Stitch, Snowflake, dbt) to do the heavy work, then wait for the result.</li>
+    <li>Version 3.0 came out in April 2025 with a new UI, DAG versioning, and "assets" for data-aware scheduling. Most tutorials online still show version 2.</li>
+    <li>Alternatives in the same category: <strong>Dagster</strong> and <strong>Prefect</strong>. The posting only asks for working knowledge of at least one orchestration tool, so any of them counts.</li>
+  </ul>
+</section>
+
+<h2 id="minga">Where it sits at Minga</h2>
+<p>The posting: <em>"Own ingestion end to end: harden or replace our current Stitch pipelines and bring proper orchestration to a stack that runs on good intentions today."</em></p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Minga data stack with Airflow highlighted: Airflow first triggers Stitch to load data, then runs dbt to transform it inside Snowflake.">
+    <defs>
+      <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="sa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="70" y="76" text-anchor="middle" class="d-s">Sources</text>
+    <rect x="10" y="88" width="120" height="32" rx="6" class="d-box"/><text x="70" y="109" text-anchor="middle" class="d-s">Product DB</text>
+    <rect x="10" y="128" width="120" height="32" rx="6" class="d-box"/><text x="70" y="149" text-anchor="middle" class="d-s">HubSpot</text>
+    <rect x="10" y="168" width="120" height="32" rx="6" class="d-box"/><text x="70" y="189" text-anchor="middle" class="d-s">Other SaaS</text>
+    <line x1="130" y1="104" x2="168" y2="138" class="d-l" marker-end="url(#sa)"/>
+    <line x1="130" y1="144" x2="168" y2="144" class="d-l" marker-end="url(#sa)"/>
+    <line x1="130" y1="184" x2="168" y2="150" class="d-l" marker-end="url(#sa)"/>
+    <rect x="170" y="118" width="100" height="52" rx="8" class="d-box"/><text x="220" y="141" text-anchor="middle" class="d-t">Stitch</text><text x="220" y="158" text-anchor="middle" class="d-s">extract + load</text>
+    <rect x="170" y="12" width="100" height="40" rx="8" class="d-box on"/><text x="220" y="37" text-anchor="middle" class="d-t on">Airflow</text>
+    <line x1="220" y1="52" x2="220" y2="116" class="d-l on dash" marker-end="url(#sa-on)"/><text x="228" y="90" class="d-s on">1. trigger</text>
+    <line x1="270" y1="32" x2="408" y2="32" class="d-l on dash" marker-end="url(#sa-on)"/><text x="339" y="25" text-anchor="middle" class="d-s on">2. then run</text>
+    <rect x="410" y="12" width="100" height="40" rx="8" class="d-box"/><text x="460" y="37" text-anchor="middle" class="d-t">dbt</text>
+    <line x1="460" y1="52" x2="460" y2="78" class="d-l" marker-end="url(#sa)"/><text x="468" y="70" class="d-s">sends SQL</text>
+    <rect x="310" y="80" width="295" height="150" rx="10" class="d-group"/>
+    <text x="458" y="103" text-anchor="middle" class="d-t">Snowflake</text>
+    <text x="458" y="120" text-anchor="middle" class="d-s">one database, three layers</text>
+    <line x1="270" y1="150" x2="320" y2="163" class="d-l" marker-end="url(#sa)"/><text x="293" y="140" text-anchor="middle" class="d-s">load</text>
+    <rect x="322" y="140" width="76" height="50" rx="6" class="d-box"/><text x="360" y="162" text-anchor="middle" class="d-t">RAW</text><text x="360" y="179" text-anchor="middle" class="d-s">as loaded</text>
+    <line x1="398" y1="165" x2="420" y2="165" class="d-l" marker-end="url(#sa)"/>
+    <rect x="422" y="140" width="76" height="50" rx="6" class="d-box"/><text x="460" y="162" text-anchor="middle" class="d-t">STAGING</text><text x="460" y="179" text-anchor="middle" class="d-s">cleaned</text>
+    <line x1="498" y1="165" x2="520" y2="165" class="d-l" marker-end="url(#sa)"/>
+    <rect x="522" y="140" width="76" height="50" rx="6" class="d-box"/><text x="560" y="162" text-anchor="middle" class="d-t">MARTS</text><text x="560" y="179" text-anchor="middle" class="d-s">modelled</text>
+    <text x="460" y="214" text-anchor="middle" class="d-s">dbt models build each layer</text>
+    <line x1="598" y1="165" x2="658" y2="165" class="d-l" marker-end="url(#sa)"/><text x="628" y="156" text-anchor="middle" class="d-s">queries</text>
+    <rect x="660" y="140" width="110" height="50" rx="8" class="d-box"/><text x="715" y="162" text-anchor="middle" class="d-t">Metabase</text><text x="715" y="179" text-anchor="middle" class="d-s">dashboards</text>
+    <text x="715" y="212" text-anchor="middle" class="d-s">RevOps · Finance</text>
+    <text x="715" y="228" text-anchor="middle" class="d-s">CX · Product</text>
+  </svg>
+  </div>
+  <figcaption>Airflow (highlighted) doesn't touch the data. It decides when each step runs and makes the next step wait for the previous one to succeed.</figcaption>
+</figure>
+
+<h2 id="why">The problem it solves</h2>
+<p>Without an orchestrator, each tool runs on its own clock. Stitch syncs on its schedule, dbt runs at a fixed time on a cron job, and everyone hopes the load finished first. Usually it does. When it doesn't, dashboards show half-loaded data and nobody gets told.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 265" role="img" aria-label="Top: Stitch's load runs long and the 6:00 dbt cron starts before it finishes, building on partial data. Bottom: with an orchestrator, dbt starts only when the load reports success.">
+    <defs>
+      <marker id="wy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="10" y="44" class="d-t">Separate</text>
+    <text x="10" y="62" class="d-t">schedules</text>
+    <rect x="200" y="30" width="267" height="28" rx="5" class="d-box"/><text x="214" y="49" class="d-s">Stitch load (ran long today)</text>
+    <rect x="360" y="70" width="80" height="28" rx="5" class="d-box warn"/><text x="400" y="89" text-anchor="middle" class="d-s warn">dbt</text>
+    <text x="450" y="89" class="d-s warn">6:00 cron fires anyway, builds on partial data</text>
+    <line x1="10" y1="122" x2="750" y2="122" class="d-axis"/>
+    <text x="10" y="158" class="d-t">Orchestrated</text>
+    <rect x="200" y="144" width="267" height="28" rx="5" class="d-box"/><text x="214" y="163" class="d-s">Stitch load (ran long today)</text>
+    <path d="M467,158 C478,158 478,198 482,198" class="d-l on" marker-end="url(#wy)"/>
+    <rect x="484" y="184" width="80" height="28" rx="5" class="d-box on"/><text x="524" y="203" text-anchor="middle" class="d-s on">dbt</text>
+    <text x="574" y="203" class="d-s on">starts when the load succeeds</text>
+    <line x1="120" y1="236" x2="750" y2="236" class="d-axis"/>
+    <line x1="200" y1="232" x2="200" y2="240" class="d-axis"/><text x="200" y="256" text-anchor="middle" class="d-s">5:00</text>
+    <line x1="360" y1="232" x2="360" y2="240" class="d-axis"/><text x="360" y="256" text-anchor="middle" class="d-s">6:00</text>
+    <line x1="520" y1="232" x2="520" y2="240" class="d-axis"/><text x="520" y="256" text-anchor="middle" class="d-s">7:00</text>
+    <line x1="680" y1="232" x2="680" y2="240" class="d-axis"/><text x="680" y="256" text-anchor="middle" class="d-s">8:00</text>
+  </svg>
+  </div>
+  <figcaption>Same morning, same slow load. On separate clocks, dbt starts at 6:00 regardless and builds on partial data with no alert. Orchestrated, dbt waits for the load to report success. If the load fails, dbt doesn't run at all and someone gets an alert.</figcaption>
+</figure>
+<p>An orchestrator gives you four things the stack lacks today: <strong>dependencies</strong> (run B after A succeeds), <strong>retries</strong> (try a flaky API call again), <strong>alerting</strong> (tell someone when it fails), and <strong>history</strong> (what ran, when, how long, and what broke).</p>
+
+<h2 id="concepts">Core ideas</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>DAG</td><td>One workflow: its tasks, their order, and its schedule. A Python file in the <code>dags/</code> folder. "Acyclic" means no loops.</td></tr>
+    <tr><td>Task</td><td>One step in a DAG, e.g. "trigger Stitch" or "run dbt build".</td></tr>
+    <tr><td>Operator</td><td>A ready-made task type. <code>BashOperator</code> runs a shell command, <code>SQLExecuteQueryOperator</code> runs SQL, and provider packages add operators for Snowflake, dbt Cloud, Slack, and more.</td></tr>
+    <tr><td>Sensor</td><td>A task that waits for something: a file to appear, an API to report "done".</td></tr>
+    <tr><td>TaskFlow</td><td>The modern style: plain Python functions decorated with <code>@task</code>, inside a function decorated with <code>@dag</code>.</td></tr>
+    <tr><td>DAG run</td><td>One execution of a DAG. Each has a <strong>logical date</strong> and a <strong>data interval</strong>, the slice of time it's responsible for.</td></tr>
+    <tr><td>Retries</td><td>How many times a failed task is retried, and how long to wait between tries.</td></tr>
+    <tr><td>Backfill</td><td>Running a DAG for past intervals, e.g. to rebuild last month after fixing a bug.</td></tr>
+    <tr><td>Connections</td><td>Stored credentials (Snowflake, Stitch API token) kept out of the code. Can come from a secrets manager.</td></tr>
+    <tr><td>XCom</td><td>Small values passed between tasks, like a job ID. Never use it for datasets.</td></tr>
+    <tr><td>Asset</td><td>(Airflow 3) A named piece of data. A DAG can be scheduled to run when an asset is updated instead of on a clock.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="example">A DAG for Minga, sketched</h2>
+<p>This is a teaching sketch of a nightly pipeline: trigger the Stitch sync, wait for it, check freshness, build dbt, and alert on failure. It's in Airflow 3 style. Read it for the shape, not as production code.</p>
+<p class="codecap">dags/nightly_warehouse.py</p>
+<pre><code><span class="k">from</span> datetime <span class="k">import</span> timedelta
+<span class="k">from</span> pendulum <span class="k">import</span> datetime
+<span class="k">from</span> airflow.sdk <span class="k">import</span> dag, task
+<span class="k">from</span> airflow.providers.standard.operators.bash <span class="k">import</span> BashOperator
+
+
+<span class="k">def</span> alert_on_failure(context):
+    <span class="c"># post the failed task and a log link to Slack or email</span>
+    ...
+
+
+@dag(
+    schedule=<span class="k">"0 5 * * *"</span>,                         <span class="c"># 5:00 every day</span>
+    start_date=datetime(2026, 10, 1, tz=<span class="k">"America/Vancouver"</span>),
+    catchup=False,                                 <span class="c"># don't auto-run missed past days</span>
+    default_args={
+        <span class="k">"retries"</span>: 2,
+        <span class="k">"retry_delay"</span>: timedelta(minutes=5),
+        <span class="k">"on_failure_callback"</span>: alert_on_failure,
+    },
+)
+<span class="k">def</span> nightly_warehouse():
+
+    @task
+    <span class="k">def</span> trigger_stitch_sync() -&gt; str:
+        <span class="c"># call Stitch's API to start the sync; the token comes from an</span>
+        <span class="c"># Airflow Connection, never from this file</span>
+        ...
+        <span class="k">return</span> job_id
+
+    @task.sensor(poke_interval=300, timeout=3 * 60 * 60, mode=<span class="k">"reschedule"</span>)
+    <span class="k">def</span> wait_for_stitch(job_id: str):
+        <span class="c"># ask Stitch every 5 minutes whether the sync finished;</span>
+        <span class="c"># give up and fail after 3 hours</span>
+        ...
+
+    freshness = BashOperator(
+        task_id=<span class="k">"dbt_source_freshness"</span>,
+        bash_command=<span class="k">"cd /opt/dbt &amp;&amp; dbt source freshness --target prod"</span>,
+    )
+
+    build = BashOperator(
+        task_id=<span class="k">"dbt_build"</span>,
+        bash_command=<span class="k">"cd /opt/dbt &amp;&amp; dbt build --target prod"</span>,
+    )
+
+    wait_for_stitch(trigger_stitch_sync()) &gt;&gt; freshness &gt;&gt; build
+
+
+nightly_warehouse()</code></pre>
+<ul>
+  <li><code>&gt;&gt;</code> sets the order. Passing <code>trigger_stitch_sync()</code> into <code>wait_for_stitch</code> sets it too, and hands over the job ID.</li>
+  <li><code>mode="reschedule"</code> frees the worker slot between checks instead of holding it for 3 hours.</li>
+  <li>Running dbt as one <code>dbt build</code> task is the simplest option. The open-source <strong>Cosmos</strong> package (from Astronomer) instead turns each dbt model into its own Airflow task, so you can see and retry a single model.</li>
+</ul>
+
+<h2 id="architecture">How Airflow runs</h2>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 355" role="img" aria-label="Airflow components: DAG files from git are parsed by the DAG processor into the metadata database. The scheduler reads state and queues tasks for workers. Workers call external systems like Stitch and Snowflake and report status through the API server, which also serves the UI.">
+    <defs>
+      <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="ac-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <rect x="10" y="30" width="130" height="46" rx="8" class="d-box"/><text x="75" y="52" text-anchor="middle" class="d-t">DAG files</text><text x="75" y="68" text-anchor="middle" class="d-s">Python, in git</text>
+    <line x1="140" y1="53" x2="178" y2="53" class="d-l" marker-end="url(#ac)"/><text x="159" y="45" text-anchor="middle" class="d-s">reads</text>
+    <rect x="180" y="30" width="140" height="46" rx="8" class="d-box"/><text x="250" y="52" text-anchor="middle" class="d-t">DAG processor</text><text x="250" y="68" text-anchor="middle" class="d-s">parses the files</text>
+    <line x1="320" y1="62" x2="398" y2="118" class="d-l" marker-end="url(#ac)"/><text x="372" y="80" class="d-s">stores DAGs</text>
+    <rect x="360" y="120" width="150" height="56" rx="8" class="d-box"/><text x="435" y="144" text-anchor="middle" class="d-t">Metadata DB</text><text x="435" y="162" text-anchor="middle" class="d-s">Postgres: runs, states</text>
+    <rect x="180" y="120" width="140" height="56" rx="8" class="d-box on"/><text x="250" y="144" text-anchor="middle" class="d-t on">Scheduler</text><text x="250" y="162" text-anchor="middle" class="d-s">decides what runs</text>
+    <line x1="320" y1="148" x2="358" y2="148" class="d-l on" marker-start="url(#ac-on)" marker-end="url(#ac-on)"/><text x="339" y="140" text-anchor="middle" class="d-s">state</text>
+    <line x1="250" y1="176" x2="250" y2="208" class="d-l on" marker-end="url(#ac-on)"/><text x="258" y="197" class="d-s on">queues tasks</text>
+    <rect x="180" y="210" width="140" height="46" rx="8" class="d-box"/><text x="250" y="232" text-anchor="middle" class="d-t">Workers</text><text x="250" y="248" text-anchor="middle" class="d-s">run the tasks</text>
+    <path d="M320,233 H600 V178" class="d-l" marker-end="url(#ac)"/><text x="460" y="226" text-anchor="middle" class="d-s">report status (Task API)</text>
+    <rect x="560" y="120" width="180" height="56" rx="8" class="d-box"/><text x="650" y="144" text-anchor="middle" class="d-t">API server + UI</text><text x="650" y="162" text-anchor="middle" class="d-s">where you watch runs</text>
+    <line x1="558" y1="148" x2="512" y2="148" class="d-l" marker-end="url(#ac)"/><text x="535" y="140" text-anchor="middle" class="d-s">reads</text>
+    <line x1="225" y1="256" x2="180" y2="298" class="d-l" marker-end="url(#ac)"/><text x="190" y="280" text-anchor="end" class="d-s">trigger sync</text>
+    <line x1="275" y1="256" x2="320" y2="298" class="d-l" marker-end="url(#ac)"/><text x="306" y="280" class="d-s">dbt build</text>
+    <rect x="90" y="300" width="140" height="40" rx="8" class="d-box"/><text x="160" y="325" text-anchor="middle" class="d-t">Stitch API</text>
+    <rect x="260" y="300" width="160" height="40" rx="8" class="d-box"/><text x="340" y="325" text-anchor="middle" class="d-t">Snowflake</text>
+  </svg>
+  </div>
+  <figcaption>Airflow 3's main parts. The scheduler (highlighted) is the heart: it reads state from the metadata database and queues tasks when their time and dependencies are met. Workers do the calling and waiting. The real work happens in Stitch and Snowflake.</figcaption>
+</figure>
+<ul>
+  <li><strong>Executor</strong>: how tasks reach workers. <code>LocalExecutor</code> runs them on the same machine. <code>CeleryExecutor</code> uses a queue (Redis) and a pool of workers, like n8n's queue mode. <code>KubernetesExecutor</code> starts a pod per task.</li>
+  <li><strong>Keep DAG files light.</strong> The DAG processor re-parses them constantly, so no database calls or API calls at the top level of the file.</li>
+  <li><strong>Managed Airflow</strong> means someone else runs all of this: Astronomer (Astro), Amazon MWAA, or Google Cloud Composer. For a one-person data team, that's usually the right call.</li>
+</ul>
+
+<h2 id="reliable">What makes a pipeline reliable</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Practice</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Idempotent tasks</td><td>Running a task twice gives the same result as running it once, so retries and backfills are safe. You built this into CDWTool: duplicate protection per reporting period.</td></tr>
+    <tr><td>Retries with a delay</td><td>Most API failures are temporary. Two or three retries a few minutes apart clear most of them.</td></tr>
+    <tr><td>Timeouts</td><td>A hung task should fail loudly, not run all night.</td></tr>
+    <tr><td>Alerts that are tested</td><td>An alert path you've never seen fire might not work. Same lesson as your n8n deliberate-failure test.</td></tr>
+    <tr><td>Process by data interval</td><td>Each run handles "its" slice of time, so reruns and backfills don't double-count.</td></tr>
+    <tr><td>Heavy work outside Airflow</td><td>Workers call Snowflake and Stitch. They don't load millions of rows into their own memory.</td></tr>
+    <tr><td>Secrets in Connections</td><td>Credentials in Airflow Connections or a secrets manager, never in the DAG file or git.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="n8n">From n8n to Airflow</h2>
+<p>Your n8n stack teaches many of the same ideas. Use this to learn faster, but don't say n8n experience <em>is</em> Airflow experience.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>In your n8n setup</th><th>In Airflow</th></tr></thead>
+  <tbody>
+    <tr><td>Workflow</td><td>DAG</td></tr>
+    <tr><td>Node</td><td>Task (operator, sensor, or @task function)</td></tr>
+    <tr><td>Node retry settings</td><td><code>retries</code>, <code>retry_delay</code></td></tr>
+    <tr><td>Global error workflow</td><td><code>on_failure_callback</code>, or a notifier</td></tr>
+    <tr><td>Workflow JSON built by a Python script, deployed from git</td><td>DAGs are Python files in git to begin with</td></tr>
+    <tr><td>Queue mode: main + worker + Redis</td><td>Scheduler + CeleryExecutor workers + Redis</td></tr>
+    <tr><td>Executions list</td><td>Grid view of DAG runs and task states</td></tr>
+    <tr><td>Credentials</td><td>Connections</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="careful">
+  <span class="tag">Keep it accurate</span>
+  <p>The honest line is: "I haven't run Airflow or another dedicated orchestrator. I've built workflow automation with n8n in queue mode, with retries, a tested error handler, and workflows deployed from git, so the concepts are familiar. The tool is new to me."</p>
+</div>
+
+<h2 id="options">Airflow or something else?</h2>
+<p>The posting asks for "working knowledge of at least one orchestration tool", not Airflow by name. A good senior answer weighs the options rather than assuming one.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Option</th><th>Good at</th><th>Watch out for</th></tr></thead>
+  <tbody>
+    <tr><td>Airflow (managed)</td><td>The industry standard, huge provider library, easy to hire for</td><td>Task-centric: it knows tasks ran, not what data they made. Needs Cosmos or similar for a model-level dbt view.</td></tr>
+    <tr><td>Dagster</td><td>Built around data assets. Strong dbt integration: each model is an asset with lineage and freshness. Hosted option: Dagster+.</td><td>Smaller community and fewer people know it</td></tr>
+    <tr><td>Prefect</td><td>Plain Python, light to start, hosted option</td><td>Less dbt-specific tooling</td></tr>
+    <tr><td>dbt Cloud jobs + Stitch schedules</td><td>Nothing new to run. Good first step.</td><td>Still two clocks. Doesn't solve the dependency problem above.</td></tr>
+    <tr><td>Snowflake Tasks</td><td>Scheduled SQL inside Snowflake, no extra system</td><td>Can't easily drive Stitch or anything outside Snowflake</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="interview">Interview-ready answers</h2>
+<div class="say">
+  <span class="tag">If asked: "What orchestration have you used?"</span>
+  <blockquote>"No dedicated orchestrator in production. I built and run an n8n stack in queue mode: per-source retries, a global error handler I proved with a deliberate failure, and workflows generated by a Python script and deployed from git. So I know the problems an orchestrator solves. Airflow and Dagster would be new tools for me, not new ideas."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you bring orchestration to our stack?"</span>
+  <blockquote>"First, make the steps depend on each other: load, check freshness, transform, test, and alert a human when something fails. Then pick the tool. As the only data engineer I'd want it managed rather than another server to babysit, and I'd look at what the platform team already runs. Between managed Airflow and Dagster+, I'd lean on which fits dbt and the team best, and I'd want to try both on a real pipeline first."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">Good questions to ask them</span>
+  <ul>
+    <li>How do you find out today when a Stitch sync fails?</li>
+    <li>What does the Platform &amp; SRE team already run (AWS, Kubernetes, anything managed)?</li>
+    <li>Is there an orchestrator in use elsewhere in engineering I should align with?</li>
+  </ul>
+</div>
+
+<h2 id="cards">Flashcards</h2>
+<div class="cards">
+  <details class="card"><summary>What is a DAG?</summary><p>A directed acyclic graph: a workflow's tasks and the order they run in, with no loops. In Airflow, a Python file.</p></details>
+  <details class="card"><summary>Operator vs sensor?</summary><p>An operator does something (run SQL, run a command). A sensor waits for something (a file, an API status) before the next task starts.</p></details>
+  <details class="card"><summary>What does the scheduler do?</summary><p>Decides which DAG runs and tasks are due, based on schedules and whether upstream tasks succeeded, and queues them for workers.</p></details>
+  <details class="card"><summary>Why must tasks be idempotent?</summary><p>So retries and backfills are safe: running a task twice for the same interval gives the same result instead of duplicates.</p></details>
+  <details class="card"><summary>What is catchup?</summary><p>Whether Airflow automatically runs every missed interval since start_date. Off by default in Airflow 3. Backfills do it on purpose.</p></details>
+  <details class="card"><summary>Where do credentials live?</summary><p>In Airflow Connections, optionally backed by a secrets manager. Never in DAG code.</p></details>
+  <details class="card"><summary>What's the main difference with Dagster?</summary><p>Airflow schedules tasks. Dagster models data assets (tables, models) and their lineage, which fits dbt naturally.</p></details>
+  <details class="card"><summary>What changed in Airflow 3?</summary><p>Released April 2025: new React UI, DAG versioning, assets (renamed from datasets), a Task Execution API between workers and the core, and catchup off by default.</p></details>
+</div>
+
+<h2 id="handson">Try it yourself</h2>
+<p>You already run Docker Compose, so a local Airflow is an evening's work.</p>
+<ul class="steps">
+  <li>Install the Astronomer CLI and run <code>astro dev init</code> then <code>astro dev start</code>. It starts a local Airflow in Docker with the UI at <code>localhost:8080</code>. (Or <code>pip install apache-airflow</code> and <code>airflow standalone</code>.)</li>
+  <li>Write a three-task TaskFlow DAG and watch it in the grid view.</li>
+  <li>Make one task fail on purpose. Watch the retries, then the failure callback fire.</li>
+  <li>Add a Snowflake connection to your trial account and run a dbt build from a task.</li>
+  <li>Optional: install <code>astronomer-cosmos</code> and render your jaffle shop dbt project as an Airflow task group.</li>
+</ul>
+
+<footer class="end">
+  Study guide 3 of 3 for the Minga Senior Data Engineer interview. Back: <a data-link="snowflake" target="_top" href="https://claude.ai/artifact/7nrAJwp8UCbk8djSNKn2rW">Snowflake Field Guide</a> · <a data-link="dbt" target="_top" href="https://claude.ai/artifact/FSdz6ncB9Q3rTYCWj3ATnm">dbt Field Guide</a>. Pipeline and DAG examples are teaching sketches, not Minga's real setup.
+</footer>
+</main>
+</div>

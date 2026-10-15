@@ -1,18 +1,37 @@
 # Status: Minga, Senior Data Engineer
 
-- **Status:** drafting
+- **Status:** round 2 in person, Thu 2026-10-15 1:00 to 2:00pm at Minga HQ with Paolo (Eng Manager) and Ted (Director, RevOps). Screening with Madison Hawkins (People & Culture Manager) done 2026-10-06; round 2 invite received 2026-10-07; confirmed by the Minga Talent Team (calendar invite to will@ascendai-tech.com). Address: 460 Doyle Ave #604, ring the doorbell. **Update 2026-10-14:** Paolo and Ted join remotely; William sits in Minga's meeting room on a video call and may bring his laptop (laptop rules in `interview/onsite_prep.md` section 0b).
 - **Created:** 2026-09-21
-- **Branch:** `apply/minga-senior-data-engineer`
+- **Salary ask on application:** $140,000 CAD
+- **Branch:** `interview/minga-senior-data-engineer` (renamed from `apply/` 2026-10-13)
 - **Role:** Senior Data Engineer (only data engineer, senior IC) · Kelowna HQ, strong preference for in-office 3x/week, open to remote · $130,000 to $160,000 CAD base · Minga (K-12 Student Behavior Platform, 2,000+ schools)
 - **Source:** https://minga.bamboohr.com/careers/117, posted 2026-09-16, captured 2026-09-21.
 - **Application asks for:** resume + a "Why Minga" answer (read by a human; they want the person behind the profile).
+
+## Folder layout
+
+| Path | What's in it |
+|:--|:--|
+| `STATUS.md`, `job_description.md` | This tracker and the posting |
+| `Resume.*`, `cover_letter.*`, `why_minga.md`, `references.md` | Working sources (md + html) |
+| `submit/` | Exactly what was submitted (PDFs + form answers). Don't edit |
+| `interview/screening_prep.md` | Screening call notes |
+| `interview/onsite_prep.md` | Round 2 (in person) prep. Sections 0b to 0e cover Paolo's Technical Interview Brief |
+| `interview/prep/Senior Data Engineer – Technical Interview Brief.pdf` | Paolo's brief (dated 2026-10-09): working session, five themes, architecture walkthrough, no live coding |
+| `interview/minga_binder.html` | The four study guides in one collapsible page (rebuild: `python interview/build_binder.py .`). Published: https://claude.ai/artifact/FhMzXXwW9hi5UMHGzRe1cr |
+| `interview/study/python.html` | Study guide 4: Python. Published: https://claude.ai/artifact/1vwgcsgHuSLpB9pXTXYvwQ |
+| `interview/study/` | Learning guides: Snowflake, dbt, Airflow |
+
+## Screening feedback (2026-10-06)
+
+William told Madison upfront he hasn't used Snowflake. She said Minga is fine with it: earlier hires chosen for a narrow tool match didn't work out, and they want someone who will grow with them. So: no trial install needed; light reading only; lead round 2 with learning track record and long-term commitment, not tool apologies.
 
 ## Fit summary
 
 **Stretch on the named tools, strong on the hard-to-hire parts.** William's decision (2026-09-21): apply, and pitch fast adaptation on the tool gap.
 
 **Strong / bullseyes:**
-- **Sensitive student data** (required, and stated twice in the posting): CDWTool is William's sole-authored pipeline sending VIU's student-level data (14 DDEF2000 tables incl. `STUDENT_PERSONAL_DATA`) to the BC Ministry's Central Data Warehouse via Oracle Data Pump + SFTP, with production security hardening. Plus CRA T4A/T2202A student and vendor filings, and SSO/SAML/privilege-class access control across VIU services. Verified 2026-09-21 against `src/CDWTool` (PROFILE.md corrected on master, `a54c5f9`).
+- **Sensitive student data** (required, and stated twice in the posting): CDWTool is William's sole-authored tool that exports VIU's student-level data (14 DDEF2000 tables incl. `STUDENT_PERSONAL_DATA`) with Oracle Data Pump and packages it for the BC Ministry's Central Data Warehouse, with production security hardening. **Correction 2026-10-08 (PROFILE.md `f02d941`):** delivery has been a manual upload to the Ministry's SharePoint since SFTP was removed 2026-04-16, and CDWTool uses VIU's cookie SSO, not SAML. The submitted resume and letter say SFTP; describe the current state in interviews. Plus CRA T4A/T2202A student and vendor filings, and SSO/SAML/privilege-class access control across VIU services. Verified 2026-09-21 against `src/CDWTool` (PROFILE.md corrected on master, `a54c5f9`).
 - **Strong SQL:** deep Oracle SQL/PL/SQL and PostgreSQL (RLS, pgvector, PostGIS).
 - **Only data engineer / sole ownership:** sole author and owner of CDWTool and several production systems.
 - **Docs, runbooks, saying no kindly:** developer handbook, CDWTool runbooks and troubleshooting guides, EA `RUNBOOK.md`; trained TRU staff on institutional reporting and SQL tuning (maps to "teach analysts to self-serve").

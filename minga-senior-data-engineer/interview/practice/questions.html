@@ -1,0 +1,546 @@
+<title>Minga Mock Exam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>/* Layout: sticky contents rail on the left (desktop), single reading column (~70ch) on the right; stacks on phones. */
+:root {
+  --paper: #f3f6f8;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #566573;
+  --faint: #8a98a6;
+  --rule: #d6dee6;
+  --code-bg: #eaf0f5;
+  --warn: #b4540a;
+  --sf: #0b6aa8;
+  --dbt: #c2452a;
+  --af: #0a7458;
+  --py: #5b4bb0;
+  --accent: var(--sf);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0e141a;
+    --surface: #151d25;
+    --ink: #e4ebf1;
+    --muted: #9dabb8;
+    --faint: #6d7c8a;
+    --rule: #2a3641;
+    --code-bg: #1a242e;
+    --warn: #f0a050;
+    --sf: #5cb6ee;
+    --dbt: #ff8a6c;
+    --af: #43cfa2;
+    --py: #a89bf2;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e141a;
+  --surface: #151d25;
+  --ink: #e4ebf1;
+  --muted: #9dabb8;
+  --faint: #6d7c8a;
+  --rule: #2a3641;
+  --code-bg: #1a242e;
+  --warn: #f0a050;
+  --sf: #5cb6ee;
+  --dbt: #ff8a6c;
+  --af: #43cfa2;
+  --py: #a89bf2;
+}
+.page.sf { --accent: var(--sf); }
+.page.dbt { --accent: var(--dbt); }
+.page.af { --accent: var(--af); }
+.page.py { --accent: var(--py); }
+.page { --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-inline: 20px;
+  padding-block: 0 64px;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.page {
+  max-width: 1120px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 56px;
+}
+@media (max-width: 900px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { display: none; }
+}
+
+/* Contents rail */
+.rail nav {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 28px);
+  padding-top: 28px;
+  font-size: 14px;
+}
+.rail .rail-title {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rail a { color: var(--muted); text-decoration: none; }
+.rail a:hover { color: var(--ink); }
+.rail .series { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); display: grid; gap: 6px; }
+.rail .series a.here { color: var(--accent); font-weight: 700; }
+
+main { max-width: 760px; min-width: 0; }
+
+/* Header */
+header.top { padding-block: 40px 8px; }
+.eyebrow {
+  font-family: var(--f-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 14px; }
+h2 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 14px; padding-top: 22px; border-top: 1px solid var(--rule); scroll-margin-top: 20px; }
+h3 { font-size: 1.15rem; font-weight: 700; margin: 30px 0 8px; }
+p, ul, ol { margin: 0 0 14px; }
+li + li { margin-top: 4px; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 62ch; }
+.series-inline { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 18px; }
+.series-inline a.here { font-weight: 700; }
+
+/* One-minute version */
+.tldr {
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 28px 0 8px;
+}
+.tldr h2 { border: 0; margin: 0 0 8px; padding: 0; font-size: 1.15rem; }
+.tldr ul { margin: 0; padding-left: 20px; }
+
+/* Callouts */
+.say, .careful {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.say .tag, .careful .tag {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.say .tag { background: var(--accent-soft); color: var(--accent); }
+.careful .tag { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); color: var(--warn); }
+.say p:last-child, .careful p:last-child, .say ul:last-child, .careful ul:last-child { margin-bottom: 0; }
+.say blockquote { margin: 0 0 10px; font-size: 1.05rem; }
+.say blockquote:last-child { margin-bottom: 0; }
+
+/* Code */
+code { font-family: var(--f-mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.55;
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 14px 0 18px;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); font-style: italic; }
+pre .k { color: var(--accent); font-weight: 600; }
+.codecap { font-size: 13px; color: var(--muted); margin: 18px 0 -8px; font-family: var(--f-mono); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; margin: 16px 0 22px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-display); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Diagrams */
+figure.diagram { margin: 22px 0 26px; }
+figure.diagram .scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; }
+figure.diagram svg { display: block; width: 100%; min-width: 620px; height: auto; }
+figure.diagram figcaption { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 68ch; }
+svg text { font-family: var(--f-body); }
+.d-box { fill: var(--surface); stroke: var(--faint); stroke-width: 1.3; }
+.d-group { fill: none; stroke: var(--faint); stroke-width: 1.3; }
+.d-box.on, .d-group.on { stroke: var(--accent); stroke-width: 2; fill: var(--accent-soft); }
+.d-box.warn { stroke: var(--warn); stroke-width: 2; fill: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.d-fill { fill: var(--accent); }
+.d-fill.muted { fill: var(--faint); }
+.d-t { fill: var(--ink); font-size: 14px; font-weight: 700; }
+.d-s { fill: var(--muted); font-size: 12px; }
+.d-m { fill: var(--ink); font-size: 12.5px; font-family: var(--f-mono); }
+.d-s.on, .d-t.on { fill: var(--accent); }
+.d-s.warn { fill: var(--warn); }
+.d-l { stroke: var(--faint); stroke-width: 1.5; fill: none; }
+.d-l.on { stroke: var(--accent); stroke-width: 2; }
+.d-l.dash { stroke-dasharray: 5 4; }
+.d-head { fill: var(--faint); }
+.d-head.on { fill: var(--accent); }
+.d-axis { stroke: var(--faint); stroke-width: 1; }
+
+/* Flashcards */
+.cards { display: grid; gap: 10px; margin: 16px 0; }
+details.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 18px; }
+details.card summary { cursor: pointer; font-weight: 700; list-style: none; }
+details.card summary::-webkit-details-marker { display: none; }
+details.card summary::before { content: "+"; display: inline-block; width: 1.2em; color: var(--accent); font-family: var(--f-mono); }
+details.card[open] summary::before { content: "−"; }
+details.card[open] summary { margin-bottom: 8px; }
+details.card p { margin: 0 0 0 1.2em; color: var(--muted); }
+
+/* Checklist */
+ul.steps { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.steps li { margin: 0; padding: 10px 14px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
+
+footer.end { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* Study tutor chat panel (chat.js) */
+.chat-launch {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 20;
+  font: 700 15px/1 var(--f-display);
+  color: var(--surface);
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.chat-launch:focus-visible, .chat-panel button:focus-visible, .chat-panel textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chat-panel {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 21;
+  width: min(430px, calc(100vw - 40px));
+  height: min(680px, calc(100dvh - 40px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 25%, transparent);
+  overflow: hidden;
+  font-size: 15px;
+}
+@media (max-width: 600px) {
+  .chat-panel { inset: 0; width: auto; height: auto; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
+.chat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--rule); }
+.chat-title { font: 700 17px/1.2 var(--f-display); margin: 0 0 3px; }
+.chat-sub { font-size: 13px; color: var(--muted); margin: 0; }
+.chat-icon { background: none; border: 0; color: var(--muted); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.chat-icon:hover { color: var(--ink); }
+.chat-tools { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rule); }
+.chat-chip {
+  font: 600 13px/1.3 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.chat-chip:hover:not(:disabled) { border-color: var(--accent); }
+.chat-chip.strong { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.chat-chip:disabled { opacity: 0.5; cursor: default; }
+.chat-log { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.chat-starters { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.chat-msg { max-width: 92%; padding: 10px 14px; border-radius: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.chat-msg p { margin: 0 0 8px; }
+.chat-msg p:last-child, .chat-msg ul:last-child, .chat-msg ol:last-child { margin-bottom: 0; }
+.chat-msg ul, .chat-msg ol { margin: 0 0 8px; padding-left: 20px; }
+.chat-msg pre { font-size: 12.5px; margin: 6px 0 8px; padding: 10px 12px; }
+.chat-msg .chat-h { font-weight: 700; }
+.chat-msg.user { align-self: flex-end; background: var(--accent); color: var(--surface); white-space: pre-wrap; }
+.chat-msg.assistant { align-self: flex-start; background: var(--paper); border: 1px solid var(--rule); }
+.chat-msg.assistant.quiz { border-color: var(--accent); background: var(--accent-soft); }
+.chat-msg.thinking { color: var(--muted); font-style: italic; }
+.chat-msg.system { align-self: stretch; max-width: none; background: color-mix(in srgb, var(--warn) 12%, var(--surface)); color: var(--ink); font-size: 14px; }
+.chat-flag { font: 700 12px/1.2 var(--f-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+.chat-log > .chat-chip { align-self: flex-start; }
+.chat-form { display: flex; gap: 8px; align-items: flex-end; padding: 10px 16px 6px; border-top: 1px solid var(--rule); }
+.chat-form textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: 15px/1.4 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+.chat-send { font: 700 14px/1 var(--f-display); color: var(--surface); background: var(--accent); border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; }
+.chat-note { font-size: 12px; color: var(--muted); margin: 0; padding: 0 16px 10px; }
+
+:root { --ex: #7a3e9d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ex: #c99be6; } }
+:root[data-theme="dark"] { --ex: #c99be6; }
+.sheet { --accent: var(--ex); --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); max-width: 820px; margin-inline: auto; padding-block: 8px 40px; }
+.sheet > header { padding-block: 40px 8px; }
+nav.index { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 22px; margin: 18px 0 28px; font-size: 15px; }
+nav.index ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+.toolbar button { font: 700 14px/1 var(--f-display); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 9px 16px; cursor: pointer; }
+.toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details.sec { border-top: 3px solid var(--accent); margin: 0 0 18px; scroll-margin-top: 12px; }
+details.sec > summary { list-style: none; cursor: pointer; padding: 16px 0 12px; font: 800 1.45rem/1.2 var(--f-display); display: grid; grid-template-columns: 1.4em minmax(0,1fr); text-wrap: balance; }
+details.sec > summary::-webkit-details-marker { display: none; }
+details.sec > summary::before { content: "+"; font-family: var(--f-mono); color: var(--accent); }
+details.sec[open] > summary::before { content: "2"; }
+.sbody { min-width: 0; padding-bottom: 10px; }
+.sbody h3 { margin-top: 26px; padding-top: 14px; border-top: 1px dashed var(--rule); }
+.sbody h3:first-child { border-top: 0; padding-top: 0; }
+.sbody pre { max-width: 100%; }
+</style>
+<div class="sheet">
+<header id="top"><p class="eyebrow">Minga prep · Practice questions</p><h1>Minga Mock Exam</h1><p class="lede">Questions you might get on October 15, from SQL and modelling to privacy, RevOps and AI-review tests. Answer out loud or on paper before you open the answer key.</p>
+<div class="toolbar"><button type="button" id="open-all">Open all</button><button type="button" id="close-all">Close all</button></div></header>
+<p>Practice questions for the in-person interview on 2026-10-15 with Paolo (Engineering Manager) and Ted (Director, RevOps). Answers, scoring guides and study pointers are in a separate file (<code>answers.md</code>). Try each question out loud or on paper before you look.</p>
+<p><strong>How they'll probably test a "human is driving":</strong> they let you use AI, so expect questions where AI gives you a draft and they watch what you catch, questions with no right answer that test judgement, and "explain it to someone else" questions. Those are marked <strong>[Human driving]</strong>.</p>
+<hr />
+
+<nav class="index" aria-label="Sections"><ol><li><a href="#s-practice-schema">Practice schema</a></li><li><a href="#s-a-background-and-walkthrough-spoken">A. Background and walkthrough (spoken)</a></li><li><a href="#s-b-sql-you-write">B. SQL you write</a></li><li><a href="#s-c-sql-you-debug">C. SQL you debug</a></li><li><a href="#s-d-ai-wrote-this-review-tests-human-drivi">D. "AI wrote this" review tests [Human driving]</a></li><li><a href="#s-e-data-modelling">E. Data modelling</a></li><li><a href="#s-f-pipelines-and-ingestion">F. Pipelines and ingestion</a></li><li><a href="#s-g-snowflake">G. Snowflake</a></li><li><a href="#s-h-dbt">H. dbt</a></li><li><a href="#s-i-privacy-and-governance">I. Privacy and governance</a></li><li><a href="#s-j-revops-and-stakeholders-ted-s-question">J. RevOps and stakeholders (Ted's questions)</a></li><li><a href="#s-k-system-design-whiteboard">K. System design (whiteboard)</a></li><li><a href="#s-l-python">L. Python</a></li><li><a href="#s-m-estimation-and-curveballs">M. Estimation and curveballs</a></li><li><a href="#s-n-ai-in-practice-human-driving">N. AI in practice [Human driving]</a></li></ol></nav>
+<details class="sec" id="s-practice-schema"><summary>Practice schema</summary><div class="sbody">
+<p>Use this made-up schema for the SQL and modelling questions. It's illustrative, not Minga's real schema. All timestamps are stored in UTC.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Table</th>
+<th style="text-align: left;">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>districts</code></td>
+<td style="text-align: left;">district_id, name, country (<code>US</code> / <code>CA</code>), state_province</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>schools</code></td>
+<td style="text-align: left;">school_id, district_id, name, timezone (e.g. <code>America/Chicago</code>), is_active</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>students</code></td>
+<td style="text-align: left;">student_id, school_id, sis_id, first_name, last_name, email, grade, is_active</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>hall_passes</code></td>
+<td style="text-align: left;">pass_id, student_id, school_id, staff_id, pass_type, status, created_at, ended_at, updated_at</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tardies</code></td>
+<td style="text-align: left;">tardy_id, student_id, school_id, tardy_date (DATE), minutes_late</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>contracts</code></td>
+<td style="text-align: left;">contract_id, district_id, start_date, end_date, annual_value, currency (<code>USD</code> / <code>CAD</code>), status</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>events</code></td>
+<td style="text-align: left;">event_id, user_id, school_id, event_name, occurred_at, properties (VARIANT / JSON)</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+</div></details><details class="sec" id="s-a-background-and-walkthrough-spoken"><summary>A. Background and walkthrough (spoken)</summary><div class="sbody">
+<p><strong>A1.</strong> Walk us through a data pipeline you built and own, from source to destination. What could go wrong, and how would you know?</p>
+<p><strong>A2.</strong> You'd be the only data engineer. What does your first 30 days look like?</p>
+<p><strong>A3.</strong> Tell us about a time you found a problem nobody else had noticed in a system you owned.</p>
+<p><strong>A4.</strong> What would you want to learn first here, and how do you learn a new platform?</p>
+<hr />
+</div></details><details class="sec" id="s-b-sql-you-write"><summary>B. SQL you write</summary><div class="sbody">
+<p><strong>B1.</strong> Each student can have many rows in <code>hall_passes</code>. Return only the most recent pass per student (by <code>created_at</code>). Write it two ways if you can.</p>
+<p><strong>B2.</strong> Count hall passes per school per <strong>local school day</strong> for the last 7 days. (Remember timestamps are UTC and schools are in different time zones.)</p>
+<p><strong>B3.</strong> Find students who had <strong>3 or more tardies within any 7-day window</strong>.</p>
+<p><strong>B4.</strong> List active schools that have had <strong>no hall passes at all in the last 14 days</strong> (a possible churn or setup problem).</p>
+<p><strong>B5.</strong> For each district, show the number of active students, the number of schools, and the hall passes per student over the last 30 days. Watch out for double counting.</p>
+<p><strong>B6.</strong> Weekly active users: for each week, count distinct <code>user_id</code>s in <code>events</code>. Then add the percentage change from the previous week.</p>
+<p><strong>B7.</strong> <code>events.properties</code> is JSON like <code>{"pass_type": "bathroom", "device": {"os": "ios", "app_version": "5.2.1"}, "tags": ["late", "flagged"]}</code>. Write a Snowflake query that returns one row per tag with the event_id, the device OS and the tag.</p>
+<hr />
+</div></details><details class="sec" id="s-c-sql-you-debug"><summary>C. SQL you debug</summary><div class="sbody">
+<p><strong>C1.</strong> This should list students who have <strong>not</strong> withdrawn, but it returns zero rows. Why?</p>
+<pre><code class="language-sql">SELECT student_id FROM students
+WHERE student_id NOT IN (SELECT student_id FROM withdrawals);
+</code></pre>
+<p><strong>C2.</strong> This is meant to show every school, including those with zero passes, but schools with no passes are missing. Why, and how do you fix it?</p>
+<pre><code class="language-sql">SELECT s.name, COUNT(h.pass_id) AS passes
+FROM schools s
+LEFT JOIN hall_passes h ON h.school_id = s.school_id
+WHERE h.created_at &gt;= DATEADD(day, -7, CURRENT_DATE)
+GROUP BY s.name;
+</code></pre>
+<p><strong>C3.</strong> October's report is missing passes from October 31. Why?</p>
+<pre><code class="language-sql">SELECT COUNT(*) FROM hall_passes
+WHERE created_at BETWEEN '2026-10-01' AND '2026-10-31';
+</code></pre>
+<p><strong>C4.</strong> <code>COUNT(*)</code> and <code>COUNT(ended_at)</code> on the same table give different numbers. What does that tell you, and which one answers "how many passes were created"?</p>
+<p><strong>C5.</strong> Two Metabase dashboards show different "total active students" for the same district. List the likely causes you'd check, in order.</p>
+<hr />
+</div></details><details class="sec" id="s-d-ai-wrote-this-review-tests-human-drivi"><summary>D. "AI wrote this" review tests [Human driving]</summary><div class="sbody">
+<p><strong>D1.</strong> An AI assistant wrote this "monthly ARR by district" query. Find every problem you can.</p>
+<pre><code class="language-sql">SELECT d.name AS district,
+       DATE_TRUNC('month', c.start_date) AS month,
+       SUM(c.annual_value) AS arr
+FROM contracts c
+JOIN districts d ON d.district_id = c.district_id
+LEFT JOIN schools s ON s.district_id = d.district_id
+WHERE c.status = 'active'
+  AND s.is_active = TRUE
+GROUP BY 1, 2
+ORDER BY 1, 2;
+</code></pre>
+<p><strong>D2.</strong> An AI assistant wrote this dbt incremental model for hall passes from MongoDB. What's wrong with it, and what would you ask for before approving the pull request?</p>
+<pre><code class="language-sql">{{ config(materialized='incremental', unique_key='pass_id') }}
+
+select *
+from {{ source('mongo', 'hall_passes') }}
+{% if is_incremental() %}
+where created_at &gt; (select max(created_at) from {{ this }})
+{% endif %}
+</code></pre>
+<p><strong>D3.</strong> An AI assistant wrote this Python loader. Find the problems.</p>
+<pre><code class="language-python">import requests, snowflake.connector
+from datetime import datetime
+
+TOKEN = &quot;pat-na1-3f9c...&quot;
+conn = snowflake.connector.connect(user=&quot;admin&quot;, password=&quot;Minga2026!&quot;, account=&quot;xy12345&quot;)
+
+def load(since):
+    page = requests.get(f&quot;https://api.example.com/passes?since={since}&quot;).json()
+    cur = conn.cursor()
+    for p in page[&quot;results&quot;]:
+        cur.execute(f&quot;INSERT INTO raw.passes VALUES ('{p['id']}', '{p['student_name']}', '{p['created_at']}')&quot;)
+    print(&quot;done&quot;, datetime.utcnow())
+
+while True:
+    try:
+        load(&quot;2026-01-01&quot;)
+    except Exception:
+        pass
+</code></pre>
+<p><strong>D4.</strong> You ask an AI assistant why the Snowflake bill doubled last month. It answers confidently: "Your tables are missing indexes, which causes full table scans. Add indexes on the join columns." How do you respond, and what do you actually do?</p>
+<hr />
+</div></details><details class="sec" id="s-e-data-modelling"><summary>E. Data modelling</summary><div class="sbody">
+<p><strong>E1.</strong> Design the tables (facts and dimensions) for reporting on hall passes. What's the grain of the fact table? Where does student PII live?</p>
+<p><strong>E2.</strong> A district upgrades from the "Core" plan to "Pro" mid-year. RevOps wants revenue reports to show which plan the district was on <em>at the time</em>. How do you model that?</p>
+<p><strong>E3.</strong> A MongoDB student document has nested arrays: <code>guardians: [...]</code>, <code>classes: [...]</code>. How do you turn that into tables analysts can use? What decisions do you have to make?</p>
+<p><strong>E4.</strong> The product team is designing the analytics event model for the new platform. What would you ask for in every event, and what would you push back on?</p>
+<p><strong>E5.</strong> Customers are migrating from the legacy platform to the new one over 18 months. Reports need to show combined numbers across both. How do you approach it?</p>
+<hr />
+</div></details><details class="sec" id="s-f-pipelines-and-ingestion"><summary>F. Pipelines and ingestion</summary><div class="sbody">
+<p><strong>F1.</strong> Stitch shows "success," but yesterday's numbers in Metabase look low. Walk us through how you investigate.</p>
+<p><strong>F2.</strong> You load hall passes incrementally using <code>updated_at</code>. What happens to records that get <strong>hard-deleted</strong> in MongoDB? Why does that matter at Minga specifically?</p>
+<p><strong>F3.</strong> Explain idempotency to us, and how you'd make a daily load idempotent.</p>
+<p><strong>F4.</strong> A new field appears in the MongoDB documents and another one changes type from number to string. What happens to your pipeline, and how should it behave?</p>
+<p><strong>F5.</strong> We ask you to backfill two years of history for a table that's only been loading for three months. How do you do it safely?</p>
+<hr />
+</div></details><details class="sec" id="s-g-snowflake"><summary>G. Snowflake</summary><div class="sbody">
+<p><strong>G1.</strong> The Snowflake bill jumped 60% this month. How do you find out why?</p>
+<p><strong>G2.</strong> Design roles for Minga's Snowflake: the loader (Stitch), dbt, Metabase, RevOps analysts, and you. Who can see student names?</p>
+<p><strong>G3.</strong> Write the Snowflake SQL to mask student last names for everyone except a <code>PII_READER</code> role.</p>
+<p><strong>G4.</strong> A district's contract ends and they ask for all their data to be deleted. You delete the rows. Is the data gone? What else do you need to think about in Snowflake?</p>
+<p><strong>G5.</strong> Stitch loads every 30 minutes and Metabase dashboards auto-refresh. Why might the warehouse never suspend, and what would you do?</p>
+<hr />
+</div></details><details class="sec" id="s-h-dbt"><summary>H. dbt</summary><div class="sbody">
+<p><strong>H1.</strong> What tests would you put on <code>fct_hall_passes</code> and <code>dim_students</code> on day one?</p>
+<p><strong>H2.</strong> Explain the staging / intermediate / marts layering, and what's allowed in each.</p>
+<p><strong>H3.</strong> A RevOps analyst wants to add a model. Walk us through how that change gets from their laptop to production safely.</p>
+<p><strong>H4.</strong> When would you make a model incremental, and what's the risk?</p>
+<hr />
+</div></details><details class="sec" id="s-i-privacy-and-governance"><summary>I. Privacy and governance</summary><div class="sbody">
+<p><strong>I1.</strong> A CX analyst asks for a list of student names at schools at risk of churning. What do you do?</p>
+<p><strong>I2.</strong> Minga's privacy policy says Canadian districts' data is kept in Canada. The warehouse is in the US. What questions would you raise, and what options exist?</p>
+<p><strong>I3.</strong> Someone shares a Metabase dashboard with a public link, and it includes student-level data. What do you do now, and what do you change so it can't happen again?</p>
+<p><strong>I4.</strong> Write a one-paragraph PII standard for the warehouse that an analyst could actually follow.</p>
+<p><strong>I5.</strong> What would you never let an AI tool do with Minga's data? [Human driving]</p>
+<hr />
+</div></details><details class="sec" id="s-j-revops-and-stakeholders-ted-s-question"><summary>J. RevOps and stakeholders (Ted's questions)</summary><div class="sbody">
+<p><strong>J1.</strong> Define ARR, churn and net revenue retention. What's included and excluded in ARR?</p>
+<p><strong>J2.</strong> HubSpot says one ARR number, Finance's spreadsheet says another. How do you resolve it, and who decides?</p>
+<p><strong>J3.</strong> Monday morning: RevOps wants a pipeline report by Wednesday, Finance needs a board number by Friday, CX says a dashboard is broken, and Product wants event data for a feature launch. You're one person. What do you do?</p>
+<p><strong>J4.</strong> An analyst asks for something you think is a bad idea (for example, a custom table only they will use, rebuilt every 5 minutes). Say no kindly. Role-play your answer.</p>
+<p><strong>J5.</strong> Explain what a dbt test is to someone who isn't technical, in 30 seconds. [Human driving]</p>
+<p><strong>J6.</strong> How would you measure whether the data platform is actually helping RevOps after six months?</p>
+<hr />
+</div></details><details class="sec" id="s-k-system-design-whiteboard"><summary>K. System design (whiteboard)</summary><div class="sbody">
+<p><strong>K1.</strong> Draw Minga's data platform as you'd want it in 12 months: sources, ingestion, warehouse layers, orchestration, BI, access control, monitoring.</p>
+<p><strong>K2.</strong> About 50 different SIS systems send roster data (OneRoster APIs, SFTP files). Design how roster data lands in the warehouse and how you'd know if one district's feed breaks.</p>
+<p><strong>K3.</strong> Design the tool that maps a customer's legacy data into the new platform during migration, and proves nothing was lost.</p>
+<hr />
+</div></details><details class="sec" id="s-l-python"><summary>L. Python</summary><div class="sbody">
+<p><strong>L1.</strong> Write a function that pulls all records from a paginated API (cursor in <code>paging.next.after</code>), with retries on rate limits.</p>
+<p><strong>L2.</strong> Write a function that flattens a nested dict into <code>parent_child</code> keys.</p>
+<p><strong>L3.</strong> Given two lists of student IDs (from the SIS and from Minga), find who's missing from each side.</p>
+<hr />
+</div></details><details class="sec" id="s-m-estimation-and-curveballs"><summary>M. Estimation and curveballs</summary><div class="sbody">
+<p><strong>M1.</strong> Roughly how many hall-pass rows does Minga generate per year? Is that "big data"? What does that mean for your design?</p>
+<p><strong>M2.</strong> What would you do in your first week if you found that the Stitch account password is shared by three people in a Slack message?</p>
+<p><strong>M3.</strong> You've been here three months and the dbt project is growing messy. How do you know, and what do you do?</p>
+<hr />
+</div></details><details class="sec" id="s-n-ai-in-practice-human-driving"><summary>N. AI in practice [Human driving]</summary><div class="sbody">
+<p><strong>N1.</strong> Write the review checklist you'd use for a pull request where AI wrote the SQL.</p>
+<p><strong>N2.</strong> "Use Claude to write a model that counts tardies per student per week. Talk us through what you check." Narrate what you'd do.</p>
+<p><strong>N3.</strong> How do you tell when an AI answer is confidently wrong, in data work specifically?</p>
+<p><strong>N4.</strong> Close your laptop. Explain, without AI, what this does and whether it's right:</p>
+<pre><code class="language-sql">SELECT school_id,
+       COUNT(DISTINCT student_id) AS students,
+       COUNT(*) / COUNT(DISTINCT student_id) AS passes_per_student
+FROM hall_passes
+GROUP BY school_id;
+</code></pre></div></details>
+</div>
+<script>
+(function () {
+  function openTo(id) { var el = document.getElementById(id); if (!el) return; if (el.tagName === "DETAILS") el.open = true; el.scrollIntoView({ block: "start" }); }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute("href").slice(1); if (!document.getElementById(id)) return;
+    e.preventDefault(); openTo(id);
+  });
+  document.getElementById("open-all").addEventListener("click", function () { document.querySelectorAll("details.sec").forEach(function (d) { d.open = true; }); });
+  document.getElementById("close-all").addEventListener("click", function () { document.querySelectorAll("details.sec").forEach(function (d) { d.open = false; }); });
+})();
+</script>

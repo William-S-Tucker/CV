@@ -1,0 +1,386 @@
+<title>dbt Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="study.css">
+<script src="chat.js" defer></script>
+
+<div class="page dbt">
+<aside class="rail">
+  <nav aria-label="Contents">
+    <p class="rail-title">On this page</p>
+    <ol>
+      <li><a href="#minga">Where it sits at Minga</a></li>
+      <li><a href="#model">What a model is</a></li>
+      <li><a href="#dag">ref() and the graph</a></li>
+      <li><a href="#layers">Staging, intermediate, marts</a></li>
+      <li><a href="#materializations">Materializations</a></li>
+      <li><a href="#tests">Tests and freshness</a></li>
+      <li><a href="#review">The review workflow</a></li>
+      <li><a href="#more">Snapshots, docs, grants</a></li>
+      <li><a href="#core-cloud">dbt Core or dbt Cloud</a></li>
+      <li><a href="#commands">Commands</a></li>
+      <li><a href="#interview">Interview answers</a></li>
+      <li><a href="#cards">Flashcards</a></li>
+      <li><a href="#handson">Try it yourself</a></li>
+    </ol>
+    <div class="series">
+      <p class="rail-title">Study series</p>
+      <a data-link="snowflake" target="_top" href="https://claude.ai/artifact/7nrAJwp8UCbk8djSNKn2rW">1 · Snowflake</a>
+      <a class="here" href="#top" aria-current="page">2 · dbt</a>
+      <a data-link="airflow" target="_top" href="https://claude.ai/artifact/5q8FaEk2RbtxsDvb29wwk7">3 · Airflow</a>
+    </div>
+  </nav>
+</aside>
+
+<main>
+<header class="top" id="top">
+  <p class="eyebrow">Minga prep · Study guide 2 of 3</p>
+  <h1>dbt Field Guide</h1>
+  <p class="lede">dbt is the "modelling layer" the posting wants you to introduce. It's SQL in version control, with tests and code review, and it runs inside Snowflake. That's very close to how you already work, which makes it your best bridge in the interview.</p>
+</header>
+
+<section class="tldr" aria-labelledby="tldr">
+  <h2 id="tldr">The one-minute version</h2>
+  <ul>
+    <li>dbt (data build tool) handles the <strong>T in ELT</strong>. Stitch extracts and loads raw data. dbt transforms it into clean tables people can trust.</li>
+    <li>You write each table as a <strong>SELECT statement in a .sql file</strong>. dbt wraps it in <code>CREATE TABLE/VIEW AS</code> and runs it in Snowflake.</li>
+    <li>Models refer to each other with <code>ref()</code>. dbt uses that to work out the run order, so you never write a dependency list by hand.</li>
+    <li>Tests (unique, not null, valid values, relationships, freshness) run after each build. The whole project lives in git and goes through pull requests like any other code.</li>
+    <li>dbt doesn't move data and doesn't need its own server for the data. All the compute happens in Snowflake.</li>
+  </ul>
+</section>
+
+<h2 id="minga">Where it sits at Minga</h2>
+<p>The posting: <em>"Introduce and own a modelling layer (dbt or equivalent) with versioning, tests and review that our RevOps analysts can build against without slowing down."</em> Today there isn't one. Raw Stitch tables go more or less straight to Metabase, with the logic buried in dashboard queries.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Minga data stack with dbt highlighted: dbt sends SQL into Snowflake to build the STAGING and MARTS layers from RAW.">
+    <defs>
+      <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="sa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="70" y="76" text-anchor="middle" class="d-s">Sources</text>
+    <rect x="10" y="88" width="120" height="32" rx="6" class="d-box"/><text x="70" y="109" text-anchor="middle" class="d-s">Product DB</text>
+    <rect x="10" y="128" width="120" height="32" rx="6" class="d-box"/><text x="70" y="149" text-anchor="middle" class="d-s">HubSpot</text>
+    <rect x="10" y="168" width="120" height="32" rx="6" class="d-box"/><text x="70" y="189" text-anchor="middle" class="d-s">Other SaaS</text>
+    <line x1="130" y1="104" x2="168" y2="138" class="d-l" marker-end="url(#sa)"/>
+    <line x1="130" y1="144" x2="168" y2="144" class="d-l" marker-end="url(#sa)"/>
+    <line x1="130" y1="184" x2="168" y2="150" class="d-l" marker-end="url(#sa)"/>
+    <rect x="170" y="118" width="100" height="52" rx="8" class="d-box"/><text x="220" y="141" text-anchor="middle" class="d-t">Stitch</text><text x="220" y="158" text-anchor="middle" class="d-s">extract + load</text>
+    <rect x="170" y="12" width="100" height="40" rx="8" class="d-box"/><text x="220" y="37" text-anchor="middle" class="d-t">Airflow</text>
+    <line x1="220" y1="52" x2="220" y2="116" class="d-l dash" marker-end="url(#sa)"/><text x="228" y="90" class="d-s">1. trigger</text>
+    <line x1="270" y1="32" x2="408" y2="32" class="d-l dash" marker-end="url(#sa)"/><text x="339" y="25" text-anchor="middle" class="d-s">2. then run</text>
+    <rect x="410" y="12" width="100" height="40" rx="8" class="d-box on"/><text x="460" y="37" text-anchor="middle" class="d-t on">dbt</text>
+    <line x1="460" y1="52" x2="460" y2="78" class="d-l on" marker-end="url(#sa-on)"/><text x="468" y="70" class="d-s on">sends SQL</text>
+    <rect x="310" y="80" width="295" height="150" rx="10" class="d-group"/>
+    <text x="458" y="103" text-anchor="middle" class="d-t">Snowflake</text>
+    <text x="458" y="120" text-anchor="middle" class="d-s">one database, three layers</text>
+    <line x1="270" y1="150" x2="320" y2="163" class="d-l" marker-end="url(#sa)"/><text x="293" y="140" text-anchor="middle" class="d-s">load</text>
+    <rect x="322" y="140" width="76" height="50" rx="6" class="d-box"/><text x="360" y="162" text-anchor="middle" class="d-t">RAW</text><text x="360" y="179" text-anchor="middle" class="d-s">as loaded</text>
+    <line x1="398" y1="165" x2="420" y2="165" class="d-l on" marker-end="url(#sa-on)"/>
+    <rect x="422" y="140" width="76" height="50" rx="6" class="d-box on"/><text x="460" y="162" text-anchor="middle" class="d-t">STAGING</text><text x="460" y="179" text-anchor="middle" class="d-s">cleaned</text>
+    <line x1="498" y1="165" x2="520" y2="165" class="d-l on" marker-end="url(#sa-on)"/>
+    <rect x="522" y="140" width="76" height="50" rx="6" class="d-box on"/><text x="560" y="162" text-anchor="middle" class="d-t">MARTS</text><text x="560" y="179" text-anchor="middle" class="d-s">modelled</text>
+    <text x="460" y="214" text-anchor="middle" class="d-s on">dbt models build each layer</text>
+    <line x1="598" y1="165" x2="658" y2="165" class="d-l" marker-end="url(#sa)"/><text x="628" y="156" text-anchor="middle" class="d-s">queries</text>
+    <rect x="660" y="140" width="110" height="50" rx="8" class="d-box"/><text x="715" y="162" text-anchor="middle" class="d-t">Metabase</text><text x="715" y="179" text-anchor="middle" class="d-s">dashboards</text>
+    <text x="715" y="212" text-anchor="middle" class="d-s">RevOps · Finance</text>
+    <text x="715" y="228" text-anchor="middle" class="d-s">CX · Product</text>
+  </svg>
+  </div>
+  <figcaption>dbt (highlighted) sits outside the data. It compiles your models into SQL and sends them to Snowflake, which builds the STAGING and MARTS layers from RAW. Metabase then points at the marts instead of raw Stitch tables.</figcaption>
+</figure>
+
+<h2 id="model">What a model is</h2>
+<p>A model is one <code>.sql</code> file containing one SELECT. The file name becomes the table or view name. Here's a staging model over an illustrative raw table:</p>
+<p class="codecap">models/staging/app/stg_app__hall_passes.sql</p>
+<pre><code><span class="k">with</span> source <span class="k">as</span> (
+    <span class="k">select</span> * <span class="k">from</span> {{ source('app', 'hall_passes') }}
+),
+
+renamed <span class="k">as</span> (
+    <span class="k">select</span>
+        id                          <span class="k">as</span> pass_id,
+        school_id,
+        student_id,
+        lower(status)               <span class="k">as</span> status,
+        started_at::timestamp_ntz   <span class="k">as</span> started_at,
+        ended_at::timestamp_ntz     <span class="k">as</span> ended_at,
+        _sdc_batched_at             <span class="k">as</span> loaded_at
+    <span class="k">from</span> source
+)
+
+<span class="k">select</span> * <span class="k">from</span> renamed</code></pre>
+<p>The <code>{{ }}</code> parts are <strong>Jinja</strong>, a templating language. When you run dbt, it <em>compiles</em> the file into plain SQL for Snowflake:</p>
+<pre><code><span class="k">create or replace view</span> analytics.staging.stg_app__hall_passes <span class="k">as</span> (
+    <span class="k">with</span> source <span class="k">as</span> (
+        <span class="k">select</span> * <span class="k">from</span> raw.app.hall_passes
+    ),
+    ...
+);</code></pre>
+<p>That's the core idea. You write SELECT, and dbt handles the DDL, the schema names, and the environment (your dev schema or production).</p>
+
+<h2 id="dag">ref() and the dependency graph</h2>
+<p>Instead of hard-coding table names, a model says <code>{{ ref('stg_app__schools') }}</code>. That does two things: it points at the right schema for the current environment, and it tells dbt "this model depends on that one". dbt collects every <code>ref()</code> and <code>source()</code> into a graph and runs models in order.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 255" role="img" aria-label="dbt lineage: three raw sources feed three staging models, which feed a fact table and a dimension, which feed Metabase dashboards. A change to stg_app__schools affects everything downstream of it, highlighted.">
+    <defs>
+      <marker id="dg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="dg-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="85" y="20" text-anchor="middle" class="d-s">Sources (raw)</text>
+    <text x="295" y="20" text-anchor="middle" class="d-s">Staging</text>
+    <text x="515" y="20" text-anchor="middle" class="d-s">Marts</text>
+    <text x="695" y="20" text-anchor="middle" class="d-s">Metabase</text>
+    <rect x="10" y="40" width="150" height="40" rx="6" class="d-box"/><text x="85" y="65" text-anchor="middle" class="d-m">app.hall_passes</text>
+    <rect x="10" y="110" width="150" height="40" rx="6" class="d-box"/><text x="85" y="135" text-anchor="middle" class="d-m">app.schools</text>
+    <rect x="10" y="180" width="150" height="40" rx="6" class="d-box"/><text x="85" y="205" text-anchor="middle" class="d-m">hubspot.companies</text>
+    <line x1="160" y1="60" x2="198" y2="60" class="d-l" marker-end="url(#dg)"/>
+    <line x1="160" y1="130" x2="198" y2="130" class="d-l" marker-end="url(#dg)"/>
+    <line x1="160" y1="200" x2="198" y2="200" class="d-l" marker-end="url(#dg)"/>
+    <text x="179" y="35" text-anchor="middle" class="d-s">source()</text>
+    <rect x="200" y="40" width="190" height="40" rx="6" class="d-box"/><text x="295" y="65" text-anchor="middle" class="d-m">stg_app__hall_passes</text>
+    <rect x="200" y="110" width="190" height="40" rx="6" class="d-box on"/><text x="295" y="135" text-anchor="middle" class="d-m">stg_app__schools</text>
+    <rect x="200" y="180" width="190" height="40" rx="6" class="d-box"/><text x="295" y="205" text-anchor="middle" class="d-m">stg_hubspot__companies</text>
+    <text x="410" y="35" text-anchor="middle" class="d-s">ref()</text>
+    <line x1="390" y1="60" x2="428" y2="74" class="d-l" marker-end="url(#dg)"/>
+    <line x1="390" y1="126" x2="428" y2="92" class="d-l on" marker-end="url(#dg-on)"/>
+    <line x1="390" y1="136" x2="428" y2="172" class="d-l on" marker-end="url(#dg-on)"/>
+    <line x1="390" y1="200" x2="428" y2="186" class="d-l" marker-end="url(#dg)"/>
+    <rect x="430" y="60" width="170" height="40" rx="6" class="d-box on"/><text x="515" y="85" text-anchor="middle" class="d-m">fct_hall_passes_daily</text>
+    <rect x="430" y="160" width="170" height="40" rx="6" class="d-box on"/><text x="515" y="185" text-anchor="middle" class="d-m">dim_schools</text>
+    <line x1="600" y1="80" x2="638" y2="80" class="d-l on" marker-end="url(#dg-on)"/>
+    <line x1="600" y1="180" x2="638" y2="180" class="d-l on" marker-end="url(#dg-on)"/>
+    <rect x="640" y="58" width="110" height="44" rx="6" class="d-box on"/><text x="695" y="77" text-anchor="middle" class="d-s">Hall pass</text><text x="695" y="93" text-anchor="middle" class="d-s">usage</text>
+    <rect x="640" y="158" width="110" height="44" rx="6" class="d-box on"/><text x="695" y="177" text-anchor="middle" class="d-s">Account</text><text x="695" y="193" text-anchor="middle" class="d-s">health</text>
+    <text x="380" y="245" text-anchor="middle" class="d-s on">dbt build -s stg_app__schools+   rebuilds and tests everything highlighted</text>
+  </svg>
+  </div>
+  <figcaption>An illustrative lineage graph. dbt draws this from your <code>source()</code> and <code>ref()</code> calls. Change <code>stg_app__schools</code> and the <code>+</code> selector rebuilds and tests it plus everything downstream, so you know what a change touches before it reaches a dashboard.</figcaption>
+</figure>
+
+<h2 id="layers">Staging, intermediate, marts</h2>
+<p>The convention dbt Labs recommends, and the one most teams follow:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Layer</th><th>What goes in it</th><th>Usually built as</th></tr></thead>
+  <tbody>
+    <tr><td>Staging <code>stg_</code></td><td>One model per raw table. Rename, cast types, fix obvious mess. No joins, no business logic. The only layer that reads <code>source()</code>.</td><td>Views</td></tr>
+    <tr><td>Intermediate <code>int_</code></td><td>Joins and business logic that's reused, kept out of sight of analysts.</td><td>Views or ephemeral</td></tr>
+    <tr><td>Marts <code>fct_</code> / <code>dim_</code></td><td><strong>Facts</strong> (events, things that happen: passes, behaviour entries, invoices) and <strong>dimensions</strong> (things: schools, districts, accounts). This is what Metabase and analysts read.</td><td>Tables or incremental</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Think of it like your Oracle reporting work: raw extracts, then cleaned views, then the reporting tables people query. The difference is that every step is a file in git with tests attached.</p>
+
+<h2 id="materializations">Materializations</h2>
+<p>A model's <strong>materialization</strong> decides what dbt builds in Snowflake. You set it in the model or for a whole folder in <code>dbt_project.yml</code>.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Type</th><th>What it creates</th><th>Use when</th></tr></thead>
+  <tbody>
+    <tr><td>view</td><td>A view. Nothing stored. Computed when queried.</td><td>Staging. Cheap to build, light to query.</td></tr>
+    <tr><td>table</td><td>A full table, rebuilt from scratch every run</td><td>Marts that are small or medium sized</td></tr>
+    <tr><td>incremental</td><td>A table where each run only processes new or changed rows</td><td>Big event tables. This is a major cost lever.</td></tr>
+    <tr><td>ephemeral</td><td>Nothing. Inlined as a CTE into models that use it.</td><td>Small helper logic</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="codecap">models/marts/fct_hall_passes.sql (incremental)</p>
+<pre><code>{{ config(materialized='incremental', unique_key='pass_id') }}
+
+<span class="k">select</span> * <span class="k">from</span> {{ ref('stg_app__hall_passes') }}
+
+{% if is_incremental() %}
+  <span class="c">-- only on later runs: rows newer than what's already in this table</span>
+  <span class="k">where</span> loaded_at &gt; (<span class="k">select</span> max(loaded_at) <span class="k">from</span> {{ this }})
+{% endif %}</code></pre>
+<p>On the first run, dbt builds the whole table. After that it merges only new rows, using <code>unique_key</code> to update rows that changed. <code>dbt build --full-refresh</code> rebuilds it from scratch when the logic changes.</p>
+
+<h2 id="tests">Tests and freshness</h2>
+<p>Tests are declared in YAML next to the models. Each one compiles to a query that returns the rows that break the rule. Zero rows means it passes.</p>
+<p class="codecap">models/staging/app/_app__models.yml</p>
+<pre><code><span class="k">models:</span>
+  - <span class="k">name:</span> stg_app__hall_passes
+    <span class="k">description:</span> One row per hall pass issued in the Minga app.
+    <span class="k">columns:</span>
+      - <span class="k">name:</span> pass_id
+        <span class="k">data_tests:</span> [unique, not_null]
+      - <span class="k">name:</span> status
+        <span class="k">data_tests:</span>
+          - <span class="k">accepted_values:</span>
+              <span class="k">values:</span> ['active', 'ended', 'expired']
+      - <span class="k">name:</span> school_id
+        <span class="k">data_tests:</span>
+          - <span class="k">relationships:</span>
+              <span class="k">to:</span> ref('stg_app__schools')
+              <span class="k">field:</span> school_id</code></pre>
+<ul>
+  <li><strong>Generic tests</strong>: the four built-ins above (<code>unique</code>, <code>not_null</code>, <code>accepted_values</code>, <code>relationships</code>), plus many more from the <code>dbt_utils</code> and <code>dbt_expectations</code> packages.</li>
+  <li><strong>Singular tests</strong>: any SQL file in <code>tests/</code> that returns bad rows, e.g. "no pass ends before it starts".</li>
+  <li><strong>Unit tests</strong> (dbt 1.8 and later): feed a model fixed input rows and check the exact output. This tests the logic itself, like your golden-file tests in AscendAI.</li>
+  <li><strong>Model contracts</strong>: lock a mart's column names and types, so a change that would break a dashboard fails the build instead.</li>
+</ul>
+
+<h3>Source freshness: catching a silent Stitch failure</h3>
+<pre><code><span class="k">sources:</span>
+  - <span class="k">name:</span> app
+    <span class="k">database:</span> raw
+    <span class="k">loaded_at_field:</span> _sdc_batched_at
+    <span class="k">freshness:</span>
+      <span class="k">warn_after:</span> {count: 6, period: hour}
+      <span class="k">error_after:</span> {count: 24, period: hour}
+    <span class="k">tables:</span>
+      - <span class="k">name:</span> hall_passes</code></pre>
+<p><code>dbt source freshness</code> checks when each source last received data. If Stitch quietly stops syncing, this fails before anyone notices stale numbers in a dashboard. It's a direct answer to "a stack that runs on good intentions today."</p>
+
+<h2 id="review">The review workflow</h2>
+<p>The posting asks you to <em>"set the standard for how data work gets reviewed when a model can write the first draft."</em> In dbt, that standard is the pull request plus CI:</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 210" role="img" aria-label="Change flow: write SQL on a branch in a personal dev schema, open a pull request, CI builds and tests only the changed models and what depends on them, a reviewer checks it, it merges, and the scheduled production run picks it up. A failing test sends the change back to the branch.">
+    <defs>
+      <marker id="rv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="rv-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="62" y="40" text-anchor="middle" class="d-s">AI or a person</text>
+    <text x="62" y="54" text-anchor="middle" class="d-s">drafts the SQL</text>
+    <rect x="10" y="62" width="105" height="60" rx="8" class="d-box"/><text x="62" y="88" text-anchor="middle" class="d-t">Branch</text><text x="62" y="106" text-anchor="middle" class="d-s">dbt_william</text>
+    <line x1="115" y1="92" x2="135" y2="92" class="d-l" marker-end="url(#rv)"/>
+    <rect x="137" y="62" width="105" height="60" rx="8" class="d-box"/><text x="189" y="88" text-anchor="middle" class="d-t">Pull</text><text x="189" y="106" text-anchor="middle" class="d-t">request</text>
+    <line x1="242" y1="92" x2="262" y2="92" class="d-l" marker-end="url(#rv)"/>
+    <rect x="264" y="62" width="105" height="60" rx="8" class="d-box on"/><text x="316" y="88" text-anchor="middle" class="d-t on">CI build</text><text x="316" y="106" text-anchor="middle" class="d-s">changed + downstream</text>
+    <line x1="369" y1="92" x2="389" y2="92" class="d-l" marker-end="url(#rv)"/>
+    <rect x="391" y="62" width="105" height="60" rx="8" class="d-box"/><text x="443" y="88" text-anchor="middle" class="d-t">Review</text><text x="443" y="106" text-anchor="middle" class="d-s">SQL, tests, data diff</text>
+    <line x1="496" y1="92" x2="516" y2="92" class="d-l" marker-end="url(#rv)"/>
+    <rect x="518" y="62" width="105" height="60" rx="8" class="d-box"/><text x="570" y="88" text-anchor="middle" class="d-t">Merge</text><text x="570" y="106" text-anchor="middle" class="d-s">to main</text>
+    <line x1="623" y1="92" x2="643" y2="92" class="d-l" marker-end="url(#rv)"/>
+    <rect x="645" y="62" width="105" height="60" rx="8" class="d-box"/><text x="697" y="88" text-anchor="middle" class="d-t">Prod run</text><text x="697" y="106" text-anchor="middle" class="d-s">on schedule</text>
+    <path d="M316,124 C316,182 62,182 62,126" class="d-l on dash" marker-end="url(#rv-on)"/>
+    <text x="189" y="196" text-anchor="middle" class="d-s on">a failing test blocks the merge</text>
+  </svg>
+  </div>
+  <figcaption>Every change, whoever or whatever wrote it, runs through the same gate. CI builds only the changed models and their downstream into a throwaway schema, runs their tests, and blocks the merge on failure. A person still reviews the SQL and the data it produced.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>Environments</strong>: each developer builds into their own schema (<code>dbt_william</code>) using a dev <em>target</em>. Production builds into <code>analytics</code>. Same code, different target in <code>profiles.yml</code>.</li>
+  <li><strong>Slim CI</strong>: <code>dbt build --select state:modified+ --defer --state prod-artifacts/</code> builds only what changed plus downstream, and reads unchanged upstream models from production. Fast and cheap.</li>
+  <li><strong>What a reviewer checks</strong>: does the SQL make sense, are keys tested, did row counts change unexpectedly (a "data diff" against production), is new PII tagged, are docs written.</li>
+</ul>
+<div class="say">
+  <span class="tag">Your angle on AI review</span>
+  <p>When AI writes the first draft, the risk isn't syntax. It's SQL that runs fine and quietly produces wrong numbers: a join that duplicates rows, a filter that drops a school. The answer is tests that catch exactly that (unique keys, relationships, row-count checks, unit tests on tricky logic), plus a human reading the diff. That's the same discipline as your golden-file tests and your guarded Oracle MCP server: let the model draft, and don't let it ship unchecked.</p>
+</div>
+
+<h2 id="more">Snapshots, docs, and grants</h2>
+<h3>Snapshots: keeping history Stitch doesn't</h3>
+<p>Stitch replicates the <em>current</em> state of a row. If a school's plan changes from Basic to Premium, the old value is gone. A dbt <strong>snapshot</strong> records each change as a new row with <code>dbt_valid_from</code> and <code>dbt_valid_to</code> (a "slowly changing dimension, type 2"). Finance and RevOps usually need this for questions like "what was this account's plan at renewal?"</p>
+
+<h3>Docs and lineage</h3>
+<p><code>dbt docs generate</code> builds a browsable site from your YAML descriptions, with the lineage graph above. <strong>Exposures</strong> let you declare which Metabase dashboards depend on which models, so you can see what breaks before you change something. This is how analysts learn to self-serve: they look up what a column means instead of asking you.</p>
+
+<h3>Access control as code</h3>
+<pre><code><span class="c"># dbt_project.yml</span>
+<span class="k">models:</span>
+  <span class="k">minga:</span>
+    <span class="k">marts:</span>
+      +materialized: table
+      +grants:
+        select: ['REPORTER', 'ANALYST']</code></pre>
+<p>dbt re-applies grants every time it builds, so permissions can't drift away from what's in git. Snowflake masking policies can be attached to tagged columns from dbt too, which ties this guide to the PII section of the Snowflake guide.</p>
+
+<h2 id="core-cloud">dbt Core or dbt Cloud</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>dbt Core</th><th>dbt Cloud</th></tr></thead>
+  <tbody>
+    <tr><td>What it is</td><td>Free, open-source command-line tool (Python package)</td><td>dbt Labs' hosted product, priced per seat (dbt Labs now markets it as the "dbt platform")</td></tr>
+    <tr><td>Running it</td><td>You schedule it yourself: Airflow, GitHub Actions, cron</td><td>Built-in job scheduler and CI on pull requests</td></tr>
+    <tr><td>Editing</td><td>Your own editor (VS Code)</td><td>Browser IDE, easier for analysts who don't live in git</td></tr>
+    <tr><td>Extras</td><td>Community packages</td><td>Hosted docs, Semantic Layer, column-level lineage, alerts</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For Minga, the deciding question is how much the RevOps analysts will write models themselves. If a lot, dbt Cloud's browser IDE lowers the bar. If you write most of it, Core plus an orchestrator is cheaper. dbt Labs has also been rolling out a newer, faster engine called <strong>Fusion</strong>. Know the name, but don't claim experience with it.</p>
+
+<h2 id="commands">Commands you'll hear</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>dbt build</code></td><td>Runs models, tests, snapshots and seeds in graph order. The everyday command.</td></tr>
+    <tr><td><code>dbt run</code> / <code>dbt test</code></td><td>Just build models / just run tests</td></tr>
+    <tr><td><code>dbt source freshness</code></td><td>Checks when sources last got data</td></tr>
+    <tr><td><code>dbt snapshot</code></td><td>Records changes for snapshot tables</td></tr>
+    <tr><td><code>dbt seed</code></td><td>Loads small CSVs from the repo (lookup lists, mappings)</td></tr>
+    <tr><td><code>dbt docs generate</code></td><td>Builds the documentation site</td></tr>
+    <tr><td><code>dbt deps</code></td><td>Installs packages like <code>dbt_utils</code></td></tr>
+    <tr><td><code>-s model+</code></td><td>Select a model and everything downstream. <code>+model</code> selects upstream. <code>tag:pii</code> selects by tag.</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="codecap">a typical project layout</p>
+<pre><code>minga_analytics/
+├── dbt_project.yml          <span class="c"># project config, folder-level defaults</span>
+├── models/
+│   ├── staging/
+│   │   ├── app/             <span class="c"># one folder per source system</span>
+│   │   └── hubspot/
+│   ├── intermediate/
+│   └── marts/
+│       ├── finance/
+│       └── revops/
+├── snapshots/
+├── seeds/
+├── tests/                   <span class="c"># singular tests</span>
+└── macros/                  <span class="c"># reusable Jinja functions</span></code></pre>
+
+<h2 id="interview">Interview-ready answers</h2>
+<div class="say">
+  <span class="tag">If asked: "Have you used dbt?"</span>
+  <blockquote>"Not in production. But dbt is SQL in version control, reviewed, tested, and deployed through CI, and that's how I already work. Most of the learning is its conventions: ref and source, the staging-to-marts layering, the testing YAML. The judgement parts, what to test and how to keep student data out of the wrong places, I bring with me."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you introduce dbt here?"</span>
+  <blockquote>"Start small and visible. Find the five Metabase dashboards people rely on most, trace them back to the raw Stitch tables, and build staging models for just those sources, with key tests and source freshness. Then build marts behind those dashboards and repoint them. Analysts see better numbers in weeks, and the pattern is set for everything after."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you let RevOps analysts build without slowing down?"</span>
+  <blockquote>"Clear layers so they know where to build, a short style guide, docs they can browse, and a pull-request template with the checks I'd look for. Reviews should be fast, and CI should catch the mechanical problems, so my review is about the logic. Same thing I did at TRU teaching staff to run their own reporting."</blockquote>
+</div>
+
+<h2 id="cards">Flashcards</h2>
+<div class="cards">
+  <details class="card"><summary>What does dbt actually do?</summary><p>Compiles SELECT-statement models (SQL + Jinja) into DDL, runs them in the warehouse in dependency order, and tests the results. It doesn't move data.</p></details>
+  <details class="card"><summary>ref() vs source()?</summary><p><code>source()</code> points at raw tables loaded by something else (Stitch). <code>ref()</code> points at another dbt model. Both add edges to the dependency graph.</p></details>
+  <details class="card"><summary>Name the four built-in generic tests.</summary><p>unique, not_null, accepted_values, relationships.</p></details>
+  <details class="card"><summary>When would you make a model incremental?</summary><p>When it's large and append-heavy (events). Each run processes only new or changed rows, saving time and Snowflake credits.</p></details>
+  <details class="card"><summary>What is a snapshot for?</summary><p>Keeping history of rows that get overwritten in the source (type 2 slowly changing dimension), using dbt_valid_from and dbt_valid_to.</p></details>
+  <details class="card"><summary>What does <code>state:modified+</code> do in CI?</summary><p>Selects only models changed in this branch plus their downstream, comparing against the production manifest. Used with --defer for fast "slim CI".</p></details>
+  <details class="card"><summary>What are staging models allowed to do?</summary><p>Rename, cast, light cleaning. One per source table. No joins or business logic. They're the only models that read source().</p></details>
+  <details class="card"><summary>How does dbt help self-serve?</summary><p>Generated docs with column descriptions and lineage, exposures that link dashboards to models, and a reviewed path for analysts to contribute their own models.</p></details>
+</div>
+
+<h2 id="handson">Try it yourself</h2>
+<p>dbt Core is free, and dbt Labs publishes a sample project called <strong>jaffle shop</strong> (a made-up sandwich shop) built for learning. Pair it with the Snowflake trial:</p>
+<ul class="steps">
+  <li><code>python -m pip install dbt-core dbt-snowflake</code>, then <code>dbt init</code> and point it at your trial account.</li>
+  <li>Load the jaffle shop CSVs with <code>dbt seed</code>, or declare a Snowflake sample table as a source.</li>
+  <li>Write two staging models and one mart that joins them, using <code>ref()</code>.</li>
+  <li>Add unique and not_null tests, break one on purpose, and watch <code>dbt build</code> fail.</li>
+  <li>Convert the mart to incremental and run it twice.</li>
+  <li>Run <code>dbt docs generate</code> and <code>dbt docs serve</code> and look at the lineage graph.</li>
+  <li>Put it in a GitHub repo with a GitHub Actions job that runs <code>dbt build</code> on pull requests. That's a small, real demo of "review standards for data work."</li>
+</ul>
+
+<footer class="end">
+  Study guide 2 of 3 for the Minga Senior Data Engineer interview. Back: <a data-link="snowflake" target="_top" href="https://claude.ai/artifact/7nrAJwp8UCbk8djSNKn2rW">Snowflake Field Guide</a>. Next: <a data-link="airflow" target="_top" href="https://claude.ai/artifact/5q8FaEk2RbtxsDvb29wwk7">Airflow Field Guide</a>. Model and table names are illustrative, not Minga's real schema.
+</footer>
+</main>
+</div>

@@ -1,0 +1,1829 @@
+<title>Minga Interview Binder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky contents rail on the left (desktop), single reading column (~70ch) on the right; stacks on phones. */
+:root {
+  --paper: #f3f6f8;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #566573;
+  --faint: #8a98a6;
+  --rule: #d6dee6;
+  --code-bg: #eaf0f5;
+  --warn: #b4540a;
+  --sf: #0b6aa8;
+  --dbt: #c2452a;
+  --af: #0a7458;
+  --py: #5b4bb0;
+  --accent: var(--sf);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0e141a;
+    --surface: #151d25;
+    --ink: #e4ebf1;
+    --muted: #9dabb8;
+    --faint: #6d7c8a;
+    --rule: #2a3641;
+    --code-bg: #1a242e;
+    --warn: #f0a050;
+    --sf: #5cb6ee;
+    --dbt: #ff8a6c;
+    --af: #43cfa2;
+    --py: #a89bf2;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e141a;
+  --surface: #151d25;
+  --ink: #e4ebf1;
+  --muted: #9dabb8;
+  --faint: #6d7c8a;
+  --rule: #2a3641;
+  --code-bg: #1a242e;
+  --warn: #f0a050;
+  --sf: #5cb6ee;
+  --dbt: #ff8a6c;
+  --af: #43cfa2;
+  --py: #a89bf2;
+}
+.page.sf { --accent: var(--sf); }
+.page.dbt { --accent: var(--dbt); }
+.page.af { --accent: var(--af); }
+.page.py { --accent: var(--py); }
+.page { --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-inline: 20px;
+  padding-block: 0 64px;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.page {
+  max-width: 1120px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 56px;
+}
+@media (max-width: 900px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { display: none; }
+}
+
+/* Contents rail */
+.rail nav {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 28px);
+  padding-top: 28px;
+  font-size: 14px;
+}
+.rail .rail-title {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rail a { color: var(--muted); text-decoration: none; }
+.rail a:hover { color: var(--ink); }
+.rail .series { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); display: grid; gap: 6px; }
+.rail .series a.here { color: var(--accent); font-weight: 700; }
+
+main { max-width: 760px; min-width: 0; }
+
+/* Header */
+header.top { padding-block: 40px 8px; }
+.eyebrow {
+  font-family: var(--f-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 14px; }
+h2 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 14px; padding-top: 22px; border-top: 1px solid var(--rule); scroll-margin-top: 20px; }
+h3 { font-size: 1.15rem; font-weight: 700; margin: 30px 0 8px; }
+p, ul, ol { margin: 0 0 14px; }
+li + li { margin-top: 4px; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 62ch; }
+.series-inline { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 18px; }
+.series-inline a.here { font-weight: 700; }
+
+/* One-minute version */
+.tldr {
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 28px 0 8px;
+}
+.tldr h2 { border: 0; margin: 0 0 8px; padding: 0; font-size: 1.15rem; }
+.tldr ul { margin: 0; padding-left: 20px; }
+
+/* Callouts */
+.say, .careful {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.say .tag, .careful .tag {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.say .tag { background: var(--accent-soft); color: var(--accent); }
+.careful .tag { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); color: var(--warn); }
+.say p:last-child, .careful p:last-child, .say ul:last-child, .careful ul:last-child { margin-bottom: 0; }
+.say blockquote { margin: 0 0 10px; font-size: 1.05rem; }
+.say blockquote:last-child { margin-bottom: 0; }
+
+/* Code */
+code { font-family: var(--f-mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.55;
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 14px 0 18px;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); font-style: italic; }
+pre .k { color: var(--accent); font-weight: 600; }
+.codecap { font-size: 13px; color: var(--muted); margin: 18px 0 -8px; font-family: var(--f-mono); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; margin: 16px 0 22px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-display); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Diagrams */
+figure.diagram { margin: 22px 0 26px; }
+figure.diagram .scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; }
+figure.diagram svg { display: block; width: 100%; min-width: 620px; height: auto; }
+figure.diagram figcaption { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 68ch; }
+svg text { font-family: var(--f-body); }
+.d-box { fill: var(--surface); stroke: var(--faint); stroke-width: 1.3; }
+.d-group { fill: none; stroke: var(--faint); stroke-width: 1.3; }
+.d-box.on, .d-group.on { stroke: var(--accent); stroke-width: 2; fill: var(--accent-soft); }
+.d-box.warn { stroke: var(--warn); stroke-width: 2; fill: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.d-fill { fill: var(--accent); }
+.d-fill.muted { fill: var(--faint); }
+.d-t { fill: var(--ink); font-size: 14px; font-weight: 700; }
+.d-s { fill: var(--muted); font-size: 12px; }
+.d-m { fill: var(--ink); font-size: 12.5px; font-family: var(--f-mono); }
+.d-s.on, .d-t.on { fill: var(--accent); }
+.d-s.warn { fill: var(--warn); }
+.d-l { stroke: var(--faint); stroke-width: 1.5; fill: none; }
+.d-l.on { stroke: var(--accent); stroke-width: 2; }
+.d-l.dash { stroke-dasharray: 5 4; }
+.d-head { fill: var(--faint); }
+.d-head.on { fill: var(--accent); }
+.d-axis { stroke: var(--faint); stroke-width: 1; }
+
+/* Flashcards */
+.cards { display: grid; gap: 10px; margin: 16px 0; }
+details.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 18px; }
+details.card summary { cursor: pointer; font-weight: 700; list-style: none; }
+details.card summary::-webkit-details-marker { display: none; }
+details.card summary::before { content: "+"; display: inline-block; width: 1.2em; color: var(--accent); font-family: var(--f-mono); }
+details.card[open] summary::before { content: "−"; }
+details.card[open] summary { margin-bottom: 8px; }
+details.card p { margin: 0 0 0 1.2em; color: var(--muted); }
+
+/* Checklist */
+ul.steps { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.steps li { margin: 0; padding: 10px 14px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
+
+footer.end { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* Study tutor chat panel (chat.js) */
+.chat-launch {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 20;
+  font: 700 15px/1 var(--f-display);
+  color: var(--surface);
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.chat-launch:focus-visible, .chat-panel button:focus-visible, .chat-panel textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chat-panel {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 21;
+  width: min(430px, calc(100vw - 40px));
+  height: min(680px, calc(100dvh - 40px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 25%, transparent);
+  overflow: hidden;
+  font-size: 15px;
+}
+@media (max-width: 600px) {
+  .chat-panel { inset: 0; width: auto; height: auto; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
+.chat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--rule); }
+.chat-title { font: 700 17px/1.2 var(--f-display); margin: 0 0 3px; }
+.chat-sub { font-size: 13px; color: var(--muted); margin: 0; }
+.chat-icon { background: none; border: 0; color: var(--muted); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.chat-icon:hover { color: var(--ink); }
+.chat-tools { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rule); }
+.chat-chip {
+  font: 600 13px/1.3 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.chat-chip:hover:not(:disabled) { border-color: var(--accent); }
+.chat-chip.strong { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.chat-chip:disabled { opacity: 0.5; cursor: default; }
+.chat-log { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.chat-starters { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.chat-msg { max-width: 92%; padding: 10px 14px; border-radius: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.chat-msg p { margin: 0 0 8px; }
+.chat-msg p:last-child, .chat-msg ul:last-child, .chat-msg ol:last-child { margin-bottom: 0; }
+.chat-msg ul, .chat-msg ol { margin: 0 0 8px; padding-left: 20px; }
+.chat-msg pre { font-size: 12.5px; margin: 6px 0 8px; padding: 10px 12px; }
+.chat-msg .chat-h { font-weight: 700; }
+.chat-msg.user { align-self: flex-end; background: var(--accent); color: var(--surface); white-space: pre-wrap; }
+.chat-msg.assistant { align-self: flex-start; background: var(--paper); border: 1px solid var(--rule); }
+.chat-msg.assistant.quiz { border-color: var(--accent); background: var(--accent-soft); }
+.chat-msg.thinking { color: var(--muted); font-style: italic; }
+.chat-msg.system { align-self: stretch; max-width: none; background: color-mix(in srgb, var(--warn) 12%, var(--surface)); color: var(--ink); font-size: 14px; }
+.chat-flag { font: 700 12px/1.2 var(--f-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+.chat-log > .chat-chip { align-self: flex-start; }
+.chat-form { display: flex; gap: 8px; align-items: flex-end; padding: 10px 16px 6px; border-top: 1px solid var(--rule); }
+.chat-form textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: 15px/1.4 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+.chat-send { font: 700 14px/1 var(--f-display); color: var(--surface); background: var(--accent); border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; }
+.chat-note { font-size: 12px; color: var(--muted); margin: 0; padding: 0 16px 10px; }
+
+/* ---------- Binder ---------- */
+:root { --ink-accent: #2f5d86; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ink-accent: #8cb8e0; } }
+:root[data-theme="dark"] { --ink-accent: #8cb8e0; }
+.binder { max-width: 820px; margin-inline: auto; padding-block: 8px 40px; }
+.binder > header { padding-block: 40px 12px; }
+.binder > header h1 { margin-bottom: 10px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+.toolbar button {
+  font: 700 14px/1 var(--f-display); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 9px 16px; cursor: pointer;
+}
+.toolbar button:hover { border-color: var(--ink-accent); }
+.toolbar button:focus-visible { outline: 2px solid var(--ink-accent); outline-offset: 2px; }
+nav.index { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 22px; margin: 18px 0 32px; }
+nav.index > p { font: 700 13px/1.2 var(--f-display); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+nav.index > ol { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+nav.index > ol > li > a { font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; color: var(--ink); text-decoration: none; }
+nav.index > ol > li > a:hover { color: var(--accent); text-decoration: underline; }
+nav.index ol ol { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; }
+nav.index ol ol a { color: var(--muted); }
+nav.index li + li { margin-top: 0; }
+
+details.part { --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); border-top: 3px solid var(--accent); margin: 0 0 22px; scroll-margin-top: 12px; }
+details.part > summary { list-style: none; cursor: pointer; padding: 18px 0 14px; display: grid; grid-template-columns: 1.6em minmax(0,1fr); align-items: baseline; }
+details.part > summary::-webkit-details-marker { display: none; }
+details.part > summary::before { content: "+"; font: 700 1.5rem/1 var(--f-mono); color: var(--accent); }
+details.part[open] > summary::before { content: "\2212"; }
+details.part > summary .eyebrow { grid-column: 2; margin: 0 0 4px; }
+details.part > summary .ptitle { grid-column: 2; font: 800 clamp(1.6rem, 4vw, 2.1rem)/1.15 var(--f-display); letter-spacing: -0.015em; text-wrap: balance; }
+details.part > .pbody { padding: 0 0 8px 1.6em; min-width: 0; }
+@media (max-width: 600px) { details.part > .pbody { padding-left: 0; } }
+
+details.sub { border-top: 1px solid var(--rule); scroll-margin-top: 12px; }
+details.sub > summary { list-style: none; cursor: pointer; padding: 14px 0; display: grid; grid-template-columns: 1.4em minmax(0,1fr); align-items: baseline; font: 700 1.2rem/1.25 var(--f-display); text-wrap: balance; }
+details.sub > summary::-webkit-details-marker { display: none; }
+details.sub > summary::before { content: "\25B8"; color: var(--accent); font-size: .95rem; transition: transform .15s; display: inline-block; }
+details.sub[open] > summary::before { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { details.sub > summary::before { transition: none; } }
+details.sub > .sbody { padding: 0 0 18px; min-width: 0; }
+.pbody h2 { margin-top: 28px; }
+.sbody h3:first-child { margin-top: 4px; }
+li.todo { list-style: none; margin-left: -1.2em; }
+li.todo.done { color: var(--muted); }
+.pbody pre, .sbody pre { max-width: 100%; }
+.backtop { position: fixed; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); font: 700 13px/1 var(--f-display); background: var(--ink-accent); color: var(--surface); border-radius: 999px; padding: 10px 14px; text-decoration: none; box-shadow: 0 2px 8px rgb(0 0 0 / .18); }
+
+</style>
+<div class="binder" style="--accent: var(--ink-accent)">
+<header id="top">
+  <p class="eyebrow">Senior Data Engineer · Minga · Kelowna</p>
+  <h1>Minga Interview Binder</h1>
+  <p class="lede">The four brush-up guides for the Minga interview in one place: Snowflake, dbt, Airflow and Python. Tap a heading to open it. The index jumps straight to any section.</p>
+  <div class="toolbar">
+    <button type="button" id="parts-only">Open all chapters</button>
+    <button type="button" id="expand-all">Expand everything</button>
+    <button type="button" id="collapse-all">Collapse everything</button>
+  </div>
+</header>
+<nav class="index" aria-label="Index">
+  <p>Index</p>
+  <ol><li><a href="#p-sf">Snowflake Field Guide</a><ol><li><a href="#p-sf-where-it-sits-at-minga">Where it sits at Minga</a></li><li><a href="#p-sf-how-it-s-built">How it's built</a></li><li><a href="#p-sf-oracle-to-snowflake-side-by-side">Oracle to Snowflake, side by side</a></li><li><a href="#p-sf-warehouses-and-cost">Warehouses and cost</a></li><li><a href="#p-sf-no-indexes-how-queries-stay-fast">No indexes: how queries stay fast</a></li><li><a href="#p-sf-loading-data-and-json">Loading data, and JSON</a></li><li><a href="#p-sf-access-control-and-student-pii">Access control and student PII</a></li><li><a href="#p-sf-time-travel-and-zero-copy-clones">Time Travel and zero-copy clones</a></li><li><a href="#p-sf-interview-ready-answers">Interview-ready answers</a></li><li><a href="#p-sf-flashcards">Flashcards</a></li><li><a href="#p-sf-try-it-yourself-in-an-evening">Try it yourself in an evening</a></li></ol></li><li><a href="#p-dbt">dbt Field Guide</a><ol><li><a href="#p-dbt-where-it-sits-at-minga">Where it sits at Minga</a></li><li><a href="#p-dbt-what-a-model-is">What a model is</a></li><li><a href="#p-dbt-ref-and-the-dependency-graph">ref() and the dependency graph</a></li><li><a href="#p-dbt-staging-intermediate-marts">Staging, intermediate, marts</a></li><li><a href="#p-dbt-materializations">Materializations</a></li><li><a href="#p-dbt-tests-and-freshness">Tests and freshness</a></li><li><a href="#p-dbt-the-review-workflow">The review workflow</a></li><li><a href="#p-dbt-snapshots-docs-and-grants">Snapshots, docs, and grants</a></li><li><a href="#p-dbt-dbt-core-or-dbt-cloud">dbt Core or dbt Cloud</a></li><li><a href="#p-dbt-commands-you-ll-hear">Commands you'll hear</a></li><li><a href="#p-dbt-interview-ready-answers">Interview-ready answers</a></li><li><a href="#p-dbt-flashcards">Flashcards</a></li><li><a href="#p-dbt-try-it-yourself">Try it yourself</a></li></ol></li><li><a href="#p-af">Airflow Field Guide</a><ol><li><a href="#p-af-where-it-sits-at-minga">Where it sits at Minga</a></li><li><a href="#p-af-the-problem-it-solves">The problem it solves</a></li><li><a href="#p-af-core-ideas">Core ideas</a></li><li><a href="#p-af-a-dag-for-minga-sketched">A DAG for Minga, sketched</a></li><li><a href="#p-af-how-airflow-runs">How Airflow runs</a></li><li><a href="#p-af-what-makes-a-pipeline-reliable">What makes a pipeline reliable</a></li><li><a href="#p-af-from-n8n-to-airflow">From n8n to Airflow</a></li><li><a href="#p-af-airflow-or-something-else">Airflow or something else?</a></li><li><a href="#p-af-interview-ready-answers">Interview-ready answers</a></li><li><a href="#p-af-flashcards">Flashcards</a></li><li><a href="#p-af-try-it-yourself">Try it yourself</a></li></ol></li><li><a href="#p-py">Python Brush-Up</a><ol><li><a href="#p-py-where-python-shows-up-at-minga">Where Python shows up at Minga</a></li><li><a href="#p-py-syntax-refresher">Syntax refresher</a></li><li><a href="#p-py-json-and-nested-documents">JSON and nested documents</a></li><li><a href="#p-py-dates-and-time-zones">Dates and time zones</a></li><li><a href="#p-py-generators-and-batching">Generators and batching</a></li><li><a href="#p-py-calling-apis">Calling APIs</a></li><li><a href="#p-py-talking-to-databases">Talking to databases</a></li><li><a href="#p-py-pandas-briefly">pandas, briefly</a></li><li><a href="#p-py-pipeline-habits-that-matter-more-than-syntax">Pipeline habits that matter more than syntax</a></li><li><a href="#p-py-tooling">Tooling</a></li><li><a href="#p-py-gotchas-interviewers-like">Gotchas interviewers like</a></li><li><a href="#p-py-practice-exercises">Practice exercises</a></li><li><a href="#p-py-interview-ready-answers">Interview-ready answers</a></li><li><a href="#p-py-flashcards">Flashcards</a></li><li><a href="#p-py-try-it-yourself-about-two-hours">Try it yourself (about two hours)</a></li></ol></li></ol>
+</nav>
+<details class="part" id="p-sf" style="--accent: var(--sf)"><summary><p class="eyebrow">Study guide 1 of 4</p><span class="ptitle">Snowflake Field Guide</span></summary><div class="pbody"><p class="lede">Snowflake is the cloud data warehouse Minga already runs on. This guide explains it in terms of the Oracle work you already know, then covers the two things the posting cares about most: cost and student data.</p><section class="tldr" aria-labelledby="sf-tldr">
+  <h2 id="sf-tldr">The one-minute version</h2>
+  <ul>
+    <li>A SQL database delivered as a service. No servers, tablespaces, indexes, or patching. You write SQL and it runs.</li>
+    <li><strong>Storage and compute are separate.</strong> One copy of the data sits in cloud storage. Compute comes from <em>virtual warehouses</em>, which are clusters you switch on and off.</li>
+    <li>You pay for storage (cheap) and for every second a warehouse is running (where the money goes). Costs come from warehouses left running.</li>
+    <li>Access is role-based, like Oracle grants. Enterprise edition adds column masking and row-level policies, which is how you'd protect student PII.</li>
+  </ul>
+</section>
+
+
+
+
+<details class="sub" id="p-sf-where-it-sits-at-minga"><summary>Where it sits at Minga</summary><div class="sbody">
+<p>The posting names the stack: <strong>Stitch</strong> pulls data out of the product and business tools, loads it into <strong>Snowflake</strong>, and analysts read it through <strong>Metabase</strong>. Snowflake is the centre: everything lands there, gets transformed there, and gets queried there.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Minga data stack: sources flow through Stitch into Snowflake's RAW, STAGING and MARTS layers, which Metabase queries. dbt sends SQL into Snowflake, and Airflow triggers Stitch then dbt.">
+    <defs>
+      <marker id="sf-sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="sf-sa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="70" y="76" text-anchor="middle" class="d-s">Sources</text>
+    <rect x="10" y="88" width="120" height="32" rx="6" class="d-box"/><text x="70" y="109" text-anchor="middle" class="d-s">Product DB</text>
+    <rect x="10" y="128" width="120" height="32" rx="6" class="d-box"/><text x="70" y="149" text-anchor="middle" class="d-s">HubSpot</text>
+    <rect x="10" y="168" width="120" height="32" rx="6" class="d-box"/><text x="70" y="189" text-anchor="middle" class="d-s">Other SaaS</text>
+    <line x1="130" y1="104" x2="168" y2="138" class="d-l" marker-end="url(#sf-sa)"/>
+    <line x1="130" y1="144" x2="168" y2="144" class="d-l" marker-end="url(#sf-sa)"/>
+    <line x1="130" y1="184" x2="168" y2="150" class="d-l" marker-end="url(#sf-sa)"/>
+    <rect x="170" y="118" width="100" height="52" rx="8" class="d-box"/><text x="220" y="141" text-anchor="middle" class="d-t">Stitch</text><text x="220" y="158" text-anchor="middle" class="d-s">extract + load</text>
+    <rect x="170" y="12" width="100" height="40" rx="8" class="d-box"/><text x="220" y="37" text-anchor="middle" class="d-t">Airflow</text>
+    <line x1="220" y1="52" x2="220" y2="116" class="d-l dash" marker-end="url(#sf-sa)"/><text x="228" y="90" class="d-s">1. trigger</text>
+    <line x1="270" y1="32" x2="408" y2="32" class="d-l dash" marker-end="url(#sf-sa)"/><text x="339" y="25" text-anchor="middle" class="d-s">2. then run</text>
+    <rect x="410" y="12" width="100" height="40" rx="8" class="d-box"/><text x="460" y="37" text-anchor="middle" class="d-t">dbt</text>
+    <line x1="460" y1="52" x2="460" y2="78" class="d-l" marker-end="url(#sf-sa)"/><text x="468" y="70" class="d-s">sends SQL</text>
+    <rect x="310" y="80" width="295" height="150" rx="10" class="d-group on"/>
+    <text x="458" y="103" text-anchor="middle" class="d-t on">Snowflake</text>
+    <text x="458" y="120" text-anchor="middle" class="d-s">one database, three layers</text>
+    <line x1="270" y1="150" x2="320" y2="163" class="d-l" marker-end="url(#sf-sa)"/><text x="293" y="140" text-anchor="middle" class="d-s">load</text>
+    <rect x="322" y="140" width="76" height="50" rx="6" class="d-box"/><text x="360" y="162" text-anchor="middle" class="d-t">RAW</text><text x="360" y="179" text-anchor="middle" class="d-s">as loaded</text>
+    <line x1="398" y1="165" x2="420" y2="165" class="d-l" marker-end="url(#sf-sa)"/>
+    <rect x="422" y="140" width="76" height="50" rx="6" class="d-box"/><text x="460" y="162" text-anchor="middle" class="d-t">STAGING</text><text x="460" y="179" text-anchor="middle" class="d-s">cleaned</text>
+    <line x1="498" y1="165" x2="520" y2="165" class="d-l" marker-end="url(#sf-sa)"/>
+    <rect x="522" y="140" width="76" height="50" rx="6" class="d-box"/><text x="560" y="162" text-anchor="middle" class="d-t">MARTS</text><text x="560" y="179" text-anchor="middle" class="d-s">modelled</text>
+    <text x="460" y="214" text-anchor="middle" class="d-s">dbt models build each layer</text>
+    <line x1="598" y1="165" x2="658" y2="165" class="d-l" marker-end="url(#sf-sa)"/><text x="628" y="156" text-anchor="middle" class="d-s">queries</text>
+    <rect x="660" y="140" width="110" height="50" rx="8" class="d-box"/><text x="715" y="162" text-anchor="middle" class="d-t">Metabase</text><text x="715" y="179" text-anchor="middle" class="d-s">dashboards</text>
+    <text x="715" y="212" text-anchor="middle" class="d-s">RevOps · Finance</text>
+    <text x="715" y="228" text-anchor="middle" class="d-s">CX · Product</text>
+  </svg>
+  </div>
+  <figcaption>The target shape of Minga's stack. Snowflake (highlighted) stores every layer and does all the compute. dbt and Airflow are what the posting says is missing today: the modelling layer and the orchestration.</figcaption>
+</figure>
+
+</div></details><details class="sub" id="p-sf-how-it-s-built"><summary>How it's built</summary><div class="sbody">
+<p>Snowflake has three layers. Once you see them, most of its behaviour (and its bill) makes sense.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 720 325" role="img" aria-label="Snowflake architecture: a cloud services layer plans queries; three independent virtual warehouses for loading, transforming and BI all read and write one shared storage layer.">
+    <defs>
+      <marker id="sf-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="sf-ar-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <rect x="20" y="16" width="680" height="62" rx="10" class="d-box"/>
+    <text x="40" y="42" class="d-t">Cloud services</text>
+    <text x="40" y="62" class="d-s">logins and roles · query optimizer · table metadata · result cache · masking and row policies</text>
+    <line x1="360" y1="78" x2="360" y2="122" class="d-l" marker-end="url(#sf-ar)"/><text x="368" y="104" class="d-s">plans each query, sends it to a warehouse</text>
+    <text x="20" y="116" class="d-s">Compute: virtual warehouses</text>
+    <rect x="20" y="125" width="200" height="70" rx="8" class="d-box on"/><text x="120" y="153" text-anchor="middle" class="d-t">LOADING_WH</text><text x="120" y="174" text-anchor="middle" class="d-s">Stitch writes · size XS</text>
+    <rect x="260" y="125" width="200" height="70" rx="8" class="d-box on"/><text x="360" y="153" text-anchor="middle" class="d-t">TRANSFORM_WH</text><text x="360" y="174" text-anchor="middle" class="d-s">dbt runs · size S</text>
+    <rect x="500" y="125" width="200" height="70" rx="8" class="d-box on"/><text x="600" y="153" text-anchor="middle" class="d-t">BI_WH</text><text x="600" y="174" text-anchor="middle" class="d-s">Metabase reads · size XS</text>
+    <line x1="120" y1="195" x2="120" y2="243" class="d-l on" marker-end="url(#sf-ar-on)"/><text x="128" y="224" class="d-s">writes</text>
+    <line x1="360" y1="195" x2="360" y2="243" class="d-l on" marker-start="url(#sf-ar-on)" marker-end="url(#sf-ar-on)"/><text x="368" y="224" class="d-s">reads + writes</text>
+    <line x1="600" y1="243" x2="600" y2="195" class="d-l on" marker-end="url(#sf-ar-on)"/><text x="608" y="224" class="d-s">reads</text>
+    <rect x="20" y="245" width="680" height="64" rx="10" class="d-box"/>
+    <text x="40" y="272" class="d-t">Storage</text>
+    <text x="40" y="292" class="d-s">one copy of every table, compressed into columnar micro-partitions in cloud object storage</text>
+  </svg>
+  </div>
+  <figcaption>Each warehouse is its own pool of CPU and memory, so a heavy dbt run never slows a Metabase dashboard. All three see the same single copy of the data. In Oracle, every workload shares one instance's CPU and memory. The names and sizes here are a common setup, not Minga's actual config.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>Cloud services</strong> is the brain: authentication, the optimizer, metadata, and security policies. Mostly free (it's billed only if it goes over 10% of your daily warehouse usage).</li>
+  <li><strong>Virtual warehouses</strong> are the muscle. They start in seconds, suspend themselves when idle, and come in T-shirt sizes.</li>
+  <li><strong>Storage</strong> is the memory. Tables are split into compressed, column-oriented files called <em>micro-partitions</em>. You never manage files.</li>
+</ul>
+<p>Snowflake runs on AWS, Azure, or Google Cloud. You pick a cloud and region when the account is created, but you never touch that cloud directly.</p>
+
+</div></details><details class="sub" id="p-sf-oracle-to-snowflake-side-by-side"><summary>Oracle to Snowflake, side by side</summary><div class="sbody">
+<p>Most of your SQL carries over. Snowflake supports <code>NVL</code>, <code>DECODE</code>, <code>MERGE</code>, <code>CONNECT BY</code>, analytic functions, and CTEs, and unquoted identifiers default to uppercase like Oracle. The differences are in everything around the SQL.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>In Oracle you'd use</th><th>In Snowflake</th></tr></thead>
+  <tbody>
+    <tr><td>Instance / server</td><td>An <strong>account</strong>, plus virtual warehouses you size and switch on per workload</td></tr>
+    <tr><td>Schema = user</td><td><strong>Database → schema → table.</strong> Schemas aren't users. Users and roles are separate objects.</td></tr>
+    <tr><td>Tablespaces, datafiles</td><td>Nothing to manage. Storage grows on its own and is billed per TB per month.</td></tr>
+    <tr><td>B-tree indexes</td><td><strong>None</strong> on normal tables. Speed comes from micro-partition pruning (see below), optional clustering keys, and the search optimization service.</td></tr>
+    <tr><td>Partitioning</td><td>Automatic micro-partitions, roughly 50 to 500 MB of uncompressed data each</td></tr>
+    <tr><td>Data Pump, SQL*Loader</td><td><strong>Stages</strong> (file landing areas) and <code>COPY INTO</code>. <strong>Snowpipe</strong> for continuous loading. At Minga, Stitch does this for you.</td></tr>
+    <tr><td>Flashback query</td><td><strong>Time Travel</strong>: <code>SELECT … AT(OFFSET =&gt; -3600)</code></td></tr>
+    <tr><td>Recycle bin</td><td><code>UNDROP TABLE</code>, within the Time Travel window</td></tr>
+    <tr><td>PL/SQL packages</td><td>Stored procedures in Snowflake Scripting (SQL), JavaScript, or Python. Used far less. Transformation logic usually lives in dbt instead.</td></tr>
+    <tr><td>DBMS_SCHEDULER</td><td><strong>Tasks</strong> (scheduled SQL) and <strong>Streams</strong> (change tracking on a table)</td></tr>
+    <tr><td>Grants and roles</td><td>Very similar, but privileges go <em>only to roles</em>, and roles go to users. Roles can be granted to other roles to form a hierarchy.</td></tr>
+    <tr><td>VPD / Data Redaction</td><td><strong>Row access policies</strong> and <strong>dynamic masking policies</strong> (Enterprise edition)</td></tr>
+    <tr><td>AWR, V$ views</td><td>The <code>SNOWFLAKE.ACCOUNT_USAGE</code> views (<code>QUERY_HISTORY</code>, <code>WAREHOUSE_METERING_HISTORY</code>, <code>ACCESS_HISTORY</code>) and the Query Profile screen</td></tr>
+    <tr><td>VARCHAR2, CLOB, XMLType</td><td><code>VARCHAR</code>, and <code>VARIANT</code> for JSON and other semi-structured data</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="careful">
+  <span class="tag">Keep it accurate</span>
+  <p>This table is for learning. In the interview, your claim is "my warehouse work is Oracle and PostgreSQL." Don't say Oracle experience <em>is</em> Snowflake experience. Saying "I understand how my Oracle work maps onto it" is fine.</p>
+</div>
+
+</div></details><details class="sub" id="p-sf-warehouses-and-cost"><summary>Warehouses and cost</summary><div class="sbody">
+<p>The posting says: <em>"Keep Snowflake and pipeline costs proportional to usage, and know exactly why when they aren't."</em> That's all about warehouses.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Size</th><th class="num">Credits per hour</th><th>Rule of thumb</th></tr></thead>
+  <tbody>
+    <tr><td>X-Small</td><td class="num">1</td><td>Most loading and BI at Minga's scale</td></tr>
+    <tr><td>Small</td><td class="num">2</td><td>Typical dbt runs</td></tr>
+    <tr><td>Medium</td><td class="num">4</td><td>Heavy transforms, big backfills</td></tr>
+    <tr><td>Large</td><td class="num">8</td><td>Rarely needed at this size of company</td></tr>
+    <tr><td>X-Large and up</td><td class="num">16, 32 …</td><td>Each size doubles the cost and roughly the speed</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A credit costs roughly $2 to $4 USD depending on edition, cloud region, and contract. Billing is <strong>per second, with a 60-second minimum</strong> every time a warehouse resumes. Two settings control most of the bill:</p>
+<ul>
+  <li><code>AUTO_SUSPEND = 60</code> turns the warehouse off after 60 idle seconds.</li>
+  <li><code>AUTO_RESUME = TRUE</code> turns it back on when a query arrives.</li>
+</ul>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 720 190" role="img" aria-label="The same five bursts of queries in a day cost about 1.7 credits with a 60-second auto-suspend, and about 17 credits when auto-suspend is off and the warehouse runs from the first query to midnight.">
+    <text x="140" y="67" text-anchor="end" class="d-m">AUTO_SUSPEND = 60</text>
+    <text x="140" y="127" text-anchor="end" class="d-m">auto-suspend off</text>
+    <text x="700" y="42" text-anchor="end" class="d-s on">≈ 1.7 credits</text>
+    <text x="700" y="102" text-anchor="end" class="d-s warn">≈ 17 credits</text>
+    <rect x="150" y="50" width="550" height="26" rx="4" class="d-box"/>
+    <rect x="312" y="50" width="8" height="26" class="d-fill"/>
+    <rect x="326" y="50" width="8" height="26" class="d-fill"/>
+    <rect x="360" y="50" width="8" height="26" class="d-fill"/>
+    <rect x="436" y="50" width="8" height="26" class="d-fill"/>
+    <rect x="511" y="50" width="8" height="26" class="d-fill"/>
+    <rect x="150" y="110" width="550" height="26" rx="4" class="d-box"/>
+    <rect x="312" y="110" width="388" height="26" class="d-box warn"/>
+    <line x1="150" y1="160" x2="700" y2="160" class="d-axis"/>
+    <line x1="150" y1="156" x2="150" y2="164" class="d-axis"/><text x="150" y="180" text-anchor="middle" class="d-s">00:00</text>
+    <line x1="287.5" y1="156" x2="287.5" y2="164" class="d-axis"/><text x="287.5" y="180" text-anchor="middle" class="d-s">06:00</text>
+    <line x1="425" y1="156" x2="425" y2="164" class="d-axis"/><text x="425" y="180" text-anchor="middle" class="d-s">12:00</text>
+    <line x1="562.5" y1="156" x2="562.5" y2="164" class="d-axis"/><text x="562.5" y="180" text-anchor="middle" class="d-s">18:00</text>
+    <line x1="700" y1="156" x2="700" y2="164" class="d-axis"/><text x="700" y="180" text-anchor="middle" class="d-s">24:00</text>
+  </svg>
+  </div>
+  <figcaption>One X-Small warehouse, one day, the same five 20-minute bursts of dashboard use. Shaded time is billed. With auto-suspend, you pay for about 100 minutes. Without it, the warehouse runs from the first query until someone turns it off. At $3 a credit, that's about $5 a day against $51, and four times that on a Medium.</figcaption>
+</figure>
+
+<h3>Where surprise bills come from</h3>
+<ul>
+  <li><strong>Frequent loads.</strong> If Stitch syncs every 30 minutes, it wakes the loading warehouse 48 times a day, and each wake-up bills at least 60 seconds. Sync frequency is a cost setting.</li>
+  <li><strong>Dashboards on auto-refresh.</strong> A Metabase dashboard left open on a wall screen keeps the BI warehouse awake all day.</li>
+  <li><strong>Oversized warehouses.</strong> Someone bumped a warehouse to Large for one backfill and never set it back.</li>
+  <li><strong>Full rebuilds.</strong> dbt rebuilding big tables from scratch every hour when an incremental model would do.</li>
+</ul>
+
+<h3>How you find out why</h3>
+<pre><code><span class="c">-- Credits per warehouse per day, last 30 days</span>
+<span class="k">select</span> warehouse_name,
+       date_trunc('day', start_time) <span class="k">as</span> day,
+       sum(credits_used)              <span class="k">as</span> credits
+<span class="k">from</span> snowflake.account_usage.warehouse_metering_history
+<span class="k">where</span> start_time &gt;= dateadd('day', -30, current_timestamp())
+<span class="k">group by</span> 1, 2
+<span class="k">order by</span> 2, 3 <span class="k">desc</span>;</code></pre>
+<ul>
+  <li><strong>One warehouse per workload</strong> (loading, transforming, BI), so the bill already tells you who spent it.</li>
+  <li><strong>Query tags</strong> (<code>ALTER SESSION SET QUERY_TAG = 'dbt:nightly'</code>) to attribute spend inside a warehouse. dbt can set these for you.</li>
+  <li><strong>Resource monitors</strong>: a monthly credit quota per warehouse that notifies you at, say, 80% and can suspend the warehouse at 100%.</li>
+  <li><strong>The result cache</strong>: if someone reruns an identical query within 24 hours and the data hasn't changed, Snowflake returns the cached result without starting a warehouse. That's free.</li>
+</ul>
+
+</div></details><details class="sub" id="p-sf-no-indexes-how-queries-stay-fast"><summary>No indexes: how queries stay fast</summary><div class="sbody">
+<p>Snowflake stores the minimum and maximum value of every column for every micro-partition. When a query filters, it skips any partition whose range can't contain a match. This is called <strong>pruning</strong>, and it does the job indexes do in Oracle.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 720 200" role="img" aria-label="A query filtering on 15 September checks the min and max dates of six micro-partitions and scans only the one whose range contains that date.">
+    <text x="20" y="28" class="d-m">select … from hall_passes where pass_date = '2026-09-15'</text>
+    <rect x="20" y="52" width="100" height="92" rx="6" class="d-box"/><text x="70" y="76" text-anchor="middle" class="d-t">MP 1</text><text x="70" y="100" text-anchor="middle" class="d-s">min 09-01</text><text x="70" y="118" text-anchor="middle" class="d-s">max 09-05</text>
+    <rect x="135" y="52" width="100" height="92" rx="6" class="d-box"/><text x="185" y="76" text-anchor="middle" class="d-t">MP 2</text><text x="185" y="100" text-anchor="middle" class="d-s">min 09-05</text><text x="185" y="118" text-anchor="middle" class="d-s">max 09-10</text>
+    <rect x="250" y="52" width="100" height="92" rx="6" class="d-box"/><text x="300" y="76" text-anchor="middle" class="d-t">MP 3</text><text x="300" y="100" text-anchor="middle" class="d-s">min 09-10</text><text x="300" y="118" text-anchor="middle" class="d-s">max 09-14</text>
+    <rect x="365" y="52" width="100" height="92" rx="6" class="d-box on"/><text x="415" y="76" text-anchor="middle" class="d-t on">MP 4</text><text x="415" y="100" text-anchor="middle" class="d-s">min 09-14</text><text x="415" y="118" text-anchor="middle" class="d-s">max 09-17</text>
+    <rect x="480" y="52" width="100" height="92" rx="6" class="d-box"/><text x="530" y="76" text-anchor="middle" class="d-t">MP 5</text><text x="530" y="100" text-anchor="middle" class="d-s">min 09-17</text><text x="530" y="118" text-anchor="middle" class="d-s">max 09-21</text>
+    <rect x="595" y="52" width="100" height="92" rx="6" class="d-box"/><text x="645" y="76" text-anchor="middle" class="d-t">MP 6</text><text x="645" y="100" text-anchor="middle" class="d-s">min 09-21</text><text x="645" y="118" text-anchor="middle" class="d-s">max 09-25</text>
+    <text x="70" y="168" text-anchor="middle" class="d-s">skipped</text>
+    <text x="185" y="168" text-anchor="middle" class="d-s">skipped</text>
+    <text x="300" y="168" text-anchor="middle" class="d-s">skipped</text>
+    <text x="415" y="168" text-anchor="middle" class="d-s on">scanned</text>
+    <text x="530" y="168" text-anchor="middle" class="d-s">skipped</text>
+    <text x="645" y="168" text-anchor="middle" class="d-s">skipped</text>
+  </svg>
+  </div>
+  <figcaption>Six micro-partitions of an illustrative table. Only partition 4's date range can contain 15 September, so the query reads one partition out of six. The Query Profile shows this as "partitions scanned" against "partitions total".</figcaption>
+</figure>
+<p>Pruning works well when you filter on a column that follows load order, like dates. If you filter on something scattered (a school ID that appears in every partition), nothing gets skipped. For very large tables you can add a <strong>clustering key</strong> so Snowflake keeps rows with similar values together. That re-sorting runs in the background and costs credits, so only use it when the Query Profile shows poor pruning on a big table.</p>
+
+</div></details><details class="sub" id="p-sf-loading-data-and-json"><summary>Loading data, and JSON</summary><div class="sbody">
+<p>Snowflake's own loading tools are <strong>stages</strong> (an internal area, or an S3/Azure/GCS bucket) plus <code>COPY INTO</code>, and <strong>Snowpipe</strong> for loading files as they arrive. At Minga, <strong>Stitch</strong> handles this. A few Stitch details worth knowing before you're asked to "harden or replace" it:</p>
+<ul>
+  <li>Stitch usually writes each source into its own schema in a raw database and adds metadata columns such as <code>_sdc_batched_at</code> and <code>_sdc_extracted_at</code>. Those are your freshness signal.</li>
+  <li>It replicates tables by key-based incremental (an <code>updated_at</code> column), log-based (database change logs), or full table. Hard deletes in the source can be missed with key-based incremental, so a student record removed in the product can survive in Snowflake. That matters for retention rules.</li>
+  <li>When a source column changes type, Stitch can split it into new columns with a type suffix. Staging models in dbt are where you clean that up.</li>
+  <li>Common replacements are Fivetran and Airbyte. Writing custom loaders in Python is another option.</li>
+</ul>
+<p>Product event data usually arrives as JSON. Snowflake keeps it in a <code>VARIANT</code> column and you query it with a path syntax:</p>
+<pre><code><span class="k">select</span>
+  payload:student_id::number      <span class="k">as</span> student_id,
+  payload:pass.type::string       <span class="k">as</span> pass_type,
+  f.value:name::string            <span class="k">as</span> tag_name
+<span class="k">from</span> raw.app.events,
+     <span class="k">lateral</span> flatten(input =&gt; payload:tags) f   <span class="c">-- one row per tag in the JSON array</span>
+<span class="k">where</span> payload:event_type::string = 'pass_started';</code></pre>
+<p>This connects to the posting's "analytics event model for the new platform": you'll help decide what those JSON events look like before they're ever written.</p>
+
+</div></details><details class="sub" id="p-sf-access-control-and-student-pii"><summary>Access control and student PII</summary><div class="sbody">
+<p>This is the part of the job closest to what you already do. The posting says it twice: <em>"We hold student-level data and we treat it that way."</em></p>
+
+<h3>Roles</h3>
+<p>Snowflake ships with system roles. <code>ACCOUNTADMIN</code> is the top and should belong to very few people, with MFA on. <code>SECURITYADMIN</code> manages grants, <code>SYSADMIN</code> owns databases and warehouses, <code>USERADMIN</code> creates users, and <code>PUBLIC</code> is granted to everyone. Anything granted to <code>PUBLIC</code> is a red flag. Below those you design your own roles, one per job:</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 720 270" role="img" aria-label="Each user or service gets one role. LOADER writes RAW, TRANSFORMER reads RAW and writes MARTS, REPORTER and ANALYST read MARTS, and student PII columns are masked unless the role is allowed to see them.">
+    <defs>
+      <marker id="sf-rb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="sf-rb-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="95" y="18" text-anchor="middle" class="d-s">Who connects</text>
+    <text x="360" y="18" text-anchor="middle" class="d-s">Role they get</text>
+    <text x="625" y="18" text-anchor="middle" class="d-s">What it can touch</text>
+    <rect x="20" y="30" width="150" height="36" rx="6" class="d-box"/><text x="95" y="53" text-anchor="middle" class="d-s">Stitch service user</text>
+    <rect x="20" y="90" width="150" height="36" rx="6" class="d-box"/><text x="95" y="113" text-anchor="middle" class="d-s">dbt service user</text>
+    <rect x="20" y="150" width="150" height="36" rx="6" class="d-box"/><text x="95" y="173" text-anchor="middle" class="d-s">Metabase service user</text>
+    <rect x="20" y="210" width="150" height="36" rx="6" class="d-box"/><text x="95" y="233" text-anchor="middle" class="d-s">RevOps analyst</text>
+    <line x1="170" y1="48" x2="283" y2="48" class="d-l" marker-end="url(#sf-rb)"/>
+    <line x1="170" y1="108" x2="283" y2="108" class="d-l" marker-end="url(#sf-rb)"/>
+    <line x1="170" y1="168" x2="283" y2="168" class="d-l" marker-end="url(#sf-rb)"/>
+    <line x1="170" y1="228" x2="283" y2="228" class="d-l" marker-end="url(#sf-rb)"/>
+    <rect x="285" y="30" width="150" height="36" rx="6" class="d-box"/><text x="360" y="53" text-anchor="middle" class="d-m">LOADER</text>
+    <rect x="285" y="90" width="150" height="36" rx="6" class="d-box"/><text x="360" y="113" text-anchor="middle" class="d-m">TRANSFORMER</text>
+    <rect x="285" y="150" width="150" height="36" rx="6" class="d-box"/><text x="360" y="173" text-anchor="middle" class="d-m">REPORTER</text>
+    <rect x="285" y="210" width="150" height="36" rx="6" class="d-box"/><text x="360" y="233" text-anchor="middle" class="d-m">ANALYST</text>
+    <rect x="550" y="50" width="150" height="46" rx="6" class="d-box"/><text x="625" y="78" text-anchor="middle" class="d-t">RAW</text>
+    <rect x="550" y="130" width="150" height="46" rx="6" class="d-box"/><text x="625" y="158" text-anchor="middle" class="d-t">MARTS</text>
+    <rect x="550" y="210" width="150" height="46" rx="6" class="d-box on"/><text x="625" y="230" text-anchor="middle" class="d-t on">Student PII</text><text x="625" y="247" text-anchor="middle" class="d-s">masking policy</text>
+    <line x1="435" y1="48" x2="548" y2="66" class="d-l" marker-end="url(#sf-rb)"/><text x="492" y="47" text-anchor="middle" class="d-s">writes</text>
+    <line x1="435" y1="104" x2="548" y2="82" class="d-l" marker-end="url(#sf-rb)"/><text x="480" y="88" text-anchor="middle" class="d-s">reads</text>
+    <line x1="435" y1="114" x2="548" y2="146" class="d-l" marker-end="url(#sf-rb)"/><text x="480" y="140" text-anchor="middle" class="d-s">writes</text>
+    <line x1="435" y1="168" x2="548" y2="158" class="d-l" marker-end="url(#sf-rb)"/><text x="492" y="174" text-anchor="middle" class="d-s">reads</text>
+    <line x1="435" y1="222" x2="548" y2="170" class="d-l" marker-end="url(#sf-rb)"/><text x="470" y="205" text-anchor="middle" class="d-s">reads</text>
+    <line x1="435" y1="236" x2="548" y2="236" class="d-l on dash" marker-end="url(#sf-rb-on)"/><text x="492" y="252" text-anchor="middle" class="d-s on">sees ****</text>
+  </svg>
+  </div>
+  <figcaption>A common least-privilege layout (illustrative names). Each service gets its own user and a role that can do only its job. Analysts read the modelled marts, and student PII columns come back masked unless the session holds a role that's allowed to see them.</figcaption>
+</figure>
+
+<h3>Masking and row policies</h3>
+<p>A <strong>masking policy</strong> is a function attached to a column. Every query runs through it, so it works the same in Metabase, a worksheet, or a dbt model.</p>
+<pre><code><span class="k">create masking policy</span> pii_string <span class="k">as</span> (val string) <span class="k">returns</span> string -&gt;
+  <span class="k">case when</span> is_role_in_session('PII_READER') <span class="k">then</span> val
+       <span class="k">else</span> '****'
+  <span class="k">end</span>;
+
+<span class="k">alter table</span> analytics.marts.dim_students
+  <span class="k">modify column</span> student_name <span class="k">set masking policy</span> pii_string;</code></pre>
+<ul>
+  <li><strong>Row access policies</strong> filter rows by role. For example, a CX role only sees schools in the region it supports. This is like Oracle VPD.</li>
+  <li><strong>Tag-based masking</strong>: tag columns as <code>pii = 'name'</code> or <code>pii = 'email'</code> and attach the policy to the tag. New PII columns are protected as soon as they're tagged.</li>
+  <li><strong>ACCESS_HISTORY</strong> records which columns each query read, so you can answer "who looked at student data last month?"</li>
+  <li>Masking, row access policies, and access history need <strong>Enterprise edition</strong> or higher. Ask which edition Minga is on.</li>
+</ul>
+
+<h3>Secrets and service accounts</h3>
+<p>Service users should sign in with <strong>key-pair authentication</strong> (or OAuth), not passwords. Snowflake has been phasing out password-only sign-in. This is the same instinct as moving CDWTool onto a dedicated Ministry service account and getting secrets out of the repo, and that's a real story you can tell.</p>
+
+<h3>Retention</h3>
+<p>Deleting student data isn't instant in Snowflake. Deleted rows stay recoverable through <strong>Time Travel</strong> for the table's retention period, then sit in <strong>Fail-safe</strong> for 7 more days, where only Snowflake support can recover them. A retention standard has to account for both. It also has to cover copies in Metabase caches and in any clones.</p>
+
+</div></details><details class="sub" id="p-sf-time-travel-and-zero-copy-clones"><summary>Time Travel and zero-copy clones</summary><div class="sbody">
+<pre><code><span class="c">-- What did this table look like an hour ago?</span>
+<span class="k">select</span> * <span class="k">from</span> marts.fct_hall_passes_daily <span class="k">at</span>(offset =&gt; -3600);
+
+<span class="c">-- Someone dropped it by mistake</span>
+<span class="k">undrop table</span> marts.fct_hall_passes_daily;
+
+<span class="c">-- A full copy of production for testing, created in seconds, no extra storage until it changes</span>
+<span class="k">create database</span> analytics_ci <span class="k">clone</span> analytics;</code></pre>
+<ul>
+  <li>Time Travel retention defaults to 1 day. Enterprise edition allows up to 90. Longer retention means more storage cost and longer-lived copies of PII.</li>
+  <li><strong>Zero-copy clones</strong> share the original's micro-partitions and only store what changes afterwards. They make a cheap CI environment for testing dbt changes against real-shaped data. Clones copy PII too, so the masking policies have to come with them.</li>
+</ul>
+
+</div></details><details class="sub" id="p-sf-interview-ready-answers"><summary>Interview-ready answers</summary><div class="sbody">
+<div class="say">
+  <span class="tag">If asked: "Have you used Snowflake?"</span>
+  <blockquote>"Not in production. My warehouse work is Oracle and PostgreSQL. I've studied how Snowflake separates storage from compute, and the parts that would be my job here, cost control and access policies, line up with work I already do: least-privilege service accounts, keeping secrets out of code, and controlling who sees student data."</blockquote>
+  <p>If you've done the trial by then, add one sentence about what you built in it.</p>
+</div>
+<div class="say">
+  <span class="tag">"How would you keep Snowflake costs under control?"</span>
+  <blockquote>"Separate warehouses per workload so the bill shows who's spending, short auto-suspend, resource monitors with alerts before the limit, and a weekly look at metering history. Then fix the usual causes: sync frequency, dashboards left refreshing, full rebuilds that could be incremental."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you handle PII in Snowflake?"</span>
+  <blockquote>"Start with an inventory: which tables and columns hold student data. Tag them, attach masking policies to the tags, give every service its own user and a role that does only its job, and check that nothing is granted to PUBLIC. Then write a retention standard that accounts for Time Travel, Fail-safe and clones. And document it so analysts know why they see masked values."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">Good questions to ask them</span>
+  <ul>
+    <li>Which Snowflake edition are you on? (Tells you if masking policies are available.)</li>
+    <li>Roughly what's the monthly Snowflake spend, and has anyone looked at where it goes?</li>
+    <li>Who has ACCOUNTADMIN today?</li>
+  </ul>
+</div>
+
+</div></details><details class="sub" id="p-sf-flashcards"><summary>Flashcards</summary><div class="sbody">
+<div class="cards">
+  <details class="card"><summary>What are the three layers of Snowflake?</summary><p>Cloud services (brain: auth, optimizer, metadata), virtual warehouses (compute), and storage (micro-partitions in cloud object storage).</p></details>
+  <details class="card"><summary>What is a credit, and how many does an X-Small use?</summary><p>The unit of compute billing. X-Small uses 1 credit per hour, and each size up doubles it. Billing is per second with a 60-second minimum on each resume.</p></details>
+  <details class="card"><summary>Why doesn't Snowflake need indexes?</summary><p>It stores min/max metadata per column per micro-partition and skips (prunes) partitions that can't match the filter. Clustering keys help when natural ordering doesn't.</p></details>
+  <details class="card"><summary>What's the difference between Time Travel and Fail-safe?</summary><p>Time Travel (1 day by default, up to 90 on Enterprise) is self-service: query or undrop past data. Fail-safe is 7 more days that only Snowflake support can recover.</p></details>
+  <details class="card"><summary>How do you mask a column for most users?</summary><p>Create a masking policy (a CASE on the current role) and attach it to the column, or to a tag that's applied to the column.</p></details>
+  <details class="card"><summary>Where do you look to explain a cost spike?</summary><p>SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY for credits by warehouse, then QUERY_HISTORY (with query tags) to find the queries behind it.</p></details>
+  <details class="card"><summary>What is a zero-copy clone good for?</summary><p>Instant copies of a database or table for dev and CI testing. They share storage until changed. Remember they copy PII too.</p></details>
+  <details class="card"><summary>What column type holds JSON?</summary><p>VARIANT. Query with <code>col:path.to.field::type</code> and expand arrays with LATERAL FLATTEN.</p></details>
+</div>
+
+</div></details><details class="sub" id="p-sf-try-it-yourself-in-an-evening"><summary>Try it yourself in an evening</summary><div class="sbody">
+<p>Snowflake offers a free 30-day trial with $400 in credits, and no credit card is needed. One evening with it lets you say "I've worked through it hands-on" truthfully.</p>
+<ul class="steps">
+  <li>Create an X-Small warehouse with <code>AUTO_SUSPEND = 60</code>.</li>
+  <li>Query the built-in <code>SNOWFLAKE_SAMPLE_DATA.TPCH_SF1</code> tables and open the Query Profile. Find "partitions scanned".</li>
+  <li>Create two roles, a masking policy on a name column, and check what each role sees.</li>
+  <li>Drop a table, <code>UNDROP</code> it, then clone a database.</li>
+  <li>Load a small JSON file into a VARIANT column and query it with <code>:</code> paths and <code>FLATTEN</code>.</li>
+  <li>Check <code>WAREHOUSE_METERING_HISTORY</code> for what your evening cost. Account usage views can lag by up to a few hours.</li>
+</ul>
+
+
+</div></details></div></details><details class="part" id="p-dbt" style="--accent: var(--dbt)"><summary><p class="eyebrow">Study guide 2 of 4</p><span class="ptitle">dbt Field Guide</span></summary><div class="pbody"><p class="lede">dbt is the "modelling layer" the posting wants you to introduce. It's SQL in version control, with tests and code review, and it runs inside Snowflake. That's very close to how you already work, which makes it your best bridge in the interview.</p><section class="tldr" aria-labelledby="dbt-tldr">
+  <h2 id="dbt-tldr">The one-minute version</h2>
+  <ul>
+    <li>dbt (data build tool) handles the <strong>T in ELT</strong>. Stitch extracts and loads raw data. dbt transforms it into clean tables people can trust.</li>
+    <li>You write each table as a <strong>SELECT statement in a .sql file</strong>. dbt wraps it in <code>CREATE TABLE/VIEW AS</code> and runs it in Snowflake.</li>
+    <li>Models refer to each other with <code>ref()</code>. dbt uses that to work out the run order, so you never write a dependency list by hand.</li>
+    <li>Tests (unique, not null, valid values, relationships, freshness) run after each build. The whole project lives in git and goes through pull requests like any other code.</li>
+    <li>dbt doesn't move data and doesn't need its own server for the data. All the compute happens in Snowflake.</li>
+  </ul>
+</section>
+
+
+
+
+<details class="sub" id="p-dbt-where-it-sits-at-minga"><summary>Where it sits at Minga</summary><div class="sbody">
+<p>The posting: <em>"Introduce and own a modelling layer (dbt or equivalent) with versioning, tests and review that our RevOps analysts can build against without slowing down."</em> Today there isn't one. Raw Stitch tables go more or less straight to Metabase, with the logic buried in dashboard queries.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Minga data stack with dbt highlighted: dbt sends SQL into Snowflake to build the STAGING and MARTS layers from RAW.">
+    <defs>
+      <marker id="dbt-sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="dbt-sa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="70" y="76" text-anchor="middle" class="d-s">Sources</text>
+    <rect x="10" y="88" width="120" height="32" rx="6" class="d-box"/><text x="70" y="109" text-anchor="middle" class="d-s">Product DB</text>
+    <rect x="10" y="128" width="120" height="32" rx="6" class="d-box"/><text x="70" y="149" text-anchor="middle" class="d-s">HubSpot</text>
+    <rect x="10" y="168" width="120" height="32" rx="6" class="d-box"/><text x="70" y="189" text-anchor="middle" class="d-s">Other SaaS</text>
+    <line x1="130" y1="104" x2="168" y2="138" class="d-l" marker-end="url(#dbt-sa)"/>
+    <line x1="130" y1="144" x2="168" y2="144" class="d-l" marker-end="url(#dbt-sa)"/>
+    <line x1="130" y1="184" x2="168" y2="150" class="d-l" marker-end="url(#dbt-sa)"/>
+    <rect x="170" y="118" width="100" height="52" rx="8" class="d-box"/><text x="220" y="141" text-anchor="middle" class="d-t">Stitch</text><text x="220" y="158" text-anchor="middle" class="d-s">extract + load</text>
+    <rect x="170" y="12" width="100" height="40" rx="8" class="d-box"/><text x="220" y="37" text-anchor="middle" class="d-t">Airflow</text>
+    <line x1="220" y1="52" x2="220" y2="116" class="d-l dash" marker-end="url(#dbt-sa)"/><text x="228" y="90" class="d-s">1. trigger</text>
+    <line x1="270" y1="32" x2="408" y2="32" class="d-l dash" marker-end="url(#dbt-sa)"/><text x="339" y="25" text-anchor="middle" class="d-s">2. then run</text>
+    <rect x="410" y="12" width="100" height="40" rx="8" class="d-box on"/><text x="460" y="37" text-anchor="middle" class="d-t on">dbt</text>
+    <line x1="460" y1="52" x2="460" y2="78" class="d-l on" marker-end="url(#dbt-sa-on)"/><text x="468" y="70" class="d-s on">sends SQL</text>
+    <rect x="310" y="80" width="295" height="150" rx="10" class="d-group"/>
+    <text x="458" y="103" text-anchor="middle" class="d-t">Snowflake</text>
+    <text x="458" y="120" text-anchor="middle" class="d-s">one database, three layers</text>
+    <line x1="270" y1="150" x2="320" y2="163" class="d-l" marker-end="url(#dbt-sa)"/><text x="293" y="140" text-anchor="middle" class="d-s">load</text>
+    <rect x="322" y="140" width="76" height="50" rx="6" class="d-box"/><text x="360" y="162" text-anchor="middle" class="d-t">RAW</text><text x="360" y="179" text-anchor="middle" class="d-s">as loaded</text>
+    <line x1="398" y1="165" x2="420" y2="165" class="d-l on" marker-end="url(#dbt-sa-on)"/>
+    <rect x="422" y="140" width="76" height="50" rx="6" class="d-box on"/><text x="460" y="162" text-anchor="middle" class="d-t">STAGING</text><text x="460" y="179" text-anchor="middle" class="d-s">cleaned</text>
+    <line x1="498" y1="165" x2="520" y2="165" class="d-l on" marker-end="url(#dbt-sa-on)"/>
+    <rect x="522" y="140" width="76" height="50" rx="6" class="d-box on"/><text x="560" y="162" text-anchor="middle" class="d-t">MARTS</text><text x="560" y="179" text-anchor="middle" class="d-s">modelled</text>
+    <text x="460" y="214" text-anchor="middle" class="d-s on">dbt models build each layer</text>
+    <line x1="598" y1="165" x2="658" y2="165" class="d-l" marker-end="url(#dbt-sa)"/><text x="628" y="156" text-anchor="middle" class="d-s">queries</text>
+    <rect x="660" y="140" width="110" height="50" rx="8" class="d-box"/><text x="715" y="162" text-anchor="middle" class="d-t">Metabase</text><text x="715" y="179" text-anchor="middle" class="d-s">dashboards</text>
+    <text x="715" y="212" text-anchor="middle" class="d-s">RevOps · Finance</text>
+    <text x="715" y="228" text-anchor="middle" class="d-s">CX · Product</text>
+  </svg>
+  </div>
+  <figcaption>dbt (highlighted) sits outside the data. It compiles your models into SQL and sends them to Snowflake, which builds the STAGING and MARTS layers from RAW. Metabase then points at the marts instead of raw Stitch tables.</figcaption>
+</figure>
+
+</div></details><details class="sub" id="p-dbt-what-a-model-is"><summary>What a model is</summary><div class="sbody">
+<p>A model is one <code>.sql</code> file containing one SELECT. The file name becomes the table or view name. Here's a staging model over an illustrative raw table:</p>
+<p class="codecap">models/staging/app/stg_app__hall_passes.sql</p>
+<pre><code><span class="k">with</span> source <span class="k">as</span> (
+    <span class="k">select</span> * <span class="k">from</span> {{ source('app', 'hall_passes') }}
+),
+
+renamed <span class="k">as</span> (
+    <span class="k">select</span>
+        id                          <span class="k">as</span> pass_id,
+        school_id,
+        student_id,
+        lower(status)               <span class="k">as</span> status,
+        started_at::timestamp_ntz   <span class="k">as</span> started_at,
+        ended_at::timestamp_ntz     <span class="k">as</span> ended_at,
+        _sdc_batched_at             <span class="k">as</span> loaded_at
+    <span class="k">from</span> source
+)
+
+<span class="k">select</span> * <span class="k">from</span> renamed</code></pre>
+<p>The <code>{{ }}</code> parts are <strong>Jinja</strong>, a templating language. When you run dbt, it <em>compiles</em> the file into plain SQL for Snowflake:</p>
+<pre><code><span class="k">create or replace view</span> analytics.staging.stg_app__hall_passes <span class="k">as</span> (
+    <span class="k">with</span> source <span class="k">as</span> (
+        <span class="k">select</span> * <span class="k">from</span> raw.app.hall_passes
+    ),
+    ...
+);</code></pre>
+<p>That's the core idea. You write SELECT, and dbt handles the DDL, the schema names, and the environment (your dev schema or production).</p>
+
+</div></details><details class="sub" id="p-dbt-ref-and-the-dependency-graph"><summary>ref() and the dependency graph</summary><div class="sbody">
+<p>Instead of hard-coding table names, a model says <code>{{ ref('stg_app__schools') }}</code>. That does two things: it points at the right schema for the current environment, and it tells dbt "this model depends on that one". dbt collects every <code>ref()</code> and <code>source()</code> into a graph and runs models in order.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 255" role="img" aria-label="dbt lineage: three raw sources feed three staging models, which feed a fact table and a dimension, which feed Metabase dashboards. A change to stg_app__schools affects everything downstream of it, highlighted.">
+    <defs>
+      <marker id="dbt-dg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="dbt-dg-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="85" y="20" text-anchor="middle" class="d-s">Sources (raw)</text>
+    <text x="295" y="20" text-anchor="middle" class="d-s">Staging</text>
+    <text x="515" y="20" text-anchor="middle" class="d-s">Marts</text>
+    <text x="695" y="20" text-anchor="middle" class="d-s">Metabase</text>
+    <rect x="10" y="40" width="150" height="40" rx="6" class="d-box"/><text x="85" y="65" text-anchor="middle" class="d-m">app.hall_passes</text>
+    <rect x="10" y="110" width="150" height="40" rx="6" class="d-box"/><text x="85" y="135" text-anchor="middle" class="d-m">app.schools</text>
+    <rect x="10" y="180" width="150" height="40" rx="6" class="d-box"/><text x="85" y="205" text-anchor="middle" class="d-m">hubspot.companies</text>
+    <line x1="160" y1="60" x2="198" y2="60" class="d-l" marker-end="url(#dbt-dg)"/>
+    <line x1="160" y1="130" x2="198" y2="130" class="d-l" marker-end="url(#dbt-dg)"/>
+    <line x1="160" y1="200" x2="198" y2="200" class="d-l" marker-end="url(#dbt-dg)"/>
+    <text x="179" y="35" text-anchor="middle" class="d-s">source()</text>
+    <rect x="200" y="40" width="190" height="40" rx="6" class="d-box"/><text x="295" y="65" text-anchor="middle" class="d-m">stg_app__hall_passes</text>
+    <rect x="200" y="110" width="190" height="40" rx="6" class="d-box on"/><text x="295" y="135" text-anchor="middle" class="d-m">stg_app__schools</text>
+    <rect x="200" y="180" width="190" height="40" rx="6" class="d-box"/><text x="295" y="205" text-anchor="middle" class="d-m">stg_hubspot__companies</text>
+    <text x="410" y="35" text-anchor="middle" class="d-s">ref()</text>
+    <line x1="390" y1="60" x2="428" y2="74" class="d-l" marker-end="url(#dbt-dg)"/>
+    <line x1="390" y1="126" x2="428" y2="92" class="d-l on" marker-end="url(#dbt-dg-on)"/>
+    <line x1="390" y1="136" x2="428" y2="172" class="d-l on" marker-end="url(#dbt-dg-on)"/>
+    <line x1="390" y1="200" x2="428" y2="186" class="d-l" marker-end="url(#dbt-dg)"/>
+    <rect x="430" y="60" width="170" height="40" rx="6" class="d-box on"/><text x="515" y="85" text-anchor="middle" class="d-m">fct_hall_passes_daily</text>
+    <rect x="430" y="160" width="170" height="40" rx="6" class="d-box on"/><text x="515" y="185" text-anchor="middle" class="d-m">dim_schools</text>
+    <line x1="600" y1="80" x2="638" y2="80" class="d-l on" marker-end="url(#dbt-dg-on)"/>
+    <line x1="600" y1="180" x2="638" y2="180" class="d-l on" marker-end="url(#dbt-dg-on)"/>
+    <rect x="640" y="58" width="110" height="44" rx="6" class="d-box on"/><text x="695" y="77" text-anchor="middle" class="d-s">Hall pass</text><text x="695" y="93" text-anchor="middle" class="d-s">usage</text>
+    <rect x="640" y="158" width="110" height="44" rx="6" class="d-box on"/><text x="695" y="177" text-anchor="middle" class="d-s">Account</text><text x="695" y="193" text-anchor="middle" class="d-s">health</text>
+    <text x="380" y="245" text-anchor="middle" class="d-s on">dbt build -s stg_app__schools+   rebuilds and tests everything highlighted</text>
+  </svg>
+  </div>
+  <figcaption>An illustrative lineage graph. dbt draws this from your <code>source()</code> and <code>ref()</code> calls. Change <code>stg_app__schools</code> and the <code>+</code> selector rebuilds and tests it plus everything downstream, so you know what a change touches before it reaches a dashboard.</figcaption>
+</figure>
+
+</div></details><details class="sub" id="p-dbt-staging-intermediate-marts"><summary>Staging, intermediate, marts</summary><div class="sbody">
+<p>The convention dbt Labs recommends, and the one most teams follow:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Layer</th><th>What goes in it</th><th>Usually built as</th></tr></thead>
+  <tbody>
+    <tr><td>Staging <code>stg_</code></td><td>One model per raw table. Rename, cast types, fix obvious mess. No joins, no business logic. The only layer that reads <code>source()</code>.</td><td>Views</td></tr>
+    <tr><td>Intermediate <code>int_</code></td><td>Joins and business logic that's reused, kept out of sight of analysts.</td><td>Views or ephemeral</td></tr>
+    <tr><td>Marts <code>fct_</code> / <code>dim_</code></td><td><strong>Facts</strong> (events, things that happen: passes, behaviour entries, invoices) and <strong>dimensions</strong> (things: schools, districts, accounts). This is what Metabase and analysts read.</td><td>Tables or incremental</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Think of it like your Oracle reporting work: raw extracts, then cleaned views, then the reporting tables people query. The difference is that every step is a file in git with tests attached.</p>
+
+</div></details><details class="sub" id="p-dbt-materializations"><summary>Materializations</summary><div class="sbody">
+<p>A model's <strong>materialization</strong> decides what dbt builds in Snowflake. You set it in the model or for a whole folder in <code>dbt_project.yml</code>.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Type</th><th>What it creates</th><th>Use when</th></tr></thead>
+  <tbody>
+    <tr><td>view</td><td>A view. Nothing stored. Computed when queried.</td><td>Staging. Cheap to build, light to query.</td></tr>
+    <tr><td>table</td><td>A full table, rebuilt from scratch every run</td><td>Marts that are small or medium sized</td></tr>
+    <tr><td>incremental</td><td>A table where each run only processes new or changed rows</td><td>Big event tables. This is a major cost lever.</td></tr>
+    <tr><td>ephemeral</td><td>Nothing. Inlined as a CTE into models that use it.</td><td>Small helper logic</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="codecap">models/marts/fct_hall_passes.sql (incremental)</p>
+<pre><code>{{ config(materialized='incremental', unique_key='pass_id') }}
+
+<span class="k">select</span> * <span class="k">from</span> {{ ref('stg_app__hall_passes') }}
+
+{% if is_incremental() %}
+  <span class="c">-- only on later runs: rows newer than what's already in this table</span>
+  <span class="k">where</span> loaded_at &gt; (<span class="k">select</span> max(loaded_at) <span class="k">from</span> {{ this }})
+{% endif %}</code></pre>
+<p>On the first run, dbt builds the whole table. After that it merges only new rows, using <code>unique_key</code> to update rows that changed. <code>dbt build --full-refresh</code> rebuilds it from scratch when the logic changes.</p>
+
+</div></details><details class="sub" id="p-dbt-tests-and-freshness"><summary>Tests and freshness</summary><div class="sbody">
+<p>Tests are declared in YAML next to the models. Each one compiles to a query that returns the rows that break the rule. Zero rows means it passes.</p>
+<p class="codecap">models/staging/app/_app__models.yml</p>
+<pre><code><span class="k">models:</span>
+  - <span class="k">name:</span> stg_app__hall_passes
+    <span class="k">description:</span> One row per hall pass issued in the Minga app.
+    <span class="k">columns:</span>
+      - <span class="k">name:</span> pass_id
+        <span class="k">data_tests:</span> [unique, not_null]
+      - <span class="k">name:</span> status
+        <span class="k">data_tests:</span>
+          - <span class="k">accepted_values:</span>
+              <span class="k">values:</span> ['active', 'ended', 'expired']
+      - <span class="k">name:</span> school_id
+        <span class="k">data_tests:</span>
+          - <span class="k">relationships:</span>
+              <span class="k">to:</span> ref('stg_app__schools')
+              <span class="k">field:</span> school_id</code></pre>
+<ul>
+  <li><strong>Generic tests</strong>: the four built-ins above (<code>unique</code>, <code>not_null</code>, <code>accepted_values</code>, <code>relationships</code>), plus many more from the <code>dbt_utils</code> and <code>dbt_expectations</code> packages.</li>
+  <li><strong>Singular tests</strong>: any SQL file in <code>tests/</code> that returns bad rows, e.g. "no pass ends before it starts".</li>
+  <li><strong>Unit tests</strong> (dbt 1.8 and later): feed a model fixed input rows and check the exact output. This tests the logic itself, like your golden-file tests in AscendAI.</li>
+  <li><strong>Model contracts</strong>: lock a mart's column names and types, so a change that would break a dashboard fails the build instead.</li>
+</ul>
+
+<h3>Source freshness: catching a silent Stitch failure</h3>
+<pre><code><span class="k">sources:</span>
+  - <span class="k">name:</span> app
+    <span class="k">database:</span> raw
+    <span class="k">loaded_at_field:</span> _sdc_batched_at
+    <span class="k">freshness:</span>
+      <span class="k">warn_after:</span> {count: 6, period: hour}
+      <span class="k">error_after:</span> {count: 24, period: hour}
+    <span class="k">tables:</span>
+      - <span class="k">name:</span> hall_passes</code></pre>
+<p><code>dbt source freshness</code> checks when each source last received data. If Stitch quietly stops syncing, this fails before anyone notices stale numbers in a dashboard. It's a direct answer to "a stack that runs on good intentions today."</p>
+
+</div></details><details class="sub" id="p-dbt-the-review-workflow"><summary>The review workflow</summary><div class="sbody">
+<p>The posting asks you to <em>"set the standard for how data work gets reviewed when a model can write the first draft."</em> In dbt, that standard is the pull request plus CI:</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 210" role="img" aria-label="Change flow: write SQL on a branch in a personal dev schema, open a pull request, CI builds and tests only the changed models and what depends on them, a reviewer checks it, it merges, and the scheduled production run picks it up. A failing test sends the change back to the branch.">
+    <defs>
+      <marker id="dbt-rv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="dbt-rv-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="62" y="40" text-anchor="middle" class="d-s">AI or a person</text>
+    <text x="62" y="54" text-anchor="middle" class="d-s">drafts the SQL</text>
+    <rect x="10" y="62" width="105" height="60" rx="8" class="d-box"/><text x="62" y="88" text-anchor="middle" class="d-t">Branch</text><text x="62" y="106" text-anchor="middle" class="d-s">dbt_william</text>
+    <line x1="115" y1="92" x2="135" y2="92" class="d-l" marker-end="url(#dbt-rv)"/>
+    <rect x="137" y="62" width="105" height="60" rx="8" class="d-box"/><text x="189" y="88" text-anchor="middle" class="d-t">Pull</text><text x="189" y="106" text-anchor="middle" class="d-t">request</text>
+    <line x1="242" y1="92" x2="262" y2="92" class="d-l" marker-end="url(#dbt-rv)"/>
+    <rect x="264" y="62" width="105" height="60" rx="8" class="d-box on"/><text x="316" y="88" text-anchor="middle" class="d-t on">CI build</text><text x="316" y="106" text-anchor="middle" class="d-s">changed + downstream</text>
+    <line x1="369" y1="92" x2="389" y2="92" class="d-l" marker-end="url(#dbt-rv)"/>
+    <rect x="391" y="62" width="105" height="60" rx="8" class="d-box"/><text x="443" y="88" text-anchor="middle" class="d-t">Review</text><text x="443" y="106" text-anchor="middle" class="d-s">SQL, tests, data diff</text>
+    <line x1="496" y1="92" x2="516" y2="92" class="d-l" marker-end="url(#dbt-rv)"/>
+    <rect x="518" y="62" width="105" height="60" rx="8" class="d-box"/><text x="570" y="88" text-anchor="middle" class="d-t">Merge</text><text x="570" y="106" text-anchor="middle" class="d-s">to main</text>
+    <line x1="623" y1="92" x2="643" y2="92" class="d-l" marker-end="url(#dbt-rv)"/>
+    <rect x="645" y="62" width="105" height="60" rx="8" class="d-box"/><text x="697" y="88" text-anchor="middle" class="d-t">Prod run</text><text x="697" y="106" text-anchor="middle" class="d-s">on schedule</text>
+    <path d="M316,124 C316,182 62,182 62,126" class="d-l on dash" marker-end="url(#dbt-rv-on)"/>
+    <text x="189" y="196" text-anchor="middle" class="d-s on">a failing test blocks the merge</text>
+  </svg>
+  </div>
+  <figcaption>Every change, whoever or whatever wrote it, runs through the same gate. CI builds only the changed models and their downstream into a throwaway schema, runs their tests, and blocks the merge on failure. A person still reviews the SQL and the data it produced.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>Environments</strong>: each developer builds into their own schema (<code>dbt_william</code>) using a dev <em>target</em>. Production builds into <code>analytics</code>. Same code, different target in <code>profiles.yml</code>.</li>
+  <li><strong>Slim CI</strong>: <code>dbt build --select state:modified+ --defer --state prod-artifacts/</code> builds only what changed plus downstream, and reads unchanged upstream models from production. Fast and cheap.</li>
+  <li><strong>What a reviewer checks</strong>: does the SQL make sense, are keys tested, did row counts change unexpectedly (a "data diff" against production), is new PII tagged, are docs written.</li>
+</ul>
+<div class="say">
+  <span class="tag">Your angle on AI review</span>
+  <p>When AI writes the first draft, the risk isn't syntax. It's SQL that runs fine and quietly produces wrong numbers: a join that duplicates rows, a filter that drops a school. The answer is tests that catch exactly that (unique keys, relationships, row-count checks, unit tests on tricky logic), plus a human reading the diff. That's the same discipline as your golden-file tests and your guarded Oracle MCP server: let the model draft, and don't let it ship unchecked.</p>
+</div>
+
+</div></details><details class="sub" id="p-dbt-snapshots-docs-and-grants"><summary>Snapshots, docs, and grants</summary><div class="sbody">
+<h3>Snapshots: keeping history Stitch doesn't</h3>
+<p>Stitch replicates the <em>current</em> state of a row. If a school's plan changes from Basic to Premium, the old value is gone. A dbt <strong>snapshot</strong> records each change as a new row with <code>dbt_valid_from</code> and <code>dbt_valid_to</code> (a "slowly changing dimension, type 2"). Finance and RevOps usually need this for questions like "what was this account's plan at renewal?"</p>
+
+<h3>Docs and lineage</h3>
+<p><code>dbt docs generate</code> builds a browsable site from your YAML descriptions, with the lineage graph above. <strong>Exposures</strong> let you declare which Metabase dashboards depend on which models, so you can see what breaks before you change something. This is how analysts learn to self-serve: they look up what a column means instead of asking you.</p>
+
+<h3>Access control as code</h3>
+<pre><code><span class="c"># dbt_project.yml</span>
+<span class="k">models:</span>
+  <span class="k">minga:</span>
+    <span class="k">marts:</span>
+      +materialized: table
+      +grants:
+        select: ['REPORTER', 'ANALYST']</code></pre>
+<p>dbt re-applies grants every time it builds, so permissions can't drift away from what's in git. Snowflake masking policies can be attached to tagged columns from dbt too, which ties this guide to the PII section of the Snowflake guide.</p>
+
+</div></details><details class="sub" id="p-dbt-dbt-core-or-dbt-cloud"><summary>dbt Core or dbt Cloud</summary><div class="sbody">
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>dbt Core</th><th>dbt Cloud</th></tr></thead>
+  <tbody>
+    <tr><td>What it is</td><td>Free, open-source command-line tool (Python package)</td><td>dbt Labs' hosted product, priced per seat (dbt Labs now markets it as the "dbt platform")</td></tr>
+    <tr><td>Running it</td><td>You schedule it yourself: Airflow, GitHub Actions, cron</td><td>Built-in job scheduler and CI on pull requests</td></tr>
+    <tr><td>Editing</td><td>Your own editor (VS Code)</td><td>Browser IDE, easier for analysts who don't live in git</td></tr>
+    <tr><td>Extras</td><td>Community packages</td><td>Hosted docs, Semantic Layer, column-level lineage, alerts</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For Minga, the deciding question is how much the RevOps analysts will write models themselves. If a lot, dbt Cloud's browser IDE lowers the bar. If you write most of it, Core plus an orchestrator is cheaper. dbt Labs has also been rolling out a newer, faster engine called <strong>Fusion</strong>. Know the name, but don't claim experience with it.</p>
+
+</div></details><details class="sub" id="p-dbt-commands-you-ll-hear"><summary>Commands you'll hear</summary><div class="sbody">
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>dbt build</code></td><td>Runs models, tests, snapshots and seeds in graph order. The everyday command.</td></tr>
+    <tr><td><code>dbt run</code> / <code>dbt test</code></td><td>Just build models / just run tests</td></tr>
+    <tr><td><code>dbt source freshness</code></td><td>Checks when sources last got data</td></tr>
+    <tr><td><code>dbt snapshot</code></td><td>Records changes for snapshot tables</td></tr>
+    <tr><td><code>dbt seed</code></td><td>Loads small CSVs from the repo (lookup lists, mappings)</td></tr>
+    <tr><td><code>dbt docs generate</code></td><td>Builds the documentation site</td></tr>
+    <tr><td><code>dbt deps</code></td><td>Installs packages like <code>dbt_utils</code></td></tr>
+    <tr><td><code>-s model+</code></td><td>Select a model and everything downstream. <code>+model</code> selects upstream. <code>tag:pii</code> selects by tag.</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="codecap">a typical project layout</p>
+<pre><code>minga_analytics/
+├── dbt_project.yml          <span class="c"># project config, folder-level defaults</span>
+├── models/
+│   ├── staging/
+│   │   ├── app/             <span class="c"># one folder per source system</span>
+│   │   └── hubspot/
+│   ├── intermediate/
+│   └── marts/
+│       ├── finance/
+│       └── revops/
+├── snapshots/
+├── seeds/
+├── tests/                   <span class="c"># singular tests</span>
+└── macros/                  <span class="c"># reusable Jinja functions</span></code></pre>
+
+</div></details><details class="sub" id="p-dbt-interview-ready-answers"><summary>Interview-ready answers</summary><div class="sbody">
+<div class="say">
+  <span class="tag">If asked: "Have you used dbt?"</span>
+  <blockquote>"Not in production. But dbt is SQL in version control, reviewed, tested, and deployed through CI, and that's how I already work. Most of the learning is its conventions: ref and source, the staging-to-marts layering, the testing YAML. The judgement parts, what to test and how to keep student data out of the wrong places, I bring with me."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you introduce dbt here?"</span>
+  <blockquote>"Start small and visible. Find the five Metabase dashboards people rely on most, trace them back to the raw Stitch tables, and build staging models for just those sources, with key tests and source freshness. Then build marts behind those dashboards and repoint them. Analysts see better numbers in weeks, and the pattern is set for everything after."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you let RevOps analysts build without slowing down?"</span>
+  <blockquote>"Clear layers so they know where to build, a short style guide, docs they can browse, and a pull-request template with the checks I'd look for. Reviews should be fast, and CI should catch the mechanical problems, so my review is about the logic. Same thing I did at TRU teaching staff to run their own reporting."</blockquote>
+</div>
+
+</div></details><details class="sub" id="p-dbt-flashcards"><summary>Flashcards</summary><div class="sbody">
+<div class="cards">
+  <details class="card"><summary>What does dbt actually do?</summary><p>Compiles SELECT-statement models (SQL + Jinja) into DDL, runs them in the warehouse in dependency order, and tests the results. It doesn't move data.</p></details>
+  <details class="card"><summary>ref() vs source()?</summary><p><code>source()</code> points at raw tables loaded by something else (Stitch). <code>ref()</code> points at another dbt model. Both add edges to the dependency graph.</p></details>
+  <details class="card"><summary>Name the four built-in generic tests.</summary><p>unique, not_null, accepted_values, relationships.</p></details>
+  <details class="card"><summary>When would you make a model incremental?</summary><p>When it's large and append-heavy (events). Each run processes only new or changed rows, saving time and Snowflake credits.</p></details>
+  <details class="card"><summary>What is a snapshot for?</summary><p>Keeping history of rows that get overwritten in the source (type 2 slowly changing dimension), using dbt_valid_from and dbt_valid_to.</p></details>
+  <details class="card"><summary>What does <code>state:modified+</code> do in CI?</summary><p>Selects only models changed in this branch plus their downstream, comparing against the production manifest. Used with --defer for fast "slim CI".</p></details>
+  <details class="card"><summary>What are staging models allowed to do?</summary><p>Rename, cast, light cleaning. One per source table. No joins or business logic. They're the only models that read source().</p></details>
+  <details class="card"><summary>How does dbt help self-serve?</summary><p>Generated docs with column descriptions and lineage, exposures that link dashboards to models, and a reviewed path for analysts to contribute their own models.</p></details>
+</div>
+
+</div></details><details class="sub" id="p-dbt-try-it-yourself"><summary>Try it yourself</summary><div class="sbody">
+<p>dbt Core is free, and dbt Labs publishes a sample project called <strong>jaffle shop</strong> (a made-up sandwich shop) built for learning. Pair it with the Snowflake trial:</p>
+<ul class="steps">
+  <li><code>python -m pip install dbt-core dbt-snowflake</code>, then <code>dbt init</code> and point it at your trial account.</li>
+  <li>Load the jaffle shop CSVs with <code>dbt seed</code>, or declare a Snowflake sample table as a source.</li>
+  <li>Write two staging models and one mart that joins them, using <code>ref()</code>.</li>
+  <li>Add unique and not_null tests, break one on purpose, and watch <code>dbt build</code> fail.</li>
+  <li>Convert the mart to incremental and run it twice.</li>
+  <li>Run <code>dbt docs generate</code> and <code>dbt docs serve</code> and look at the lineage graph.</li>
+  <li>Put it in a GitHub repo with a GitHub Actions job that runs <code>dbt build</code> on pull requests. That's a small, real demo of "review standards for data work."</li>
+</ul>
+
+
+</div></details></div></details><details class="part" id="p-af" style="--accent: var(--af)"><summary><p class="eyebrow">Study guide 3 of 4</p><span class="ptitle">Airflow Field Guide</span></summary><div class="pbody"><p class="lede">Apache Airflow is the best-known orchestration tool, the thing that runs each pipeline step in the right order and tells you when one fails. The posting says Minga's stack "runs on good intentions today." This guide explains what orchestration would change.</p><section class="tldr" aria-labelledby="af-tldr">
+  <h2 id="af-tldr">The one-minute version</h2>
+  <ul>
+    <li>You write workflows in <strong>Python</strong> as <strong>DAGs</strong> (directed acyclic graphs): a set of tasks plus the order they run in.</li>
+    <li>Airflow's <strong>scheduler</strong> starts each run on time, runs each task once the tasks before it succeed, retries failures, and records every run's state.</li>
+    <li>It's a conductor, not an engine. Tasks tell other systems (Stitch, Snowflake, dbt) to do the heavy work, then wait for the result.</li>
+    <li>Version 3.0 came out in April 2025 with a new UI, DAG versioning, and "assets" for data-aware scheduling. Most tutorials online still show version 2.</li>
+    <li>Alternatives in the same category: <strong>Dagster</strong> and <strong>Prefect</strong>. The posting only asks for working knowledge of at least one orchestration tool, so any of them counts.</li>
+  </ul>
+</section>
+
+
+
+
+<details class="sub" id="p-af-where-it-sits-at-minga"><summary>Where it sits at Minga</summary><div class="sbody">
+<p>The posting: <em>"Own ingestion end to end: harden or replace our current Stitch pipelines and bring proper orchestration to a stack that runs on good intentions today."</em></p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Minga data stack with Airflow highlighted: Airflow first triggers Stitch to load data, then runs dbt to transform it inside Snowflake.">
+    <defs>
+      <marker id="af-sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="af-sa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="70" y="76" text-anchor="middle" class="d-s">Sources</text>
+    <rect x="10" y="88" width="120" height="32" rx="6" class="d-box"/><text x="70" y="109" text-anchor="middle" class="d-s">Product DB</text>
+    <rect x="10" y="128" width="120" height="32" rx="6" class="d-box"/><text x="70" y="149" text-anchor="middle" class="d-s">HubSpot</text>
+    <rect x="10" y="168" width="120" height="32" rx="6" class="d-box"/><text x="70" y="189" text-anchor="middle" class="d-s">Other SaaS</text>
+    <line x1="130" y1="104" x2="168" y2="138" class="d-l" marker-end="url(#af-sa)"/>
+    <line x1="130" y1="144" x2="168" y2="144" class="d-l" marker-end="url(#af-sa)"/>
+    <line x1="130" y1="184" x2="168" y2="150" class="d-l" marker-end="url(#af-sa)"/>
+    <rect x="170" y="118" width="100" height="52" rx="8" class="d-box"/><text x="220" y="141" text-anchor="middle" class="d-t">Stitch</text><text x="220" y="158" text-anchor="middle" class="d-s">extract + load</text>
+    <rect x="170" y="12" width="100" height="40" rx="8" class="d-box on"/><text x="220" y="37" text-anchor="middle" class="d-t on">Airflow</text>
+    <line x1="220" y1="52" x2="220" y2="116" class="d-l on dash" marker-end="url(#af-sa-on)"/><text x="228" y="90" class="d-s on">1. trigger</text>
+    <line x1="270" y1="32" x2="408" y2="32" class="d-l on dash" marker-end="url(#af-sa-on)"/><text x="339" y="25" text-anchor="middle" class="d-s on">2. then run</text>
+    <rect x="410" y="12" width="100" height="40" rx="8" class="d-box"/><text x="460" y="37" text-anchor="middle" class="d-t">dbt</text>
+    <line x1="460" y1="52" x2="460" y2="78" class="d-l" marker-end="url(#af-sa)"/><text x="468" y="70" class="d-s">sends SQL</text>
+    <rect x="310" y="80" width="295" height="150" rx="10" class="d-group"/>
+    <text x="458" y="103" text-anchor="middle" class="d-t">Snowflake</text>
+    <text x="458" y="120" text-anchor="middle" class="d-s">one database, three layers</text>
+    <line x1="270" y1="150" x2="320" y2="163" class="d-l" marker-end="url(#af-sa)"/><text x="293" y="140" text-anchor="middle" class="d-s">load</text>
+    <rect x="322" y="140" width="76" height="50" rx="6" class="d-box"/><text x="360" y="162" text-anchor="middle" class="d-t">RAW</text><text x="360" y="179" text-anchor="middle" class="d-s">as loaded</text>
+    <line x1="398" y1="165" x2="420" y2="165" class="d-l" marker-end="url(#af-sa)"/>
+    <rect x="422" y="140" width="76" height="50" rx="6" class="d-box"/><text x="460" y="162" text-anchor="middle" class="d-t">STAGING</text><text x="460" y="179" text-anchor="middle" class="d-s">cleaned</text>
+    <line x1="498" y1="165" x2="520" y2="165" class="d-l" marker-end="url(#af-sa)"/>
+    <rect x="522" y="140" width="76" height="50" rx="6" class="d-box"/><text x="560" y="162" text-anchor="middle" class="d-t">MARTS</text><text x="560" y="179" text-anchor="middle" class="d-s">modelled</text>
+    <text x="460" y="214" text-anchor="middle" class="d-s">dbt models build each layer</text>
+    <line x1="598" y1="165" x2="658" y2="165" class="d-l" marker-end="url(#af-sa)"/><text x="628" y="156" text-anchor="middle" class="d-s">queries</text>
+    <rect x="660" y="140" width="110" height="50" rx="8" class="d-box"/><text x="715" y="162" text-anchor="middle" class="d-t">Metabase</text><text x="715" y="179" text-anchor="middle" class="d-s">dashboards</text>
+    <text x="715" y="212" text-anchor="middle" class="d-s">RevOps · Finance</text>
+    <text x="715" y="228" text-anchor="middle" class="d-s">CX · Product</text>
+  </svg>
+  </div>
+  <figcaption>Airflow (highlighted) doesn't touch the data. It decides when each step runs and makes the next step wait for the previous one to succeed.</figcaption>
+</figure>
+
+</div></details><details class="sub" id="p-af-the-problem-it-solves"><summary>The problem it solves</summary><div class="sbody">
+<p>Without an orchestrator, each tool runs on its own clock. Stitch syncs on its schedule, dbt runs at a fixed time on a cron job, and everyone hopes the load finished first. Usually it does. When it doesn't, dashboards show half-loaded data and nobody gets told.</p>
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 265" role="img" aria-label="Top: Stitch's load runs long and the 6:00 dbt cron starts before it finishes, building on partial data. Bottom: with an orchestrator, dbt starts only when the load reports success.">
+    <defs>
+      <marker id="af-wy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <text x="10" y="44" class="d-t">Separate</text>
+    <text x="10" y="62" class="d-t">schedules</text>
+    <rect x="200" y="30" width="267" height="28" rx="5" class="d-box"/><text x="214" y="49" class="d-s">Stitch load (ran long today)</text>
+    <rect x="360" y="70" width="80" height="28" rx="5" class="d-box warn"/><text x="400" y="89" text-anchor="middle" class="d-s warn">dbt</text>
+    <text x="450" y="89" class="d-s warn">6:00 cron fires anyway, builds on partial data</text>
+    <line x1="10" y1="122" x2="750" y2="122" class="d-axis"/>
+    <text x="10" y="158" class="d-t">Orchestrated</text>
+    <rect x="200" y="144" width="267" height="28" rx="5" class="d-box"/><text x="214" y="163" class="d-s">Stitch load (ran long today)</text>
+    <path d="M467,158 C478,158 478,198 482,198" class="d-l on" marker-end="url(#af-wy)"/>
+    <rect x="484" y="184" width="80" height="28" rx="5" class="d-box on"/><text x="524" y="203" text-anchor="middle" class="d-s on">dbt</text>
+    <text x="574" y="203" class="d-s on">starts when the load succeeds</text>
+    <line x1="120" y1="236" x2="750" y2="236" class="d-axis"/>
+    <line x1="200" y1="232" x2="200" y2="240" class="d-axis"/><text x="200" y="256" text-anchor="middle" class="d-s">5:00</text>
+    <line x1="360" y1="232" x2="360" y2="240" class="d-axis"/><text x="360" y="256" text-anchor="middle" class="d-s">6:00</text>
+    <line x1="520" y1="232" x2="520" y2="240" class="d-axis"/><text x="520" y="256" text-anchor="middle" class="d-s">7:00</text>
+    <line x1="680" y1="232" x2="680" y2="240" class="d-axis"/><text x="680" y="256" text-anchor="middle" class="d-s">8:00</text>
+  </svg>
+  </div>
+  <figcaption>Same morning, same slow load. On separate clocks, dbt starts at 6:00 regardless and builds on partial data with no alert. Orchestrated, dbt waits for the load to report success. If the load fails, dbt doesn't run at all and someone gets an alert.</figcaption>
+</figure>
+<p>An orchestrator gives you four things the stack lacks today: <strong>dependencies</strong> (run B after A succeeds), <strong>retries</strong> (try a flaky API call again), <strong>alerting</strong> (tell someone when it fails), and <strong>history</strong> (what ran, when, how long, and what broke).</p>
+
+</div></details><details class="sub" id="p-af-core-ideas"><summary>Core ideas</summary><div class="sbody">
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>DAG</td><td>One workflow: its tasks, their order, and its schedule. A Python file in the <code>dags/</code> folder. "Acyclic" means no loops.</td></tr>
+    <tr><td>Task</td><td>One step in a DAG, e.g. "trigger Stitch" or "run dbt build".</td></tr>
+    <tr><td>Operator</td><td>A ready-made task type. <code>BashOperator</code> runs a shell command, <code>SQLExecuteQueryOperator</code> runs SQL, and provider packages add operators for Snowflake, dbt Cloud, Slack, and more.</td></tr>
+    <tr><td>Sensor</td><td>A task that waits for something: a file to appear, an API to report "done".</td></tr>
+    <tr><td>TaskFlow</td><td>The modern style: plain Python functions decorated with <code>@task</code>, inside a function decorated with <code>@dag</code>.</td></tr>
+    <tr><td>DAG run</td><td>One execution of a DAG. Each has a <strong>logical date</strong> and a <strong>data interval</strong>, the slice of time it's responsible for.</td></tr>
+    <tr><td>Retries</td><td>How many times a failed task is retried, and how long to wait between tries.</td></tr>
+    <tr><td>Backfill</td><td>Running a DAG for past intervals, e.g. to rebuild last month after fixing a bug.</td></tr>
+    <tr><td>Connections</td><td>Stored credentials (Snowflake, Stitch API token) kept out of the code. Can come from a secrets manager.</td></tr>
+    <tr><td>XCom</td><td>Small values passed between tasks, like a job ID. Never use it for datasets.</td></tr>
+    <tr><td>Asset</td><td>(Airflow 3) A named piece of data. A DAG can be scheduled to run when an asset is updated instead of on a clock.</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div></details><details class="sub" id="p-af-a-dag-for-minga-sketched"><summary>A DAG for Minga, sketched</summary><div class="sbody">
+<p>This is a teaching sketch of a nightly pipeline: trigger the Stitch sync, wait for it, check freshness, build dbt, and alert on failure. It's in Airflow 3 style. Read it for the shape, not as production code.</p>
+<p class="codecap">dags/nightly_warehouse.py</p>
+<pre><code><span class="k">from</span> datetime <span class="k">import</span> timedelta
+<span class="k">from</span> pendulum <span class="k">import</span> datetime
+<span class="k">from</span> airflow.sdk <span class="k">import</span> dag, task
+<span class="k">from</span> airflow.providers.standard.operators.bash <span class="k">import</span> BashOperator
+
+
+<span class="k">def</span> alert_on_failure(context):
+    <span class="c"># post the failed task and a log link to Slack or email</span>
+    ...
+
+
+@dag(
+    schedule=<span class="k">"0 5 * * *"</span>,                         <span class="c"># 5:00 every day</span>
+    start_date=datetime(2026, 10, 1, tz=<span class="k">"America/Vancouver"</span>),
+    catchup=False,                                 <span class="c"># don't auto-run missed past days</span>
+    default_args={
+        <span class="k">"retries"</span>: 2,
+        <span class="k">"retry_delay"</span>: timedelta(minutes=5),
+        <span class="k">"on_failure_callback"</span>: alert_on_failure,
+    },
+)
+<span class="k">def</span> nightly_warehouse():
+
+    @task
+    <span class="k">def</span> trigger_stitch_sync() -&gt; str:
+        <span class="c"># call Stitch's API to start the sync; the token comes from an</span>
+        <span class="c"># Airflow Connection, never from this file</span>
+        ...
+        <span class="k">return</span> job_id
+
+    @task.sensor(poke_interval=300, timeout=3 * 60 * 60, mode=<span class="k">"reschedule"</span>)
+    <span class="k">def</span> wait_for_stitch(job_id: str):
+        <span class="c"># ask Stitch every 5 minutes whether the sync finished;</span>
+        <span class="c"># give up and fail after 3 hours</span>
+        ...
+
+    freshness = BashOperator(
+        task_id=<span class="k">"dbt_source_freshness"</span>,
+        bash_command=<span class="k">"cd /opt/dbt &amp;&amp; dbt source freshness --target prod"</span>,
+    )
+
+    build = BashOperator(
+        task_id=<span class="k">"dbt_build"</span>,
+        bash_command=<span class="k">"cd /opt/dbt &amp;&amp; dbt build --target prod"</span>,
+    )
+
+    wait_for_stitch(trigger_stitch_sync()) &gt;&gt; freshness &gt;&gt; build
+
+
+nightly_warehouse()</code></pre>
+<ul>
+  <li><code>&gt;&gt;</code> sets the order. Passing <code>trigger_stitch_sync()</code> into <code>wait_for_stitch</code> sets it too, and hands over the job ID.</li>
+  <li><code>mode="reschedule"</code> frees the worker slot between checks instead of holding it for 3 hours.</li>
+  <li>Running dbt as one <code>dbt build</code> task is the simplest option. The open-source <strong>Cosmos</strong> package (from Astronomer) instead turns each dbt model into its own Airflow task, so you can see and retry a single model.</li>
+</ul>
+
+</div></details><details class="sub" id="p-af-how-airflow-runs"><summary>How Airflow runs</summary><div class="sbody">
+
+<figure class="diagram">
+  <div class="scroll">
+  <svg viewBox="0 0 760 355" role="img" aria-label="Airflow components: DAG files from git are parsed by the DAG processor into the metadata database. The scheduler reads state and queues tasks for workers. Workers call external systems like Stitch and Snowflake and report status through the API server, which also serves the UI.">
+    <defs>
+      <marker id="af-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+      <marker id="af-ac-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head on"/></marker>
+    </defs>
+    <rect x="10" y="30" width="130" height="46" rx="8" class="d-box"/><text x="75" y="52" text-anchor="middle" class="d-t">DAG files</text><text x="75" y="68" text-anchor="middle" class="d-s">Python, in git</text>
+    <line x1="140" y1="53" x2="178" y2="53" class="d-l" marker-end="url(#af-ac)"/><text x="159" y="45" text-anchor="middle" class="d-s">reads</text>
+    <rect x="180" y="30" width="140" height="46" rx="8" class="d-box"/><text x="250" y="52" text-anchor="middle" class="d-t">DAG processor</text><text x="250" y="68" text-anchor="middle" class="d-s">parses the files</text>
+    <line x1="320" y1="62" x2="398" y2="118" class="d-l" marker-end="url(#af-ac)"/><text x="372" y="80" class="d-s">stores DAGs</text>
+    <rect x="360" y="120" width="150" height="56" rx="8" class="d-box"/><text x="435" y="144" text-anchor="middle" class="d-t">Metadata DB</text><text x="435" y="162" text-anchor="middle" class="d-s">Postgres: runs, states</text>
+    <rect x="180" y="120" width="140" height="56" rx="8" class="d-box on"/><text x="250" y="144" text-anchor="middle" class="d-t on">Scheduler</text><text x="250" y="162" text-anchor="middle" class="d-s">decides what runs</text>
+    <line x1="320" y1="148" x2="358" y2="148" class="d-l on" marker-start="url(#af-ac-on)" marker-end="url(#af-ac-on)"/><text x="339" y="140" text-anchor="middle" class="d-s">state</text>
+    <line x1="250" y1="176" x2="250" y2="208" class="d-l on" marker-end="url(#af-ac-on)"/><text x="258" y="197" class="d-s on">queues tasks</text>
+    <rect x="180" y="210" width="140" height="46" rx="8" class="d-box"/><text x="250" y="232" text-anchor="middle" class="d-t">Workers</text><text x="250" y="248" text-anchor="middle" class="d-s">run the tasks</text>
+    <path d="M320,233 H600 V178" class="d-l" marker-end="url(#af-ac)"/><text x="460" y="226" text-anchor="middle" class="d-s">report status (Task API)</text>
+    <rect x="560" y="120" width="180" height="56" rx="8" class="d-box"/><text x="650" y="144" text-anchor="middle" class="d-t">API server + UI</text><text x="650" y="162" text-anchor="middle" class="d-s">where you watch runs</text>
+    <line x1="558" y1="148" x2="512" y2="148" class="d-l" marker-end="url(#af-ac)"/><text x="535" y="140" text-anchor="middle" class="d-s">reads</text>
+    <line x1="225" y1="256" x2="180" y2="298" class="d-l" marker-end="url(#af-ac)"/><text x="190" y="280" text-anchor="end" class="d-s">trigger sync</text>
+    <line x1="275" y1="256" x2="320" y2="298" class="d-l" marker-end="url(#af-ac)"/><text x="306" y="280" class="d-s">dbt build</text>
+    <rect x="90" y="300" width="140" height="40" rx="8" class="d-box"/><text x="160" y="325" text-anchor="middle" class="d-t">Stitch API</text>
+    <rect x="260" y="300" width="160" height="40" rx="8" class="d-box"/><text x="340" y="325" text-anchor="middle" class="d-t">Snowflake</text>
+  </svg>
+  </div>
+  <figcaption>Airflow 3's main parts. The scheduler (highlighted) is the heart: it reads state from the metadata database and queues tasks when their time and dependencies are met. Workers do the calling and waiting. The real work happens in Stitch and Snowflake.</figcaption>
+</figure>
+<ul>
+  <li><strong>Executor</strong>: how tasks reach workers. <code>LocalExecutor</code> runs them on the same machine. <code>CeleryExecutor</code> uses a queue (Redis) and a pool of workers, like n8n's queue mode. <code>KubernetesExecutor</code> starts a pod per task.</li>
+  <li><strong>Keep DAG files light.</strong> The DAG processor re-parses them constantly, so no database calls or API calls at the top level of the file.</li>
+  <li><strong>Managed Airflow</strong> means someone else runs all of this: Astronomer (Astro), Amazon MWAA, or Google Cloud Composer. For a one-person data team, that's usually the right call.</li>
+</ul>
+
+</div></details><details class="sub" id="p-af-what-makes-a-pipeline-reliable"><summary>What makes a pipeline reliable</summary><div class="sbody">
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Practice</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Idempotent tasks</td><td>Running a task twice gives the same result as running it once, so retries and backfills are safe. You built this into CDWTool: duplicate protection per reporting period.</td></tr>
+    <tr><td>Retries with a delay</td><td>Most API failures are temporary. Two or three retries a few minutes apart clear most of them.</td></tr>
+    <tr><td>Timeouts</td><td>A hung task should fail loudly, not run all night.</td></tr>
+    <tr><td>Alerts that are tested</td><td>An alert path you've never seen fire might not work. Same lesson as your n8n deliberate-failure test.</td></tr>
+    <tr><td>Process by data interval</td><td>Each run handles "its" slice of time, so reruns and backfills don't double-count.</td></tr>
+    <tr><td>Heavy work outside Airflow</td><td>Workers call Snowflake and Stitch. They don't load millions of rows into their own memory.</td></tr>
+    <tr><td>Secrets in Connections</td><td>Credentials in Airflow Connections or a secrets manager, never in the DAG file or git.</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div></details><details class="sub" id="p-af-from-n8n-to-airflow"><summary>From n8n to Airflow</summary><div class="sbody">
+<p>Your n8n stack teaches many of the same ideas. Use this to learn faster, but don't say n8n experience <em>is</em> Airflow experience.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>In your n8n setup</th><th>In Airflow</th></tr></thead>
+  <tbody>
+    <tr><td>Workflow</td><td>DAG</td></tr>
+    <tr><td>Node</td><td>Task (operator, sensor, or @task function)</td></tr>
+    <tr><td>Node retry settings</td><td><code>retries</code>, <code>retry_delay</code></td></tr>
+    <tr><td>Global error workflow</td><td><code>on_failure_callback</code>, or a notifier</td></tr>
+    <tr><td>Workflow JSON built by a Python script, deployed from git</td><td>DAGs are Python files in git to begin with</td></tr>
+    <tr><td>Queue mode: main + worker + Redis</td><td>Scheduler + CeleryExecutor workers + Redis</td></tr>
+    <tr><td>Executions list</td><td>Grid view of DAG runs and task states</td></tr>
+    <tr><td>Credentials</td><td>Connections</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="careful">
+  <span class="tag">Keep it accurate</span>
+  <p>The honest line is: "I haven't run Airflow or another dedicated orchestrator. I've built workflow automation with n8n in queue mode, with retries, a tested error handler, and workflows deployed from git, so the concepts are familiar. The tool is new to me."</p>
+</div>
+
+</div></details><details class="sub" id="p-af-airflow-or-something-else"><summary>Airflow or something else?</summary><div class="sbody">
+<p>The posting asks for "working knowledge of at least one orchestration tool", not Airflow by name. A good senior answer weighs the options rather than assuming one.</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Option</th><th>Good at</th><th>Watch out for</th></tr></thead>
+  <tbody>
+    <tr><td>Airflow (managed)</td><td>The industry standard, huge provider library, easy to hire for</td><td>Task-centric: it knows tasks ran, not what data they made. Needs Cosmos or similar for a model-level dbt view.</td></tr>
+    <tr><td>Dagster</td><td>Built around data assets. Strong dbt integration: each model is an asset with lineage and freshness. Hosted option: Dagster+.</td><td>Smaller community and fewer people know it</td></tr>
+    <tr><td>Prefect</td><td>Plain Python, light to start, hosted option</td><td>Less dbt-specific tooling</td></tr>
+    <tr><td>dbt Cloud jobs + Stitch schedules</td><td>Nothing new to run. Good first step.</td><td>Still two clocks. Doesn't solve the dependency problem above.</td></tr>
+    <tr><td>Snowflake Tasks</td><td>Scheduled SQL inside Snowflake, no extra system</td><td>Can't easily drive Stitch or anything outside Snowflake</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div></details><details class="sub" id="p-af-interview-ready-answers"><summary>Interview-ready answers</summary><div class="sbody">
+<div class="say">
+  <span class="tag">If asked: "What orchestration have you used?"</span>
+  <blockquote>"No dedicated orchestrator in production. I built and run an n8n stack in queue mode: per-source retries, a global error handler I proved with a deliberate failure, and workflows generated by a Python script and deployed from git. So I know the problems an orchestrator solves. Airflow and Dagster would be new tools for me, not new ideas."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you bring orchestration to our stack?"</span>
+  <blockquote>"First, make the steps depend on each other: load, check freshness, transform, test, and alert a human when something fails. Then pick the tool. As the only data engineer I'd want it managed rather than another server to babysit, and I'd look at what the platform team already runs. Between managed Airflow and Dagster+, I'd lean on which fits dbt and the team best, and I'd want to try both on a real pipeline first."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">Good questions to ask them</span>
+  <ul>
+    <li>How do you find out today when a Stitch sync fails?</li>
+    <li>What does the Platform &amp; SRE team already run (AWS, Kubernetes, anything managed)?</li>
+    <li>Is there an orchestrator in use elsewhere in engineering I should align with?</li>
+  </ul>
+</div>
+
+</div></details><details class="sub" id="p-af-flashcards"><summary>Flashcards</summary><div class="sbody">
+<div class="cards">
+  <details class="card"><summary>What is a DAG?</summary><p>A directed acyclic graph: a workflow's tasks and the order they run in, with no loops. In Airflow, a Python file.</p></details>
+  <details class="card"><summary>Operator vs sensor?</summary><p>An operator does something (run SQL, run a command). A sensor waits for something (a file, an API status) before the next task starts.</p></details>
+  <details class="card"><summary>What does the scheduler do?</summary><p>Decides which DAG runs and tasks are due, based on schedules and whether upstream tasks succeeded, and queues them for workers.</p></details>
+  <details class="card"><summary>Why must tasks be idempotent?</summary><p>So retries and backfills are safe: running a task twice for the same interval gives the same result instead of duplicates.</p></details>
+  <details class="card"><summary>What is catchup?</summary><p>Whether Airflow automatically runs every missed interval since start_date. Off by default in Airflow 3. Backfills do it on purpose.</p></details>
+  <details class="card"><summary>Where do credentials live?</summary><p>In Airflow Connections, optionally backed by a secrets manager. Never in DAG code.</p></details>
+  <details class="card"><summary>What's the main difference with Dagster?</summary><p>Airflow schedules tasks. Dagster models data assets (tables, models) and their lineage, which fits dbt naturally.</p></details>
+  <details class="card"><summary>What changed in Airflow 3?</summary><p>Released April 2025: new React UI, DAG versioning, assets (renamed from datasets), a Task Execution API between workers and the core, and catchup off by default.</p></details>
+</div>
+
+</div></details><details class="sub" id="p-af-try-it-yourself"><summary>Try it yourself</summary><div class="sbody">
+<p>You already run Docker Compose, so a local Airflow is an evening's work.</p>
+<ul class="steps">
+  <li>Install the Astronomer CLI and run <code>astro dev init</code> then <code>astro dev start</code>. It starts a local Airflow in Docker with the UI at <code>localhost:8080</code>. (Or <code>pip install apache-airflow</code> and <code>airflow standalone</code>.)</li>
+  <li>Write a three-task TaskFlow DAG and watch it in the grid view.</li>
+  <li>Make one task fail on purpose. Watch the retries, then the failure callback fire.</li>
+  <li>Add a Snowflake connection to your trial account and run a dbt build from a task.</li>
+  <li>Optional: install <code>astronomer-cosmos</code> and render your jaffle shop dbt project as an Airflow task group.</li>
+</ul>
+
+
+</div></details></div></details><details class="part" id="p-py" style="--accent: var(--py)"><summary><p class="eyebrow">Study guide 4 of 4</p><span class="ptitle">Python Brush-Up</span></summary><div class="pbody"><p class="lede">Ted's repost of the job lists Python right next to SQL. You won't be asked to write a web framework. You might be asked to load data from an API, clean up some JSON, or explain how you'd make a script safe to run twice. This guide covers that slice of Python, with comparisons to the Oracle, C# and TypeScript you already know.</p><section class="tldr" aria-labelledby="py-tldr">
+  <h2 id="py-tldr">The one-minute version</h2>
+  <ul>
+    <li>For a data engineer, Python is the <strong>glue</strong>: pull from APIs and databases, reshape JSON, load into the warehouse, and describe pipelines (Airflow DAGs are Python files).</li>
+    <li>The heavy lifting on rows belongs in <strong>SQL inside Snowflake</strong>. Python moves data and handles the parts SQL can't reach.</li>
+    <li>Know cold: dicts and lists, comprehensions, functions with type hints, <code>with</code>, exceptions, generators, f-strings.</li>
+    <li>Know the habits: <strong>parameterized queries</strong>, UTC everywhere, retries with backoff, idempotent loads, secrets from the environment, small testable functions.</li>
+    <li>Your honest line: "I write Python for pipelines and tooling. It isn't my first language, and I'm not going to pretend it is."</li>
+  </ul>
+</section>
+
+
+
+
+<details class="sub" id="p-py-where-python-shows-up-at-minga"><summary>Where Python shows up at Minga</summary><div class="sbody">
+<p>Their data stack is Stitch, Snowflake and Metabase, with dbt and orchestration still to come. Python would most likely appear in these places:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Where</th><th>What the Python does</th></tr></thead>
+  <tbody>
+    <tr><td>Orchestration (Airflow or Dagster)</td><td>The pipeline definitions themselves are Python. Each task calls a loader, runs dbt, or checks freshness.</td></tr>
+    <tr><td>Custom loaders</td><td>Anything Stitch handles poorly: a MongoDB collection with deep nesting, a HubSpot object Stitch doesn't sync, an SIS file drop.</td></tr>
+    <tr><td>Data-quality and cost checks</td><td>Small scripts that query Snowflake, compare counts with the source, and raise an alert.</td></tr>
+    <tr><td>Legacy-to-new migration tooling</td><td>The posting's "tooling that maps legacy data into the new platform as customers migrate." Read old shape, transform, write new shape, report what didn't fit.</td></tr>
+    <tr><td>dbt Python models</td><td>dbt can run Python models in Snowflake (via Snowpark). Rarely needed. SQL models come first.</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div></details><details class="sub" id="p-py-syntax-refresher"><summary>Syntax refresher</summary><div class="sbody">
+<p>If you're coming from C# or TypeScript, the big differences are indentation instead of braces, no semicolons, and dynamic types with optional hints.</p>
+
+<p class="codecap">basics.py</p>
+<pre><code><span class="c"># Variables and types: no declarations. Hints are optional and not enforced at runtime.</span>
+school_count: int = 2000
+name = "Minga"
+ratio = 3 / 2          <span class="c"># 1.5 (true division)</span>
+whole = 3 // 2         <span class="c"># 1   (floor division)</span>
+nothing = None         <span class="c"># Python's null</span>
+
+<span class="c"># f-strings for formatting</span>
+print(f"{name} serves {school_count:,} schools")   <span class="c"># Minga serves 2,000 schools</span>
+
+<span class="c"># Lists, dicts, sets, tuples</span>
+schools = ["Kelowna SS", "Rutland SS"]
+student = {"id": 42, "name": "Ana", "grade": 10}
+seen = {"a", "b"}                  <span class="c"># set: unique values, fast membership</span>
+point = (49.88, -119.49)           <span class="c"># tuple: fixed, immutable</span>
+
+<span class="c"># Safe dict access</span>
+grade = student.get("grade")         <span class="c"># None if missing, no exception</span>
+email = student.get("email", "")     <span class="c"># default value</span>
+
+<span class="c"># Functions with type hints and default arguments</span>
+<span class="k">def</span> full_name(first: str, last: str, sep: str = " ") -&gt; str:
+    <span class="k">return</span> f"{first}{sep}{last}"
+
+<span class="c"># Comprehensions: the Python way to map and filter</span>
+ids = [s["id"] <span class="k">for</span> s <span class="k">in</span> students <span class="k">if</span> s["active"]]
+by_id = {s["id"]: s <span class="k">for</span> s <span class="k">in</span> students}       <span class="c"># dict comprehension: an index</span>
+
+<span class="c"># Unpacking</span>
+first, *rest = [1, 2, 3]            <span class="c"># first=1, rest=[2, 3]</span>
+<span class="k">for</span> i, s <span class="k">in</span> enumerate(schools, start=1): ...
+<span class="k">for</span> key, value <span class="k">in</span> student.items(): ...
+
+<span class="c"># Context managers: like C# using. The file closes even if an error happens.</span>
+<span class="k">with</span> open("roster.csv", newline="", encoding="utf-8") <span class="k">as</span> f:
+    text = f.read()
+
+<span class="c"># Exceptions</span>
+<span class="k">try</span>:
+    value = int(row["grade"])
+<span class="k">except</span> (KeyError, ValueError) <span class="k">as</span> e:
+    log.warning("bad grade in row %s: %s", row.get("id"), e)
+    value = None
+<span class="k">finally</span>:
+    ...</code></pre>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>You know this</th><th>In Python</th></tr></thead>
+  <tbody>
+    <tr><td>C# <code>List&lt;T&gt;</code> / TS array</td><td><code>list</code></td></tr>
+    <tr><td>C# <code>Dictionary</code> / TS object or <code>Map</code></td><td><code>dict</code> (keeps insertion order)</td></tr>
+    <tr><td>LINQ <code>.Where().Select()</code> / TS <code>.filter().map()</code></td><td>comprehension: <code>[f(x) for x in xs if cond]</code></td></tr>
+    <tr><td><code>null</code></td><td><code>None</code>, checked with <code>is None</code></td></tr>
+    <tr><td><code>&amp;&amp;</code>, <code>||</code>, <code>!</code></td><td><code>and</code>, <code>or</code>, <code>not</code></td></tr>
+    <tr><td>C# <code>using</code></td><td><code>with</code></td></tr>
+    <tr><td>PL/SQL cursor <code>FOR</code> loop</td><td><code>for row in cursor:</code></td></tr>
+    <tr><td>Interfaces / DTOs</td><td><code>@dataclass</code> or <code>TypedDict</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Truthiness.</strong> Empty things are false: <code>0</code>, <code>""</code>, <code>[]</code>, <code>{}</code>, <code>None</code>. So <code>if rows:</code> means "if there are any rows." Be careful when 0 is a real value: <code>if grade:</code> treats grade 0 as missing. Use <code>if grade is not None:</code> instead.</p>
+
+<p class="codecap">dataclass.py</p>
+<pre><code><span class="k">from</span> dataclasses <span class="k">import</span> dataclass
+
+<span class="k">@dataclass</span>(frozen=True)
+<span class="k">class</span> Student:
+    id: int
+    school_id: int
+    grade: int | None = None     <span class="c"># "int or None" (Python 3.10+)</span>
+
+s = Student(id=42, school_id=7)
+print(s)   <span class="c"># Student(id=42, school_id=7, grade=None)</span></code></pre>
+
+</div></details><details class="sub" id="p-py-json-and-nested-documents"><summary>JSON and nested documents</summary><div class="sbody">
+<p>Minga's app database is MongoDB, so most product data arrives as nested documents. In Python a parsed JSON document is just dicts and lists.</p>
+
+<p class="codecap">json_basics.py</p>
+<pre><code><span class="k">import</span> json
+
+doc = json.loads('{"_id": "abc", "student": {"id": 42, "name": "Ana"}, "tags": ["late", "hallpass"]}')
+doc["student"]["name"]          <span class="c"># "Ana"</span>
+doc.get("school", {}).get("id") <span class="c"># None, without a KeyError</span>
+
+text = json.dumps(doc, indent=2, default=str)  <span class="c"># default=str handles datetimes and ObjectIds</span></code></pre>
+
+<p>A classic task: flatten a nested document into columns. In Snowflake you'd do this with <code>LATERAL FLATTEN</code> on a <code>VARIANT</code> column, and that's usually the better place. But you should be able to write it in Python too:</p>
+
+<p class="codecap">flatten.py</p>
+<pre><code><span class="k">def</span> flatten(d: dict, parent: str = "", sep: str = "_") -&gt; dict:
+    <span class="c">"""{"student": {"id": 42}} -&gt; {"student_id": 42}. Lists are kept as-is."""</span>
+    out = {}
+    <span class="k">for</span> key, value <span class="k">in</span> d.items():
+        name = f"{parent}{sep}{key}" <span class="k">if</span> parent <span class="k">else</span> key
+        <span class="k">if</span> isinstance(value, dict):
+            out.update(flatten(value, name, sep))
+        <span class="k">else</span>:
+            out[name] = value
+    <span class="k">return</span> out
+
+flatten({"_id": "abc", "student": {"id": 42, "name": "Ana"}, "tags": ["late"]})
+<span class="c"># {"_id": "abc", "student_id": 42, "student_name": "Ana", "tags": ["late"]}</span></code></pre>
+<p>Arrays are the hard part. A document with three tags becomes three rows in a child table (like <code>FLATTEN</code> in Snowflake, or a detail table in Oracle). Say that out loud in an interview. It shows you know where the real modelling decision is.</p>
+
+</div></details><details class="sub" id="p-py-dates-and-time-zones"><summary>Dates and time zones</summary><div class="sbody">
+<p>Schools are spread across US time zones, and "tardy at 8:05" means local time. Store UTC, convert for display.</p>
+<p class="codecap">time.py</p>
+<pre><code><span class="k">from</span> datetime <span class="k">import</span> datetime, timezone, timedelta
+<span class="k">from</span> zoneinfo <span class="k">import</span> ZoneInfo
+
+now = datetime.now(timezone.utc)                 <span class="c"># aware, UTC. Don't use utcnow() (deprecated in 3.12)</span>
+since = now - timedelta(days=1)
+
+ts = datetime.fromisoformat("2026-10-15T13:00:00-07:00")
+ts.astimezone(timezone.utc)                      <span class="c"># 2026-10-15 20:00:00+00:00</span>
+ts.astimezone(ZoneInfo("America/Chicago"))       <span class="c"># school-local time</span>
+
+now.isoformat()   <span class="c"># "2026-10-15T20:00:00.123456+00:00", good for APIs and logs</span></code></pre>
+<p>A "naive" datetime has no time zone attached. Mixing naive and aware datetimes raises an error when you compare them, which is a good thing. Make everything aware.</p>
+
+</div></details><details class="sub" id="p-py-generators-and-batching"><summary>Generators and batching</summary><div class="sbody">
+<p>A generator produces values one at a time with <code>yield</code> instead of building a whole list in memory. It's how you stream a million rows without loading them all at once, much like fetching from a cursor.</p>
+<p class="codecap">batching.py</p>
+<pre><code><span class="k">from</span> itertools <span class="k">import</span> batched     <span class="c"># Python 3.12+</span>
+
+<span class="k">def</span> read_events(path: str):
+    <span class="k">with</span> open(path, encoding="utf-8") <span class="k">as</span> f:
+        <span class="k">for</span> line <span class="k">in</span> f:                   <span class="c"># one line at a time, not the whole file</span>
+            <span class="k">yield</span> json.loads(line)
+
+<span class="k">for</span> chunk <span class="k">in</span> batched(read_events("events.jsonl"), 5000):
+    load_to_snowflake(chunk)                <span class="c"># chunk is a tuple of up to 5,000 events</span></code></pre>
+<p>Generator expressions use parentheses: <code>total = sum(e["points"] for e in events)</code> adds them up without building a list first.</p>
+
+</div></details><details class="sub" id="p-py-calling-apis"><summary>Calling APIs</summary><div class="sbody">
+<p>You've done this in the n8n stack (HubSpot, Jira, GitHub, Vercel). In Python the standard library is <code>requests</code>. The three things that matter are pagination, retries and incremental loads.</p>
+
+<p class="codecap">hubspot_contacts.py</p>
+<pre><code><span class="k">import</span> os, time, logging, requests
+
+log = logging.getLogger(__name__)
+BASE = "https://api.hubapi.com/crm/v3/objects/contacts"
+session = requests.Session()
+session.headers["Authorization"] = f"Bearer {os.environ['HUBSPOT_TOKEN']}"  <span class="c"># secret from env, never in code</span>
+
+<span class="k">def</span> get_with_retry(url: str, params: dict, tries: int = 5) -&gt; dict:
+    <span class="k">for</span> attempt <span class="k">in</span> range(tries):
+        resp = session.get(url, params=params, timeout=30)
+        <span class="k">if</span> resp.status_code == 429 <span class="k">or</span> resp.status_code &gt;= 500:
+            wait = 2 ** attempt                     <span class="c"># 1, 2, 4, 8, 16 seconds</span>
+            log.warning("HTTP %s, retrying in %ss", resp.status_code, wait)
+            time.sleep(wait)
+            <span class="k">continue</span>
+        resp.raise_for_status()                     <span class="c"># 4xx other than 429: fail loudly</span>
+        <span class="k">return</span> resp.json()
+    <span class="k">raise</span> RuntimeError(f"gave up after {tries} tries: {url}")
+
+<span class="k">def</span> all_contacts():
+    params = {"limit": 100}
+    <span class="k">while</span> True:
+        page = get_with_retry(BASE, params)
+        <span class="k">yield from</span> page["results"]
+        after = page.get("paging", {}).get("next", {}).get("after")
+        <span class="k">if not</span> after:
+            <span class="k">break</span>
+        params["after"] = after                     <span class="c"># cursor pagination</span></code></pre>
+
+<ul>
+  <li><strong>Retry only what's retryable.</strong> 429 (rate limited) and 5xx (server trouble) are worth retrying. A 401 or 404 won't fix itself, so fail. You learned this with GitHub's ambiguous 404s.</li>
+  <li><strong>Always set a timeout.</strong> Without one, <code>requests</code> can hang forever.</li>
+  <li><strong>Incremental loads.</strong> Don't pull everything every night. Remember the highest <code>updated_at</code> you loaded (the "watermark"), and next run ask only for records changed since then, minus a small overlap for safety. The overlap means some rows arrive twice, which is why the load must be idempotent (a merge, not an insert).</li>
+</ul>
+
+</div></details><details class="sub" id="p-py-talking-to-databases"><summary>Talking to databases</summary><div class="sbody">
+<p>Every Python database driver follows the same pattern (the DB-API): connect, get a cursor, execute, fetch. You already know this from Oracle.</p>
+
+<p class="codecap">snowflake_load.py</p>
+<pre><code><span class="k">import</span> os
+<span class="k">import</span> snowflake.connector               <span class="c"># pip install snowflake-connector-python</span>
+
+conn = snowflake.connector.connect(
+    account=os.environ["SF_ACCOUNT"],
+    user=os.environ["SF_USER"],
+    <span class="c"># service users should use key-pair auth, not a password; see the Snowflake guide</span>
+    warehouse="LOAD_WH", database="RAW", schema="HUBSPOT", role="LOADER",
+)
+
+<span class="k">with</span> conn.cursor() <span class="k">as</span> cur:
+    cur.execute(
+        "SELECT id, email FROM contacts WHERE updated_at &gt; %s",
+        (since,),                            <span class="c"># bound parameter, never an f-string</span>
+    )
+    <span class="k">for</span> row_id, email <span class="k">in</span> cur:
+        ...
+
+    cur.executemany(
+        "INSERT INTO staging_contacts (id, email) VALUES (%s, %s)",
+        [(c["id"], c["properties"].get("email")) <span class="k">for</span> c <span class="k">in</span> batch],
+    )</code></pre>
+
+<div class="say">
+  <span class="tag">The one rule</span>
+  <p><strong>Never build SQL with an f-string or <code>+</code>.</strong> <code>f"WHERE email = '{email}'"</code> is SQL injection waiting to happen, and it breaks on names like O'Brien. Pass values as parameters. The placeholder style varies by driver: <code>%s</code> for Snowflake and psycopg (PostgreSQL), <code>:name</code> for <code>oracledb</code>, same idea as bind variables in PL/SQL.</p>
+</div>
+
+<p>For loading big batches into Snowflake, row-by-row inserts are slow. The fast paths are <code>write_pandas</code> (from <code>snowflake.connector.pandas_tools</code>, which stages a file and runs <code>COPY INTO</code>), or writing files to a stage yourself and running <code>COPY INTO</code>. Then <code>MERGE</code> from the staging table into the target so reruns don't duplicate rows.</p>
+
+</div></details><details class="sub" id="p-py-pandas-briefly"><summary>pandas, briefly</summary><div class="sbody">
+<p>pandas gives you DataFrames: in-memory tables with columns. It's handy for small to medium data, quick analysis and file wrangling. In a warehouse shop, most transformation should happen in SQL (dbt) instead, where it runs on Snowflake's compute and gets reviewed and tested.</p>
+<p class="codecap">pandas_basics.py</p>
+<pre><code><span class="k">import</span> pandas <span class="k">as</span> pd
+
+df = pd.read_csv("roster.csv")
+df.head()                                      <span class="c"># first 5 rows</span>
+df.dtypes                                      <span class="c"># column types</span>
+active = df[df["status"] == "active"]          <span class="c"># filter (WHERE)</span>
+active = active[["student_id", "school_id", "grade"]]   <span class="c"># select columns</span>
+
+per_school = (active.groupby("school_id")       <span class="c"># GROUP BY</span>
+                    .agg(students=("student_id", "nunique"))
+                    .reset_index())
+
+joined = active.merge(schools, on="school_id", how="left")  <span class="c"># LEFT JOIN</span>
+df["email"] = df["email"].str.strip().str.lower()
+df = df.drop_duplicates(subset=["student_id"], keep="last")</code></pre>
+<p><strong>Interview angle:</strong> "I'd use pandas for exploration or a one-off file. Anything that runs every day goes into dbt models in Snowflake, where it's tested and reviewed."</p>
+
+</div></details><details class="sub" id="p-py-pipeline-habits-that-matter-more-than-syntax"><summary>Pipeline habits that matter more than syntax</summary><div class="sbody">
+<ul>
+  <li><strong>Idempotent.</strong> Running a job twice gives the same result as running it once. Load into staging, then <code>MERGE</code> on a key. Or replace a whole date partition. Never blind <code>INSERT</code> on a rerun. Your CDWTool duplicate protection per reporting period is the same idea.</li>
+  <li><strong>Small, pure functions.</strong> Separate "fetch" (talks to the network), "transform" (pure: data in, data out) and "load" (talks to the warehouse). The transform is where bugs live, and a pure function is trivial to test.</li>
+  <li><strong>Tests with pytest.</strong> Plain functions starting with <code>test_</code> and plain <code>assert</code>.</li>
+  <li><strong>Logging, not print.</strong> Log counts in and counts out. "Loaded 0 rows" should be visible, and maybe alarming.</li>
+  <li><strong>Config and secrets from the environment</strong> (or a secrets manager). Nothing sensitive in git. Same rule you applied when you removed committed secrets from CDWTool.</li>
+  <li><strong>Fail loudly.</strong> A pipeline that swallows an exception and reports success is worse than one that crashes. Then test the alert path on purpose, like your n8n canary.</li>
+</ul>
+
+<p class="codecap">test_flatten.py</p>
+<pre><code><span class="k">from</span> flatten <span class="k">import</span> flatten
+
+<span class="k">def</span> test_nested_keys_are_joined():
+    <span class="k">assert</span> flatten({"a": {"b": 1}}) == {"a_b": 1}
+
+<span class="k">def</span> test_lists_are_left_alone():
+    <span class="k">assert</span> flatten({"tags": ["x"]}) == {"tags": ["x"]}
+
+<span class="c"># run with:  pytest -q</span></code></pre>
+
+</div></details><details class="sub" id="p-py-tooling"><summary>Tooling</summary><div class="sbody">
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Tool</th><th>What it's for</th></tr></thead>
+  <tbody>
+    <tr><td><code>python -m venv .venv</code></td><td>An isolated environment per project, so package versions don't collide.</td></tr>
+    <tr><td><code>uv</code></td><td>A newer, very fast replacement for pip and venv. Common in new projects.</td></tr>
+    <tr><td><code>pyproject.toml</code></td><td>The project's dependencies and tool settings (the modern <code>requirements.txt</code>).</td></tr>
+    <tr><td><code>ruff</code></td><td>Linter and formatter. Catches unused imports, style issues and some real bugs.</td></tr>
+    <tr><td><code>pytest</code></td><td>Tests.</td></tr>
+    <tr><td><code>mypy</code> or <code>pyright</code></td><td>Checks your type hints. Optional, but useful on shared code.</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div></details><details class="sub" id="p-py-gotchas-interviewers-like"><summary>Gotchas interviewers like</summary><div class="sbody">
+<div class="careful">
+  <span class="tag">Mutable default arguments</span>
+  <p><code>def add(x, items=[]):</code> reuses the <em>same</em> list on every call, so it keeps growing. Use <code>items=None</code> and create the list inside the function.</p>
+</div>
+<div class="careful">
+  <span class="tag"><code>is</code> vs <code>==</code></span>
+  <p><code>==</code> compares values. <code>is</code> checks that two names point at the same object. Use <code>is</code> only for <code>None</code>.</p>
+</div>
+<div class="careful">
+  <span class="tag">Copies</span>
+  <p><code>b = a</code> doesn't copy a list or dict, it gives the same object a second name. <code>a.copy()</code> makes a shallow copy. Nested dicts need <code>copy.deepcopy</code>.</p>
+</div>
+<div class="careful">
+  <span class="tag">Floats and money</span>
+  <p><code>0.1 + 0.2 != 0.3</code>. For revenue, use <code>decimal.Decimal</code> in Python and <code>NUMBER(p,s)</code> in Snowflake. Ted will care.</p>
+</div>
+
+</div></details><details class="sub" id="p-py-practice-exercises"><summary>Practice exercises</summary><div class="sbody">
+<p>These are the shape of live-coding tasks a data team might give. Try each one before opening the answer.</p>
+
+<div class="cards">
+  <details class="card"><summary>1. Keep only the latest version of each record (by <code>id</code>, newest <code>updated_at</code>).</summary>
+<pre><code>latest = {}
+<span class="k">for</span> r <span class="k">in</span> records:
+    cur = latest.get(r["id"])
+    <span class="k">if</span> cur <span class="k">is</span> None <span class="k">or</span> r["updated_at"] &gt; cur["updated_at"]:
+        latest[r["id"]] = r
+result = list(latest.values())</code></pre>
+  <p>SQL equivalent: <code>QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1</code> in Snowflake.</p></details>
+
+  <details class="card"><summary>2. Count hall-pass events per school per day.</summary>
+<pre><code><span class="k">from</span> collections <span class="k">import</span> Counter
+counts = Counter(
+    (e["school_id"], e["created_at"][:10])    <span class="c"># ISO string, first 10 chars = date</span>
+    <span class="k">for</span> e <span class="k">in</span> events <span class="k">if</span> e["type"] == "hall_pass"
+)
+counts.most_common(5)</code></pre>
+  <p>Mention the time-zone catch: a UTC date isn't the school's local date. Convert first if the report is per school day.</p></details>
+
+  <details class="card"><summary>3. Validate a roster CSV: split rows into good and rejected, with reasons.</summary>
+<pre><code><span class="k">import</span> csv
+good, bad = [], []
+<span class="k">with</span> open("roster.csv", newline="", encoding="utf-8") <span class="k">as</span> f:
+    <span class="k">for</span> line_no, row <span class="k">in</span> enumerate(csv.DictReader(f), start=2):
+        problems = []
+        <span class="k">if not</span> row.get("student_id", "").strip():
+            problems.append("missing student_id")
+        <span class="k">if</span> row.get("grade") <span class="k">not in</span> {str(g) <span class="k">for</span> g <span class="k">in</span> range(0, 13)}:
+            problems.append(f"bad grade {row.get('grade')!r}")
+        (bad <span class="k">if</span> problems <span class="k">else</span> good).append({**row, "line": line_no, "problems": problems})</code></pre>
+  <p>Talking point: never silently drop rows. Rejected rows go somewhere visible with the reason, and the counts get logged.</p></details>
+
+  <details class="card"><summary>4. Group students by school into a dict of lists.</summary>
+<pre><code><span class="k">from</span> collections <span class="k">import</span> defaultdict
+by_school = defaultdict(list)
+<span class="k">for</span> s <span class="k">in</span> students:
+    by_school[s["school_id"]].append(s["id"])</code></pre></details>
+
+  <details class="card"><summary>5. Find students in the SIS roster who are missing from Minga (and the reverse).</summary>
+<pre><code>sis_ids = {r["student_id"] <span class="k">for</span> r <span class="k">in</span> sis_rows}
+minga_ids = {u["sis_id"] <span class="k">for</span> u <span class="k">in</span> minga_users}
+missing_in_minga = sis_ids - minga_ids
+extra_in_minga = minga_ids - sis_ids</code></pre>
+  <p>Set operations are the fastest way to reconcile two lists. This is the same check you'd run after a migration.</p></details>
+
+  <details class="card"><summary>6. Write a function that rounds a timestamp down to the hour, and a test for it.</summary>
+<pre><code><span class="k">def</span> hour_bucket(ts: datetime) -&gt; datetime:
+    <span class="k">return</span> ts.replace(minute=0, second=0, microsecond=0)
+
+<span class="k">def</span> test_hour_bucket():
+    ts = datetime(2026, 10, 15, 13, 47, 5, tzinfo=timezone.utc)
+    <span class="k">assert</span> hour_bucket(ts) == datetime(2026, 10, 15, 13, tzinfo=timezone.utc)</code></pre></details>
+</div>
+
+</div></details><details class="sub" id="p-py-interview-ready-answers"><summary>Interview-ready answers</summary><div class="sbody">
+<div class="say">
+  <span class="tag">"How strong is your Python?"</span>
+  <blockquote>"Solid for pipeline and tooling work, not my first language. My most recent example is a Python script that generates an n8n workflow (nodes, connections, retry settings) and deploys it through n8n's REST API, so the workflow lives in git. My deepest language for data is SQL, and in a warehouse I'd rather push transformation into SQL and dbt anyway, where it's tested and reviewed. Python is where I'd write custom loaders, orchestration and checks."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you load data from an API Stitch doesn't cover?"</span>
+  <blockquote>"Incremental pulls using an updated-since watermark with a small overlap, cursor pagination, retries with backoff only on rate limits and server errors, and a timeout on every call. Land it raw in a staging table, then merge on the key so a rerun can't duplicate anything. Log the counts in and out, and make sure a failure actually alerts someone. I'd test that by forcing a failure, the same way I tested my n8n error handler."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How do you review AI-written Python?"</span>
+  <blockquote>"Same as any code. I read every line, I check that queries are parameterized and secrets come from the environment, and the transform logic gets unit tests with real edge cases: empty input, nulls, duplicates, time zones. The model drafts, I approve. If I can't explain a line, it doesn't ship."</blockquote>
+</div>
+<div class="careful">
+  <span class="tag">Keep it accurate</span>
+  <p>Don't claim pandas, Airflow or Snowpark in production. Do claim what's true: Python scripting for pipelines and tooling, the n8n workflow generator, REST API integration, and deep SQL. If you build the small project below this week, you can describe exactly what you built.</p>
+</div>
+
+</div></details><details class="sub" id="p-py-flashcards"><summary>Flashcards</summary><div class="sbody">
+<div class="cards">
+  <details class="card"><summary>List comprehension that keeps active student ids?</summary><p><code>[s["id"] for s in students if s["active"]]</code></p></details>
+  <details class="card"><summary>Get a dict value without risking KeyError?</summary><p><code>d.get("key")</code> or <code>d.get("key", default)</code>.</p></details>
+  <details class="card"><summary>What does <code>yield</code> do?</summary><p>Turns the function into a generator: it hands back one value at a time and pauses, so you can stream large data without holding it all in memory.</p></details>
+  <details class="card"><summary>How do you pass a value into SQL safely?</summary><p>As a bound parameter: <code>cur.execute("... WHERE id = %s", (id,))</code>. Never format it into the string.</p></details>
+  <details class="card"><summary>Which HTTP errors are worth retrying?</summary><p>429 (rate limited) and 5xx (server errors), with exponential backoff. Not 400, 401, 403 or 404.</p></details>
+  <details class="card"><summary>What makes a load idempotent?</summary><p>A rerun can't change the result: load to staging and MERGE on a key, or replace the whole partition. No blind inserts.</p></details>
+  <details class="card"><summary>Naive vs aware datetime?</summary><p>Naive has no time zone. Aware does. Use <code>datetime.now(timezone.utc)</code> and keep everything aware.</p></details>
+  <details class="card"><summary>Why is <code>def f(items=[])</code> a bug?</summary><p>The default list is created once and shared by every call, so it accumulates values.</p></details>
+  <details class="card"><summary>Fastest way to find ids in one list but not another?</summary><p>Sets: <code>set(a) - set(b)</code>.</p></details>
+  <details class="card"><summary>When pandas, when SQL?</summary><p>pandas for exploration and one-off files. Recurring transformation goes in SQL/dbt in the warehouse, where it's tested, reviewed and runs on warehouse compute.</p></details>
+</div>
+
+</div></details><details class="sub" id="p-py-try-it-yourself-about-two-hours"><summary>Try it yourself (about two hours)</summary><div class="sbody">
+<p>A small project that ties this guide to the Snowflake and dbt guides, so you can talk about it from your own hands-on time:</p>
+<ul class="steps">
+  <li>Your machine has Python 3.11. <code>itertools.batched</code> needs 3.12 or newer, so install 3.12+ (or use <code>uv</code>, which can fetch it), or slice batches yourself with <code>islice</code> on 3.11.</li>
+  <li>Make a folder, run <code>python -m venv .venv</code>, activate it, and <code>pip install requests snowflake-connector-python pytest</code>.</li>
+  <li>Write a fake source: a JSON-lines file of 1,000 "hall pass" events with nested <code>student</code> and <code>school</code> objects and a <code>created_at</code> in UTC. Have Claude generate it, then read it.</li>
+  <li>Write <code>transform.py</code> with <code>flatten()</code> and a validator that splits good and rejected rows. Write pytest tests for both, including empty input and a missing field.</li>
+  <li>Write <code>load.py</code> that batches the good rows into a <code>RAW.EVENTS_STAGE</code> table in your Snowflake trial with parameterized inserts, then runs a <code>MERGE</code> into <code>RAW.EVENTS</code> on the event id.</li>
+  <li>Run it twice and confirm the row count doesn't change. That's your idempotency proof.</li>
+  <li>Point a dbt staging model at <code>RAW.EVENTS</code> and you've built a small end-to-end pipeline: Python loads, dbt transforms, tests guard both.</li>
+</ul>
+
+
+</div></details></div></details>
+</div>
+<a class="backtop" href="#top">Index &#8593;</a>
+
+<script>
+(function () {
+  function openTo(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var d = el.closest("details");
+    while (d) { d.open = true; d = d.parentElement && d.parentElement.closest("details"); }
+    if (el.tagName === "DETAILS") el.open = true;
+    el.scrollIntoView({ block: "start" });
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    if (!id || !document.getElementById(id)) return;
+    e.preventDefault();
+    openTo(id);
+    try { history.replaceState(null, "", "#" + id); } catch (err) {}
+  });
+  if (location.hash.length > 1) openTo(decodeURIComponent(location.hash.slice(1)));
+  function setAll(sel, on) { document.querySelectorAll(sel).forEach(function (d) { d.open = on; }); }
+  document.getElementById("expand-all").addEventListener("click", function () { setAll("details.part, details.sub", true); });
+  document.getElementById("collapse-all").addEventListener("click", function () { setAll("details.sub, details.part", false); });
+  document.getElementById("parts-only").addEventListener("click", function () { setAll("details.part", true); setAll("details.sub", false); });
+})();
+</script>
+

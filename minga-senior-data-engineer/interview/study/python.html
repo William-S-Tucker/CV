@@ -1,0 +1,464 @@
+<title>Python Brush-Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="study.css">
+<script src="chat.js" defer></script>
+
+<div class="page py">
+<aside class="rail">
+  <nav aria-label="Contents">
+    <p class="rail-title">On this page</p>
+    <ol>
+      <li><a href="#minga">Where Python shows up</a></li>
+      <li><a href="#syntax">Syntax refresher</a></li>
+      <li><a href="#json">JSON and nested documents</a></li>
+      <li><a href="#time">Dates and time zones</a></li>
+      <li><a href="#batch">Generators and batching</a></li>
+      <li><a href="#api">Calling APIs</a></li>
+      <li><a href="#db">Talking to databases</a></li>
+      <li><a href="#pandas">pandas, briefly</a></li>
+      <li><a href="#pipeline">Pipeline habits</a></li>
+      <li><a href="#tooling">Tooling</a></li>
+      <li><a href="#gotchas">Gotchas</a></li>
+      <li><a href="#exercises">Practice exercises</a></li>
+      <li><a href="#interview">Interview answers</a></li>
+      <li><a href="#cards">Flashcards</a></li>
+      <li><a href="#handson">Try it yourself</a></li>
+    </ol>
+    <div class="series">
+      <p class="rail-title">Study series</p>
+      <a data-link="snowflake" target="_top" href="https://claude.ai/artifact/7nrAJwp8UCbk8djSNKn2rW">1 · Snowflake</a>
+      <a data-link="dbt" target="_top" href="https://claude.ai/artifact/FSdz6ncB9Q3rTYCWj3ATnm">2 · dbt</a>
+      <a data-link="airflow" target="_top" href="https://claude.ai/artifact/5q8FaEk2RbtxsDvb29wwk7">3 · Airflow</a>
+      <a class="here" href="#top" aria-current="page">4 · Python</a>
+    </div>
+  </nav>
+</aside>
+
+<main>
+<header class="top" id="top">
+  <p class="eyebrow">Minga prep · Study guide 4 of 4</p>
+  <h1>Python Brush-Up</h1>
+  <p class="lede">Ted's repost of the job lists Python right next to SQL. You won't be asked to write a web framework. You might be asked to load data from an API, clean up some JSON, or explain how you'd make a script safe to run twice. This guide covers that slice of Python, with comparisons to the Oracle, C# and TypeScript you already know.</p>
+</header>
+
+<section class="tldr" aria-labelledby="tldr">
+  <h2 id="tldr">The one-minute version</h2>
+  <ul>
+    <li>For a data engineer, Python is the <strong>glue</strong>: pull from APIs and databases, reshape JSON, load into the warehouse, and describe pipelines (Airflow DAGs are Python files).</li>
+    <li>The heavy lifting on rows belongs in <strong>SQL inside Snowflake</strong>. Python moves data and handles the parts SQL can't reach.</li>
+    <li>Know cold: dicts and lists, comprehensions, functions with type hints, <code>with</code>, exceptions, generators, f-strings.</li>
+    <li>Know the habits: <strong>parameterized queries</strong>, UTC everywhere, retries with backoff, idempotent loads, secrets from the environment, small testable functions.</li>
+    <li>Your honest line: "I write Python for pipelines and tooling. It isn't my first language, and I'm not going to pretend it is."</li>
+  </ul>
+</section>
+
+<h2 id="minga">Where Python shows up at Minga</h2>
+<p>Their data stack is Stitch, Snowflake and Metabase, with dbt and orchestration still to come. Python would most likely appear in these places:</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Where</th><th>What the Python does</th></tr></thead>
+  <tbody>
+    <tr><td>Orchestration (Airflow or Dagster)</td><td>The pipeline definitions themselves are Python. Each task calls a loader, runs dbt, or checks freshness.</td></tr>
+    <tr><td>Custom loaders</td><td>Anything Stitch handles poorly: a MongoDB collection with deep nesting, a HubSpot object Stitch doesn't sync, an SIS file drop.</td></tr>
+    <tr><td>Data-quality and cost checks</td><td>Small scripts that query Snowflake, compare counts with the source, and raise an alert.</td></tr>
+    <tr><td>Legacy-to-new migration tooling</td><td>The posting's "tooling that maps legacy data into the new platform as customers migrate." Read old shape, transform, write new shape, report what didn't fit.</td></tr>
+    <tr><td>dbt Python models</td><td>dbt can run Python models in Snowflake (via Snowpark). Rarely needed. SQL models come first.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="syntax">Syntax refresher</h2>
+<p>If you're coming from C# or TypeScript, the big differences are indentation instead of braces, no semicolons, and dynamic types with optional hints.</p>
+
+<p class="codecap">basics.py</p>
+<pre><code><span class="c"># Variables and types: no declarations. Hints are optional and not enforced at runtime.</span>
+school_count: int = 2000
+name = "Minga"
+ratio = 3 / 2          <span class="c"># 1.5 (true division)</span>
+whole = 3 // 2         <span class="c"># 1   (floor division)</span>
+nothing = None         <span class="c"># Python's null</span>
+
+<span class="c"># f-strings for formatting</span>
+print(f"{name} serves {school_count:,} schools")   <span class="c"># Minga serves 2,000 schools</span>
+
+<span class="c"># Lists, dicts, sets, tuples</span>
+schools = ["Kelowna SS", "Rutland SS"]
+student = {"id": 42, "name": "Ana", "grade": 10}
+seen = {"a", "b"}                  <span class="c"># set: unique values, fast membership</span>
+point = (49.88, -119.49)           <span class="c"># tuple: fixed, immutable</span>
+
+<span class="c"># Safe dict access</span>
+grade = student.get("grade")         <span class="c"># None if missing, no exception</span>
+email = student.get("email", "")     <span class="c"># default value</span>
+
+<span class="c"># Functions with type hints and default arguments</span>
+<span class="k">def</span> full_name(first: str, last: str, sep: str = " ") -&gt; str:
+    <span class="k">return</span> f"{first}{sep}{last}"
+
+<span class="c"># Comprehensions: the Python way to map and filter</span>
+ids = [s["id"] <span class="k">for</span> s <span class="k">in</span> students <span class="k">if</span> s["active"]]
+by_id = {s["id"]: s <span class="k">for</span> s <span class="k">in</span> students}       <span class="c"># dict comprehension: an index</span>
+
+<span class="c"># Unpacking</span>
+first, *rest = [1, 2, 3]            <span class="c"># first=1, rest=[2, 3]</span>
+<span class="k">for</span> i, s <span class="k">in</span> enumerate(schools, start=1): ...
+<span class="k">for</span> key, value <span class="k">in</span> student.items(): ...
+
+<span class="c"># Context managers: like C# using. The file closes even if an error happens.</span>
+<span class="k">with</span> open("roster.csv", newline="", encoding="utf-8") <span class="k">as</span> f:
+    text = f.read()
+
+<span class="c"># Exceptions</span>
+<span class="k">try</span>:
+    value = int(row["grade"])
+<span class="k">except</span> (KeyError, ValueError) <span class="k">as</span> e:
+    log.warning("bad grade in row %s: %s", row.get("id"), e)
+    value = None
+<span class="k">finally</span>:
+    ...</code></pre>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>You know this</th><th>In Python</th></tr></thead>
+  <tbody>
+    <tr><td>C# <code>List&lt;T&gt;</code> / TS array</td><td><code>list</code></td></tr>
+    <tr><td>C# <code>Dictionary</code> / TS object or <code>Map</code></td><td><code>dict</code> (keeps insertion order)</td></tr>
+    <tr><td>LINQ <code>.Where().Select()</code> / TS <code>.filter().map()</code></td><td>comprehension: <code>[f(x) for x in xs if cond]</code></td></tr>
+    <tr><td><code>null</code></td><td><code>None</code>, checked with <code>is None</code></td></tr>
+    <tr><td><code>&amp;&amp;</code>, <code>||</code>, <code>!</code></td><td><code>and</code>, <code>or</code>, <code>not</code></td></tr>
+    <tr><td>C# <code>using</code></td><td><code>with</code></td></tr>
+    <tr><td>PL/SQL cursor <code>FOR</code> loop</td><td><code>for row in cursor:</code></td></tr>
+    <tr><td>Interfaces / DTOs</td><td><code>@dataclass</code> or <code>TypedDict</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Truthiness.</strong> Empty things are false: <code>0</code>, <code>""</code>, <code>[]</code>, <code>{}</code>, <code>None</code>. So <code>if rows:</code> means "if there are any rows." Be careful when 0 is a real value: <code>if grade:</code> treats grade 0 as missing. Use <code>if grade is not None:</code> instead.</p>
+
+<p class="codecap">dataclass.py</p>
+<pre><code><span class="k">from</span> dataclasses <span class="k">import</span> dataclass
+
+<span class="k">@dataclass</span>(frozen=True)
+<span class="k">class</span> Student:
+    id: int
+    school_id: int
+    grade: int | None = None     <span class="c"># "int or None" (Python 3.10+)</span>
+
+s = Student(id=42, school_id=7)
+print(s)   <span class="c"># Student(id=42, school_id=7, grade=None)</span></code></pre>
+
+<h2 id="json">JSON and nested documents</h2>
+<p>Minga's app database is MongoDB, so most product data arrives as nested documents. In Python a parsed JSON document is just dicts and lists.</p>
+
+<p class="codecap">json_basics.py</p>
+<pre><code><span class="k">import</span> json
+
+doc = json.loads('{"_id": "abc", "student": {"id": 42, "name": "Ana"}, "tags": ["late", "hallpass"]}')
+doc["student"]["name"]          <span class="c"># "Ana"</span>
+doc.get("school", {}).get("id") <span class="c"># None, without a KeyError</span>
+
+text = json.dumps(doc, indent=2, default=str)  <span class="c"># default=str handles datetimes and ObjectIds</span></code></pre>
+
+<p>A classic task: flatten a nested document into columns. In Snowflake you'd do this with <code>LATERAL FLATTEN</code> on a <code>VARIANT</code> column, and that's usually the better place. But you should be able to write it in Python too:</p>
+
+<p class="codecap">flatten.py</p>
+<pre><code><span class="k">def</span> flatten(d: dict, parent: str = "", sep: str = "_") -&gt; dict:
+    <span class="c">"""{"student": {"id": 42}} -&gt; {"student_id": 42}. Lists are kept as-is."""</span>
+    out = {}
+    <span class="k">for</span> key, value <span class="k">in</span> d.items():
+        name = f"{parent}{sep}{key}" <span class="k">if</span> parent <span class="k">else</span> key
+        <span class="k">if</span> isinstance(value, dict):
+            out.update(flatten(value, name, sep))
+        <span class="k">else</span>:
+            out[name] = value
+    <span class="k">return</span> out
+
+flatten({"_id": "abc", "student": {"id": 42, "name": "Ana"}, "tags": ["late"]})
+<span class="c"># {"_id": "abc", "student_id": 42, "student_name": "Ana", "tags": ["late"]}</span></code></pre>
+<p>Arrays are the hard part. A document with three tags becomes three rows in a child table (like <code>FLATTEN</code> in Snowflake, or a detail table in Oracle). Say that out loud in an interview. It shows you know where the real modelling decision is.</p>
+
+<h2 id="time">Dates and time zones</h2>
+<p>Schools are spread across US time zones, and "tardy at 8:05" means local time. Store UTC, convert for display.</p>
+<p class="codecap">time.py</p>
+<pre><code><span class="k">from</span> datetime <span class="k">import</span> datetime, timezone, timedelta
+<span class="k">from</span> zoneinfo <span class="k">import</span> ZoneInfo
+
+now = datetime.now(timezone.utc)                 <span class="c"># aware, UTC. Don't use utcnow() (deprecated in 3.12)</span>
+since = now - timedelta(days=1)
+
+ts = datetime.fromisoformat("2026-10-15T13:00:00-07:00")
+ts.astimezone(timezone.utc)                      <span class="c"># 2026-10-15 20:00:00+00:00</span>
+ts.astimezone(ZoneInfo("America/Chicago"))       <span class="c"># school-local time</span>
+
+now.isoformat()   <span class="c"># "2026-10-15T20:00:00.123456+00:00", good for APIs and logs</span></code></pre>
+<p>A "naive" datetime has no time zone attached. Mixing naive and aware datetimes raises an error when you compare them, which is a good thing. Make everything aware.</p>
+
+<h2 id="batch">Generators and batching</h2>
+<p>A generator produces values one at a time with <code>yield</code> instead of building a whole list in memory. It's how you stream a million rows without loading them all at once, much like fetching from a cursor.</p>
+<p class="codecap">batching.py</p>
+<pre><code><span class="k">from</span> itertools <span class="k">import</span> batched     <span class="c"># Python 3.12+</span>
+
+<span class="k">def</span> read_events(path: str):
+    <span class="k">with</span> open(path, encoding="utf-8") <span class="k">as</span> f:
+        <span class="k">for</span> line <span class="k">in</span> f:                   <span class="c"># one line at a time, not the whole file</span>
+            <span class="k">yield</span> json.loads(line)
+
+<span class="k">for</span> chunk <span class="k">in</span> batched(read_events("events.jsonl"), 5000):
+    load_to_snowflake(chunk)                <span class="c"># chunk is a tuple of up to 5,000 events</span></code></pre>
+<p>Generator expressions use parentheses: <code>total = sum(e["points"] for e in events)</code> adds them up without building a list first.</p>
+
+<h2 id="api">Calling APIs</h2>
+<p>You've done this in the n8n stack (HubSpot, Jira, GitHub, Vercel). In Python the standard library is <code>requests</code>. The three things that matter are pagination, retries and incremental loads.</p>
+
+<p class="codecap">hubspot_contacts.py</p>
+<pre><code><span class="k">import</span> os, time, logging, requests
+
+log = logging.getLogger(__name__)
+BASE = "https://api.hubapi.com/crm/v3/objects/contacts"
+session = requests.Session()
+session.headers["Authorization"] = f"Bearer {os.environ['HUBSPOT_TOKEN']}"  <span class="c"># secret from env, never in code</span>
+
+<span class="k">def</span> get_with_retry(url: str, params: dict, tries: int = 5) -&gt; dict:
+    <span class="k">for</span> attempt <span class="k">in</span> range(tries):
+        resp = session.get(url, params=params, timeout=30)
+        <span class="k">if</span> resp.status_code == 429 <span class="k">or</span> resp.status_code &gt;= 500:
+            wait = 2 ** attempt                     <span class="c"># 1, 2, 4, 8, 16 seconds</span>
+            log.warning("HTTP %s, retrying in %ss", resp.status_code, wait)
+            time.sleep(wait)
+            <span class="k">continue</span>
+        resp.raise_for_status()                     <span class="c"># 4xx other than 429: fail loudly</span>
+        <span class="k">return</span> resp.json()
+    <span class="k">raise</span> RuntimeError(f"gave up after {tries} tries: {url}")
+
+<span class="k">def</span> all_contacts():
+    params = {"limit": 100}
+    <span class="k">while</span> True:
+        page = get_with_retry(BASE, params)
+        <span class="k">yield from</span> page["results"]
+        after = page.get("paging", {}).get("next", {}).get("after")
+        <span class="k">if not</span> after:
+            <span class="k">break</span>
+        params["after"] = after                     <span class="c"># cursor pagination</span></code></pre>
+
+<ul>
+  <li><strong>Retry only what's retryable.</strong> 429 (rate limited) and 5xx (server trouble) are worth retrying. A 401 or 404 won't fix itself, so fail. You learned this with GitHub's ambiguous 404s.</li>
+  <li><strong>Always set a timeout.</strong> Without one, <code>requests</code> can hang forever.</li>
+  <li><strong>Incremental loads.</strong> Don't pull everything every night. Remember the highest <code>updated_at</code> you loaded (the "watermark"), and next run ask only for records changed since then, minus a small overlap for safety. The overlap means some rows arrive twice, which is why the load must be idempotent (a merge, not an insert).</li>
+</ul>
+
+<h2 id="db">Talking to databases</h2>
+<p>Every Python database driver follows the same pattern (the DB-API): connect, get a cursor, execute, fetch. You already know this from Oracle.</p>
+
+<p class="codecap">snowflake_load.py</p>
+<pre><code><span class="k">import</span> os
+<span class="k">import</span> snowflake.connector               <span class="c"># pip install snowflake-connector-python</span>
+
+conn = snowflake.connector.connect(
+    account=os.environ["SF_ACCOUNT"],
+    user=os.environ["SF_USER"],
+    <span class="c"># service users should use key-pair auth, not a password; see the Snowflake guide</span>
+    warehouse="LOAD_WH", database="RAW", schema="HUBSPOT", role="LOADER",
+)
+
+<span class="k">with</span> conn.cursor() <span class="k">as</span> cur:
+    cur.execute(
+        "SELECT id, email FROM contacts WHERE updated_at &gt; %s",
+        (since,),                            <span class="c"># bound parameter, never an f-string</span>
+    )
+    <span class="k">for</span> row_id, email <span class="k">in</span> cur:
+        ...
+
+    cur.executemany(
+        "INSERT INTO staging_contacts (id, email) VALUES (%s, %s)",
+        [(c["id"], c["properties"].get("email")) <span class="k">for</span> c <span class="k">in</span> batch],
+    )</code></pre>
+
+<div class="say">
+  <span class="tag">The one rule</span>
+  <p><strong>Never build SQL with an f-string or <code>+</code>.</strong> <code>f"WHERE email = '{email}'"</code> is SQL injection waiting to happen, and it breaks on names like O'Brien. Pass values as parameters. The placeholder style varies by driver: <code>%s</code> for Snowflake and psycopg (PostgreSQL), <code>:name</code> for <code>oracledb</code>, same idea as bind variables in PL/SQL.</p>
+</div>
+
+<p>For loading big batches into Snowflake, row-by-row inserts are slow. The fast paths are <code>write_pandas</code> (from <code>snowflake.connector.pandas_tools</code>, which stages a file and runs <code>COPY INTO</code>), or writing files to a stage yourself and running <code>COPY INTO</code>. Then <code>MERGE</code> from the staging table into the target so reruns don't duplicate rows.</p>
+
+<h2 id="pandas">pandas, briefly</h2>
+<p>pandas gives you DataFrames: in-memory tables with columns. It's handy for small to medium data, quick analysis and file wrangling. In a warehouse shop, most transformation should happen in SQL (dbt) instead, where it runs on Snowflake's compute and gets reviewed and tested.</p>
+<p class="codecap">pandas_basics.py</p>
+<pre><code><span class="k">import</span> pandas <span class="k">as</span> pd
+
+df = pd.read_csv("roster.csv")
+df.head()                                      <span class="c"># first 5 rows</span>
+df.dtypes                                      <span class="c"># column types</span>
+active = df[df["status"] == "active"]          <span class="c"># filter (WHERE)</span>
+active = active[["student_id", "school_id", "grade"]]   <span class="c"># select columns</span>
+
+per_school = (active.groupby("school_id")       <span class="c"># GROUP BY</span>
+                    .agg(students=("student_id", "nunique"))
+                    .reset_index())
+
+joined = active.merge(schools, on="school_id", how="left")  <span class="c"># LEFT JOIN</span>
+df["email"] = df["email"].str.strip().str.lower()
+df = df.drop_duplicates(subset=["student_id"], keep="last")</code></pre>
+<p><strong>Interview angle:</strong> "I'd use pandas for exploration or a one-off file. Anything that runs every day goes into dbt models in Snowflake, where it's tested and reviewed."</p>
+
+<h2 id="pipeline">Pipeline habits that matter more than syntax</h2>
+<ul>
+  <li><strong>Idempotent.</strong> Running a job twice gives the same result as running it once. Load into staging, then <code>MERGE</code> on a key. Or replace a whole date partition. Never blind <code>INSERT</code> on a rerun. Your CDWTool duplicate protection per reporting period is the same idea.</li>
+  <li><strong>Small, pure functions.</strong> Separate "fetch" (talks to the network), "transform" (pure: data in, data out) and "load" (talks to the warehouse). The transform is where bugs live, and a pure function is trivial to test.</li>
+  <li><strong>Tests with pytest.</strong> Plain functions starting with <code>test_</code> and plain <code>assert</code>.</li>
+  <li><strong>Logging, not print.</strong> Log counts in and counts out. "Loaded 0 rows" should be visible, and maybe alarming.</li>
+  <li><strong>Config and secrets from the environment</strong> (or a secrets manager). Nothing sensitive in git. Same rule you applied when you removed committed secrets from CDWTool.</li>
+  <li><strong>Fail loudly.</strong> A pipeline that swallows an exception and reports success is worse than one that crashes. Then test the alert path on purpose, like your n8n canary.</li>
+</ul>
+
+<p class="codecap">test_flatten.py</p>
+<pre><code><span class="k">from</span> flatten <span class="k">import</span> flatten
+
+<span class="k">def</span> test_nested_keys_are_joined():
+    <span class="k">assert</span> flatten({"a": {"b": 1}}) == {"a_b": 1}
+
+<span class="k">def</span> test_lists_are_left_alone():
+    <span class="k">assert</span> flatten({"tags": ["x"]}) == {"tags": ["x"]}
+
+<span class="c"># run with:  pytest -q</span></code></pre>
+
+<h2 id="tooling">Tooling</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Tool</th><th>What it's for</th></tr></thead>
+  <tbody>
+    <tr><td><code>python -m venv .venv</code></td><td>An isolated environment per project, so package versions don't collide.</td></tr>
+    <tr><td><code>uv</code></td><td>A newer, very fast replacement for pip and venv. Common in new projects.</td></tr>
+    <tr><td><code>pyproject.toml</code></td><td>The project's dependencies and tool settings (the modern <code>requirements.txt</code>).</td></tr>
+    <tr><td><code>ruff</code></td><td>Linter and formatter. Catches unused imports, style issues and some real bugs.</td></tr>
+    <tr><td><code>pytest</code></td><td>Tests.</td></tr>
+    <tr><td><code>mypy</code> or <code>pyright</code></td><td>Checks your type hints. Optional, but useful on shared code.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="gotchas">Gotchas interviewers like</h2>
+<div class="careful">
+  <span class="tag">Mutable default arguments</span>
+  <p><code>def add(x, items=[]):</code> reuses the <em>same</em> list on every call, so it keeps growing. Use <code>items=None</code> and create the list inside the function.</p>
+</div>
+<div class="careful">
+  <span class="tag"><code>is</code> vs <code>==</code></span>
+  <p><code>==</code> compares values. <code>is</code> checks that two names point at the same object. Use <code>is</code> only for <code>None</code>.</p>
+</div>
+<div class="careful">
+  <span class="tag">Copies</span>
+  <p><code>b = a</code> doesn't copy a list or dict, it gives the same object a second name. <code>a.copy()</code> makes a shallow copy. Nested dicts need <code>copy.deepcopy</code>.</p>
+</div>
+<div class="careful">
+  <span class="tag">Floats and money</span>
+  <p><code>0.1 + 0.2 != 0.3</code>. For revenue, use <code>decimal.Decimal</code> in Python and <code>NUMBER(p,s)</code> in Snowflake. Ted will care.</p>
+</div>
+
+<h2 id="exercises">Practice exercises</h2>
+<p>These are the shape of live-coding tasks a data team might give. Try each one before opening the answer.</p>
+
+<div class="cards">
+  <details class="card"><summary>1. Keep only the latest version of each record (by <code>id</code>, newest <code>updated_at</code>).</summary>
+<pre><code>latest = {}
+<span class="k">for</span> r <span class="k">in</span> records:
+    cur = latest.get(r["id"])
+    <span class="k">if</span> cur <span class="k">is</span> None <span class="k">or</span> r["updated_at"] &gt; cur["updated_at"]:
+        latest[r["id"]] = r
+result = list(latest.values())</code></pre>
+  <p>SQL equivalent: <code>QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1</code> in Snowflake.</p></details>
+
+  <details class="card"><summary>2. Count hall-pass events per school per day.</summary>
+<pre><code><span class="k">from</span> collections <span class="k">import</span> Counter
+counts = Counter(
+    (e["school_id"], e["created_at"][:10])    <span class="c"># ISO string, first 10 chars = date</span>
+    <span class="k">for</span> e <span class="k">in</span> events <span class="k">if</span> e["type"] == "hall_pass"
+)
+counts.most_common(5)</code></pre>
+  <p>Mention the time-zone catch: a UTC date isn't the school's local date. Convert first if the report is per school day.</p></details>
+
+  <details class="card"><summary>3. Validate a roster CSV: split rows into good and rejected, with reasons.</summary>
+<pre><code><span class="k">import</span> csv
+good, bad = [], []
+<span class="k">with</span> open("roster.csv", newline="", encoding="utf-8") <span class="k">as</span> f:
+    <span class="k">for</span> line_no, row <span class="k">in</span> enumerate(csv.DictReader(f), start=2):
+        problems = []
+        <span class="k">if not</span> row.get("student_id", "").strip():
+            problems.append("missing student_id")
+        <span class="k">if</span> row.get("grade") <span class="k">not in</span> {str(g) <span class="k">for</span> g <span class="k">in</span> range(0, 13)}:
+            problems.append(f"bad grade {row.get('grade')!r}")
+        (bad <span class="k">if</span> problems <span class="k">else</span> good).append({**row, "line": line_no, "problems": problems})</code></pre>
+  <p>Talking point: never silently drop rows. Rejected rows go somewhere visible with the reason, and the counts get logged.</p></details>
+
+  <details class="card"><summary>4. Group students by school into a dict of lists.</summary>
+<pre><code><span class="k">from</span> collections <span class="k">import</span> defaultdict
+by_school = defaultdict(list)
+<span class="k">for</span> s <span class="k">in</span> students:
+    by_school[s["school_id"]].append(s["id"])</code></pre></details>
+
+  <details class="card"><summary>5. Find students in the SIS roster who are missing from Minga (and the reverse).</summary>
+<pre><code>sis_ids = {r["student_id"] <span class="k">for</span> r <span class="k">in</span> sis_rows}
+minga_ids = {u["sis_id"] <span class="k">for</span> u <span class="k">in</span> minga_users}
+missing_in_minga = sis_ids - minga_ids
+extra_in_minga = minga_ids - sis_ids</code></pre>
+  <p>Set operations are the fastest way to reconcile two lists. This is the same check you'd run after a migration.</p></details>
+
+  <details class="card"><summary>6. Write a function that rounds a timestamp down to the hour, and a test for it.</summary>
+<pre><code><span class="k">def</span> hour_bucket(ts: datetime) -&gt; datetime:
+    <span class="k">return</span> ts.replace(minute=0, second=0, microsecond=0)
+
+<span class="k">def</span> test_hour_bucket():
+    ts = datetime(2026, 10, 15, 13, 47, 5, tzinfo=timezone.utc)
+    <span class="k">assert</span> hour_bucket(ts) == datetime(2026, 10, 15, 13, tzinfo=timezone.utc)</code></pre></details>
+</div>
+
+<h2 id="interview">Interview-ready answers</h2>
+<div class="say">
+  <span class="tag">"How strong is your Python?"</span>
+  <blockquote>"Solid for pipeline and tooling work, not my first language. My most recent example is a Python script that generates an n8n workflow (nodes, connections, retry settings) and deploys it through n8n's REST API, so the workflow lives in git. My deepest language for data is SQL, and in a warehouse I'd rather push transformation into SQL and dbt anyway, where it's tested and reviewed. Python is where I'd write custom loaders, orchestration and checks."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How would you load data from an API Stitch doesn't cover?"</span>
+  <blockquote>"Incremental pulls using an updated-since watermark with a small overlap, cursor pagination, retries with backoff only on rate limits and server errors, and a timeout on every call. Land it raw in a staging table, then merge on the key so a rerun can't duplicate anything. Log the counts in and out, and make sure a failure actually alerts someone. I'd test that by forcing a failure, the same way I tested my n8n error handler."</blockquote>
+</div>
+<div class="say">
+  <span class="tag">"How do you review AI-written Python?"</span>
+  <blockquote>"Same as any code. I read every line, I check that queries are parameterized and secrets come from the environment, and the transform logic gets unit tests with real edge cases: empty input, nulls, duplicates, time zones. The model drafts, I approve. If I can't explain a line, it doesn't ship."</blockquote>
+</div>
+<div class="careful">
+  <span class="tag">Keep it accurate</span>
+  <p>Don't claim pandas, Airflow or Snowpark in production. Do claim what's true: Python scripting for pipelines and tooling, the n8n workflow generator, REST API integration, and deep SQL. If you build the small project below this week, you can describe exactly what you built.</p>
+</div>
+
+<h2 id="cards">Flashcards</h2>
+<div class="cards">
+  <details class="card"><summary>List comprehension that keeps active student ids?</summary><p><code>[s["id"] for s in students if s["active"]]</code></p></details>
+  <details class="card"><summary>Get a dict value without risking KeyError?</summary><p><code>d.get("key")</code> or <code>d.get("key", default)</code>.</p></details>
+  <details class="card"><summary>What does <code>yield</code> do?</summary><p>Turns the function into a generator: it hands back one value at a time and pauses, so you can stream large data without holding it all in memory.</p></details>
+  <details class="card"><summary>How do you pass a value into SQL safely?</summary><p>As a bound parameter: <code>cur.execute("... WHERE id = %s", (id,))</code>. Never format it into the string.</p></details>
+  <details class="card"><summary>Which HTTP errors are worth retrying?</summary><p>429 (rate limited) and 5xx (server errors), with exponential backoff. Not 400, 401, 403 or 404.</p></details>
+  <details class="card"><summary>What makes a load idempotent?</summary><p>A rerun can't change the result: load to staging and MERGE on a key, or replace the whole partition. No blind inserts.</p></details>
+  <details class="card"><summary>Naive vs aware datetime?</summary><p>Naive has no time zone. Aware does. Use <code>datetime.now(timezone.utc)</code> and keep everything aware.</p></details>
+  <details class="card"><summary>Why is <code>def f(items=[])</code> a bug?</summary><p>The default list is created once and shared by every call, so it accumulates values.</p></details>
+  <details class="card"><summary>Fastest way to find ids in one list but not another?</summary><p>Sets: <code>set(a) - set(b)</code>.</p></details>
+  <details class="card"><summary>When pandas, when SQL?</summary><p>pandas for exploration and one-off files. Recurring transformation goes in SQL/dbt in the warehouse, where it's tested, reviewed and runs on warehouse compute.</p></details>
+</div>
+
+<h2 id="handson">Try it yourself (about two hours)</h2>
+<p>A small project that ties this guide to the Snowflake and dbt guides, so you can talk about it from your own hands-on time:</p>
+<ul class="steps">
+  <li>Your machine has Python 3.11. <code>itertools.batched</code> needs 3.12 or newer, so install 3.12+ (or use <code>uv</code>, which can fetch it), or slice batches yourself with <code>islice</code> on 3.11.</li>
+  <li>Make a folder, run <code>python -m venv .venv</code>, activate it, and <code>pip install requests snowflake-connector-python pytest</code>.</li>
+  <li>Write a fake source: a JSON-lines file of 1,000 "hall pass" events with nested <code>student</code> and <code>school</code> objects and a <code>created_at</code> in UTC. Have Claude generate it, then read it.</li>
+  <li>Write <code>transform.py</code> with <code>flatten()</code> and a validator that splits good and rejected rows. Write pytest tests for both, including empty input and a missing field.</li>
+  <li>Write <code>load.py</code> that batches the good rows into a <code>RAW.EVENTS_STAGE</code> table in your Snowflake trial with parameterized inserts, then runs a <code>MERGE</code> into <code>RAW.EVENTS</code> on the event id.</li>
+  <li>Run it twice and confirm the row count doesn't change. That's your idempotency proof.</li>
+  <li>Point a dbt staging model at <code>RAW.EVENTS</code> and you've built a small end-to-end pipeline: Python loads, dbt transforms, tests guard both.</li>
+</ul>
+
+<footer class="end">
+  Study guide 4 of 4 for the Minga Senior Data Engineer interview. Back: <a data-link="airflow" target="_top" href="https://claude.ai/artifact/5q8FaEk2RbtxsDvb29wwk7">Airflow Field Guide</a>. Table, field and file names are illustrative, not Minga's real schema.
+</footer>
+</main>
+</div>

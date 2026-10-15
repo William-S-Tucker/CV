@@ -1,0 +1,1241 @@
+<title>Minga Mock Exam Answers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>/* Layout: sticky contents rail on the left (desktop), single reading column (~70ch) on the right; stacks on phones. */
+:root {
+  --paper: #f3f6f8;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #566573;
+  --faint: #8a98a6;
+  --rule: #d6dee6;
+  --code-bg: #eaf0f5;
+  --warn: #b4540a;
+  --sf: #0b6aa8;
+  --dbt: #c2452a;
+  --af: #0a7458;
+  --py: #5b4bb0;
+  --accent: var(--sf);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0e141a;
+    --surface: #151d25;
+    --ink: #e4ebf1;
+    --muted: #9dabb8;
+    --faint: #6d7c8a;
+    --rule: #2a3641;
+    --code-bg: #1a242e;
+    --warn: #f0a050;
+    --sf: #5cb6ee;
+    --dbt: #ff8a6c;
+    --af: #43cfa2;
+    --py: #a89bf2;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e141a;
+  --surface: #151d25;
+  --ink: #e4ebf1;
+  --muted: #9dabb8;
+  --faint: #6d7c8a;
+  --rule: #2a3641;
+  --code-bg: #1a242e;
+  --warn: #f0a050;
+  --sf: #5cb6ee;
+  --dbt: #ff8a6c;
+  --af: #43cfa2;
+  --py: #a89bf2;
+}
+.page.sf { --accent: var(--sf); }
+.page.dbt { --accent: var(--dbt); }
+.page.af { --accent: var(--af); }
+.page.py { --accent: var(--py); }
+.page { --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-inline: 20px;
+  padding-block: 0 64px;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.page {
+  max-width: 1120px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 56px;
+}
+@media (max-width: 900px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { display: none; }
+}
+
+/* Contents rail */
+.rail nav {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 28px);
+  padding-top: 28px;
+  font-size: 14px;
+}
+.rail .rail-title {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rail a { color: var(--muted); text-decoration: none; }
+.rail a:hover { color: var(--ink); }
+.rail .series { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); display: grid; gap: 6px; }
+.rail .series a.here { color: var(--accent); font-weight: 700; }
+
+main { max-width: 760px; min-width: 0; }
+
+/* Header */
+header.top { padding-block: 40px 8px; }
+.eyebrow {
+  font-family: var(--f-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 14px; }
+h2 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 14px; padding-top: 22px; border-top: 1px solid var(--rule); scroll-margin-top: 20px; }
+h3 { font-size: 1.15rem; font-weight: 700; margin: 30px 0 8px; }
+p, ul, ol { margin: 0 0 14px; }
+li + li { margin-top: 4px; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 62ch; }
+.series-inline { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 18px; }
+.series-inline a.here { font-weight: 700; }
+
+/* One-minute version */
+.tldr {
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 28px 0 8px;
+}
+.tldr h2 { border: 0; margin: 0 0 8px; padding: 0; font-size: 1.15rem; }
+.tldr ul { margin: 0; padding-left: 20px; }
+
+/* Callouts */
+.say, .careful {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.say .tag, .careful .tag {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.say .tag { background: var(--accent-soft); color: var(--accent); }
+.careful .tag { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); color: var(--warn); }
+.say p:last-child, .careful p:last-child, .say ul:last-child, .careful ul:last-child { margin-bottom: 0; }
+.say blockquote { margin: 0 0 10px; font-size: 1.05rem; }
+.say blockquote:last-child { margin-bottom: 0; }
+
+/* Code */
+code { font-family: var(--f-mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.55;
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 14px 0 18px;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); font-style: italic; }
+pre .k { color: var(--accent); font-weight: 600; }
+.codecap { font-size: 13px; color: var(--muted); margin: 18px 0 -8px; font-family: var(--f-mono); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; margin: 16px 0 22px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-display); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Diagrams */
+figure.diagram { margin: 22px 0 26px; }
+figure.diagram .scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; }
+figure.diagram svg { display: block; width: 100%; min-width: 620px; height: auto; }
+figure.diagram figcaption { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 68ch; }
+svg text { font-family: var(--f-body); }
+.d-box { fill: var(--surface); stroke: var(--faint); stroke-width: 1.3; }
+.d-group { fill: none; stroke: var(--faint); stroke-width: 1.3; }
+.d-box.on, .d-group.on { stroke: var(--accent); stroke-width: 2; fill: var(--accent-soft); }
+.d-box.warn { stroke: var(--warn); stroke-width: 2; fill: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.d-fill { fill: var(--accent); }
+.d-fill.muted { fill: var(--faint); }
+.d-t { fill: var(--ink); font-size: 14px; font-weight: 700; }
+.d-s { fill: var(--muted); font-size: 12px; }
+.d-m { fill: var(--ink); font-size: 12.5px; font-family: var(--f-mono); }
+.d-s.on, .d-t.on { fill: var(--accent); }
+.d-s.warn { fill: var(--warn); }
+.d-l { stroke: var(--faint); stroke-width: 1.5; fill: none; }
+.d-l.on { stroke: var(--accent); stroke-width: 2; }
+.d-l.dash { stroke-dasharray: 5 4; }
+.d-head { fill: var(--faint); }
+.d-head.on { fill: var(--accent); }
+.d-axis { stroke: var(--faint); stroke-width: 1; }
+
+/* Flashcards */
+.cards { display: grid; gap: 10px; margin: 16px 0; }
+details.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 18px; }
+details.card summary { cursor: pointer; font-weight: 700; list-style: none; }
+details.card summary::-webkit-details-marker { display: none; }
+details.card summary::before { content: "+"; display: inline-block; width: 1.2em; color: var(--accent); font-family: var(--f-mono); }
+details.card[open] summary::before { content: "−"; }
+details.card[open] summary { margin-bottom: 8px; }
+details.card p { margin: 0 0 0 1.2em; color: var(--muted); }
+
+/* Checklist */
+ul.steps { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.steps li { margin: 0; padding: 10px 14px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
+
+footer.end { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* Study tutor chat panel (chat.js) */
+.chat-launch {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 20;
+  font: 700 15px/1 var(--f-display);
+  color: var(--surface);
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.chat-launch:focus-visible, .chat-panel button:focus-visible, .chat-panel textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chat-panel {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 21;
+  width: min(430px, calc(100vw - 40px));
+  height: min(680px, calc(100dvh - 40px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 25%, transparent);
+  overflow: hidden;
+  font-size: 15px;
+}
+@media (max-width: 600px) {
+  .chat-panel { inset: 0; width: auto; height: auto; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
+.chat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--rule); }
+.chat-title { font: 700 17px/1.2 var(--f-display); margin: 0 0 3px; }
+.chat-sub { font-size: 13px; color: var(--muted); margin: 0; }
+.chat-icon { background: none; border: 0; color: var(--muted); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.chat-icon:hover { color: var(--ink); }
+.chat-tools { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rule); }
+.chat-chip {
+  font: 600 13px/1.3 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.chat-chip:hover:not(:disabled) { border-color: var(--accent); }
+.chat-chip.strong { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.chat-chip:disabled { opacity: 0.5; cursor: default; }
+.chat-log { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.chat-starters { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.chat-msg { max-width: 92%; padding: 10px 14px; border-radius: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.chat-msg p { margin: 0 0 8px; }
+.chat-msg p:last-child, .chat-msg ul:last-child, .chat-msg ol:last-child { margin-bottom: 0; }
+.chat-msg ul, .chat-msg ol { margin: 0 0 8px; padding-left: 20px; }
+.chat-msg pre { font-size: 12.5px; margin: 6px 0 8px; padding: 10px 12px; }
+.chat-msg .chat-h { font-weight: 700; }
+.chat-msg.user { align-self: flex-end; background: var(--accent); color: var(--surface); white-space: pre-wrap; }
+.chat-msg.assistant { align-self: flex-start; background: var(--paper); border: 1px solid var(--rule); }
+.chat-msg.assistant.quiz { border-color: var(--accent); background: var(--accent-soft); }
+.chat-msg.thinking { color: var(--muted); font-style: italic; }
+.chat-msg.system { align-self: stretch; max-width: none; background: color-mix(in srgb, var(--warn) 12%, var(--surface)); color: var(--ink); font-size: 14px; }
+.chat-flag { font: 700 12px/1.2 var(--f-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+.chat-log > .chat-chip { align-self: flex-start; }
+.chat-form { display: flex; gap: 8px; align-items: flex-end; padding: 10px 16px 6px; border-top: 1px solid var(--rule); }
+.chat-form textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: 15px/1.4 var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+.chat-send { font: 700 14px/1 var(--f-display); color: var(--surface); background: var(--accent); border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; }
+.chat-note { font-size: 12px; color: var(--muted); margin: 0; padding: 0 16px 10px; }
+
+:root { --ex: #7a3e9d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ex: #c99be6; } }
+:root[data-theme="dark"] { --ex: #c99be6; }
+.sheet { --accent: var(--ex); --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--surface)); max-width: 820px; margin-inline: auto; padding-block: 8px 40px; }
+.sheet > header { padding-block: 40px 8px; }
+nav.index { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 22px; margin: 18px 0 28px; font-size: 15px; }
+nav.index ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+.toolbar button { font: 700 14px/1 var(--f-display); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 9px 16px; cursor: pointer; }
+.toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details.sec { border-top: 3px solid var(--accent); margin: 0 0 18px; scroll-margin-top: 12px; }
+details.sec > summary { list-style: none; cursor: pointer; padding: 16px 0 12px; font: 800 1.45rem/1.2 var(--f-display); display: grid; grid-template-columns: 1.4em minmax(0,1fr); text-wrap: balance; }
+details.sec > summary::-webkit-details-marker { display: none; }
+details.sec > summary::before { content: "+"; font-family: var(--f-mono); color: var(--accent); }
+details.sec[open] > summary::before { content: "2"; }
+.sbody { min-width: 0; padding-bottom: 10px; }
+.sbody h3 { margin-top: 26px; padding-top: 14px; border-top: 1px dashed var(--rule); }
+.sbody h3:first-child { border-top: 0; padding-top: 0; }
+.sbody pre { max-width: 100%; }
+</style>
+<div class="sheet">
+<header id="top"><p class="eyebrow">Minga prep · Answer key</p><h1>Minga Mock Exam Answers</h1><p class="lede">Model answers, scoring guides, red flags and what to study for every question in the Minga Mock Exam.</p>
+<div class="toolbar"><button type="button" id="open-all">Open all</button><button type="button" id="close-all">Close all</button></div></header>
+<p>Model answers for <code>questions.md</code>. Each answer has:
+- <strong>Strong answer:</strong> what a good answer covers. In the live exam, scoring is out of 10 against this list.
+- <strong>Red flags:</strong> things that would cost you points in the room.
+- <strong>Study:</strong> where to read up. "Guide" means your study guides (Snowflake, dbt, Airflow, Python Brush-Up, all in the Minga Interview Binder). "Docs" means the official documentation for that tool; search the topic name.</p>
+<p>You don't need to say everything here. Interviewers listen for the two or three points that show judgement. Lead with those.</p>
+<p>The schema is the made-up practice schema from the question bank. Timestamps are UTC.</p>
+<hr />
+
+<nav class="index" aria-label="Sections"><ol><li><a href="#s-a-background-and-walkthrough">A. Background and walkthrough</a></li><li><a href="#s-b-sql-you-write">B. SQL you write</a></li><li><a href="#s-c-sql-you-debug">C. SQL you debug</a></li><li><a href="#s-d-ai-wrote-this-review-tests">D. "AI wrote this" review tests</a></li><li><a href="#s-e-data-modelling">E. Data modelling</a></li><li><a href="#s-f-pipelines-and-ingestion">F. Pipelines and ingestion</a></li><li><a href="#s-g-snowflake">G. Snowflake</a></li><li><a href="#s-h-dbt">H. dbt</a></li><li><a href="#s-i-privacy-and-governance">I. Privacy and governance</a></li><li><a href="#s-j-revops-and-stakeholders">J. RevOps and stakeholders</a></li><li><a href="#s-k-system-design">K. System design</a></li><li><a href="#s-l-python">L. Python</a></li><li><a href="#s-m-estimation-and-curveballs">M. Estimation and curveballs</a></li><li><a href="#s-n-ai-in-practice-human-driving">N. AI in practice [Human driving]</a></li><li><a href="#s-study-plan-by-weakness">Study plan by weakness</a></li></ol></nav>
+<details class="sec" id="s-a-background-and-walkthrough"><summary>A. Background and walkthrough</summary><div class="sbody">
+<h3>A1. A pipeline you built and own</h3>
+<p><strong>Strong answer:</strong> use CDWTool, in order: source → transport → destination → controls → failure modes → how you'd know.
+- <strong>Source:</strong> 14 student-level tables in Oracle, including student personal data.
+- <strong>Transport:</strong> Oracle Data Pump export, compressed, delivered to the Ministry (describe current delivery accurately; it was moving from SFTP to SharePoint in 2026), archived.
+- <strong>Controls:</strong> duplicate protection per reporting period, job history, SSO and privilege checks, a dedicated Ministry service account, secrets out of code.
+- <strong>What can go wrong:</strong> an export fails partway, the wrong period gets sent twice, credentials expire, the file is incomplete, someone without the right privilege runs it.
+- <strong>How you'd know:</strong> job history and status, duplicate check, row counts, and the Ministry's acceptance.
+- End with what you'd improve: an automated count check against the source, or an alert on failure.</p>
+<p><strong>Red flags:</strong> describing it only as "a .NET app." Not mentioning failure modes. Overstating scale.</p>
+<p><strong>Study:</strong> your own CDWTool docs. Practice saying it in 90 seconds.</p>
+<h3>A2. First 30 days</h3>
+<p><strong>Strong answer:</strong> listen, map, protect, and deliver one visible thing.
+- Get set up, and ask the rules for AI tools and student data before using either.
+- Meet RevOps, Finance, CX and Product. Ask what they rely on and what they don't trust.
+- Inventory: every Stitch connector, every Metabase dashboard that's actually used, Snowflake spend by warehouse, who can see student data.
+- Write it down in a shared docs repo (Minga's, not personal; no secrets).
+- Quick, safe wins: resource monitors and auto-suspend, and tighten obviously over-broad access.
+- Start the visible request queue.
+- Deliverable at day 30: a readable map of the platform, a ranked risk list, and the queue running.</p>
+<p><strong>Red flags:</strong> a plan that's all tooling and no people. Rebuilding things in week one. A personal repo holding credentials.</p>
+<p><strong>Study:</strong> onsite prep section 4 (90-day plan).</p>
+<h3>A3. A problem nobody else noticed</h3>
+<p><strong>Strong answer:</strong> STAR format (situation, task, action, result) with a real example.
+- <strong>Best fit:</strong> the n8n error handler. It looked wired up, but your forced-failure test showed alerts were silently dropped in two cases (error workflows don't fire on manual runs; an inactive error workflow drops alerts). You documented both in the runbook.
+- <strong>Alternative:</strong> the Google credential bound to the wrong account, caught by checking identity through the API instead of trusting the "connected" badge.
+- Or CDWTool hardening: finding committed secrets and fixing them.
+- Close with the lesson: "I don't trust an alert until I've watched it fire."</p>
+<p><strong>Red flags:</strong> blaming someone else. No concrete result.</p>
+<h3>A4. What to learn first, and how you learn</h3>
+<p><strong>Strong answer:</strong>
+- Ask them what matters most. Then offer your guess: how data flows from MongoDB through Stitch into Snowflake, and which models and dashboards RevOps depends on.
+- <strong>How you learn:</strong> read the docs, build something small, document as you go, and ask the person who built it (Ted).
+- <strong>Evidence:</strong> PostgreSQL vector search and n8n in the past year, both shipped.</p>
+<p><strong>Red flags:</strong> a vague "I'm a fast learner" without evidence.</p>
+<hr />
+</div></details><details class="sec" id="s-b-sql-you-write"><summary>B. SQL you write</summary><div class="sbody">
+<h3>B1. Latest pass per student</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">-- Way 1: window function + QUALIFY (Snowflake)
+SELECT *
+FROM hall_passes
+QUALIFY ROW_NUMBER() OVER (PARTITION BY student_id
+                           ORDER BY created_at DESC, pass_id DESC) = 1;
+
+-- Way 2: works everywhere
+SELECT h.*
+FROM hall_passes h
+JOIN (SELECT student_id, MAX(created_at) AS max_created
+      FROM hall_passes GROUP BY student_id) m
+  ON m.student_id = h.student_id AND m.max_created = h.created_at;
+</code></pre>
+<ul>
+<li><strong>Why the tiebreaker:</strong> two passes with the same timestamp make <code>ROW_NUMBER</code> arbitrary. Adding <code>pass_id</code> makes it deterministic.</li>
+<li>Way 2 returns <strong>both rows on a tie</strong>. Mention it.</li>
+<li><code>QUALIFY</code> filters on window functions without a subquery. Oracle doesn't have it (you'd wrap in a subquery), but Snowflake does.</li>
+</ul>
+<p><strong>Red flags:</strong> using <code>GROUP BY student_id</code> and selecting other columns. Forgetting ties.</p>
+<p><strong>Study:</strong> Docs: Snowflake <code>QUALIFY</code>, <code>ROW_NUMBER</code>. Guide: dbt (dedupe in staging).</p>
+<h3>B2. Passes per school per local day</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">WITH local_passes AS (
+  SELECT h.school_id,
+         CONVERT_TIMEZONE('UTC', s.timezone, h.created_at)::DATE AS local_day
+  FROM hall_passes h
+  JOIN schools s ON s.school_id = h.school_id
+  WHERE h.created_at &gt;= DATEADD(day, -9, CURRENT_TIMESTAMP())   -- pad for time zones
+)
+SELECT school_id, local_day, COUNT(*) AS passes
+FROM local_passes
+WHERE local_day &gt;= DATEADD(day, -7, CURRENT_DATE)
+GROUP BY school_id, local_day
+ORDER BY school_id, local_day;
+</code></pre>
+<ul>
+<li>Convert to the <strong>school's</strong> time zone <em>before</em> taking the date. A pass at 7:30pm Pacific is already the next day in UTC.</li>
+<li><strong>Pad the UTC filter</strong>, then filter on the local date.</li>
+<li><strong>Bonus points:</strong></li>
+<li>Days with zero passes won't appear. Use a date spine if the dashboard needs zeros.</li>
+<li>"Last 7 days" relative to whose today? Say it.</li>
+</ul>
+<p><strong>Red flags:</strong> <code>created_at::DATE</code> with no time-zone conversion.</p>
+<p><strong>Study:</strong> Docs: Snowflake <code>CONVERT_TIMEZONE</code>, <code>TIMESTAMP_NTZ</code> vs <code>TIMESTAMP_TZ</code>. Guide: Python (dates and time zones).</p>
+<h3>B3. 3+ tardies in any 7-day window</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">SELECT a.student_id, a.tardy_date AS window_end, COUNT(*) AS tardies_in_window
+FROM tardies a
+JOIN tardies b
+  ON b.student_id = a.student_id
+ AND b.tardy_date BETWEEN DATEADD(day, -6, a.tardy_date) AND a.tardy_date
+GROUP BY a.student_id, a.tardy_date
+HAVING COUNT(*) &gt;= 3;
+</code></pre>
+<ul>
+<li>A self-join counts each student's tardies in the 7 days ending on each tardy date.</li>
+<li>Return <code>DISTINCT student_id</code> if they only want the list of students.</li>
+<li><strong>Alternative:</strong> a window function with a date-range frame. Snowflake supports interval-based <code>RANGE</code> frames, but check the docs before relying on it.</li>
+<li><strong>Questions to ask:</strong> "7-day window" means calendar days or school days? Do two tardies on the same day count twice?</li>
+</ul>
+<p><strong>Red flags:</strong> <code>DATE_TRUNC('week')</code> buckets. That misses a run of tardies that crosses a week boundary. Say why if you mention it.</p>
+<p><strong>Study:</strong> Docs: Snowflake window frames. Practice self-joins.</p>
+<h3>B4. Active schools with no passes in 14 days</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">SELECT s.school_id, s.name
+FROM schools s
+WHERE s.is_active
+  AND NOT EXISTS (
+    SELECT 1 FROM hall_passes h
+    WHERE h.school_id = s.school_id
+      AND h.created_at &gt;= DATEADD(day, -14, CURRENT_TIMESTAMP())
+  );
+</code></pre>
+<ul>
+<li><code>NOT EXISTS</code> is safe with nulls (compare C1).</li>
+<li><strong>Context points:</strong></li>
+<li>Summer break and holidays make "no passes" normal. Check the school calendar before flagging churn.</li>
+<li>A school might use other features, not passes.</li>
+<li>Ask Ted what "inactive" should mean.</li>
+</ul>
+<p><strong>Red flags:</strong> <code>NOT IN</code> against a column that could be null.</p>
+<h3>B5. Per-district rollup without double counting</h3>
+<p><strong>Strong answer:</strong> aggregate each table to the district level <strong>separately</strong>, then join.</p>
+<pre><code class="language-sql">WITH st AS (
+  SELECT sc.district_id, COUNT(*) AS active_students
+  FROM students s JOIN schools sc ON sc.school_id = s.school_id
+  WHERE s.is_active
+  GROUP BY sc.district_id
+),
+sch AS (
+  SELECT district_id, COUNT(*) AS schools
+  FROM schools GROUP BY district_id
+),
+hp AS (
+  SELECT sc.district_id, COUNT(*) AS passes_30d
+  FROM hall_passes h JOIN schools sc ON sc.school_id = h.school_id
+  WHERE h.created_at &gt;= DATEADD(day, -30, CURRENT_TIMESTAMP())
+  GROUP BY sc.district_id
+)
+SELECT d.district_id, d.name,
+       COALESCE(st.active_students, 0) AS active_students,
+       COALESCE(sch.schools, 0)        AS schools,
+       COALESCE(hp.passes_30d, 0)      AS passes_30d,
+       hp.passes_30d / NULLIF(st.active_students, 0) AS passes_per_student
+FROM districts d
+LEFT JOIN st  ON st.district_id  = d.district_id
+LEFT JOIN sch ON sch.district_id = d.district_id
+LEFT JOIN hp  ON hp.district_id  = d.district_id;
+</code></pre>
+<ul>
+<li><strong>The trap:</strong> joining students and hall_passes in one query and counting multiplies the rows ("fan-out"). You'd get passes × students.</li>
+<li><code>NULLIF</code> avoids divide-by-zero.</li>
+</ul>
+<p><strong>Red flags:</strong> one big join with <code>COUNT(*)</code>. <code>COUNT(DISTINCT ...)</code> everywhere as a band-aid. It can work for counts but hides the problem and breaks sums.</p>
+<p><strong>Study:</strong> Search "SQL join fan-out" / "chasm trap." This is the most common real-world reporting bug, and Ted will know it.</p>
+<h3>B6. Weekly active users with week-over-week change</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">WITH wau AS (
+  SELECT DATE_TRUNC('week', occurred_at) AS week_start,
+         COUNT(DISTINCT user_id) AS wau
+  FROM events
+  GROUP BY 1
+)
+SELECT week_start, wau,
+       LAG(wau) OVER (ORDER BY week_start) AS prev_wau,
+       ROUND(100 * (wau - LAG(wau) OVER (ORDER BY week_start))
+             / NULLIF(LAG(wau) OVER (ORDER BY week_start), 0), 1) AS pct_change
+FROM wau
+ORDER BY week_start;
+</code></pre>
+<ul>
+<li><strong>Bonus points:</strong></li>
+<li>Week start depends on Snowflake's <code>WEEK_START</code> parameter. Say "I'd confirm which day weeks start on."</li>
+<li>The current week is partial, so it looks like a drop. Exclude it or label it.</li>
+<li>School holidays cause big swings. Compare to the same week last year.</li>
+</ul>
+<p><strong>Red flags:</strong> summing daily distinct users to get weekly (double counts people active on several days).</p>
+<h3>B7. Flatten JSON tags</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">SELECT e.event_id,
+       e.properties:device.os::STRING AS device_os,
+       t.value::STRING                AS tag
+FROM events e,
+     LATERAL FLATTEN(input =&gt; e.properties:tags) t;
+</code></pre>
+<ul>
+<li><code>:</code> walks into the VARIANT, <code>.</code> goes deeper, and <code>::STRING</code> casts. Without the cast you get JSON-quoted values.</li>
+<li><code>FLATTEN</code> makes one row per array element.</li>
+<li>Events with no tags disappear. Add <code>OUTER =&gt; TRUE</code> to keep them with a null tag.</li>
+</ul>
+<p><strong>Red flags:</strong> treating the JSON as a string and using <code>LIKE</code>.</p>
+<p><strong>Study:</strong> Guide: Snowflake "Loading and JSON." Docs: <code>FLATTEN</code>, semi-structured data.</p>
+<hr />
+</div></details><details class="sec" id="s-c-sql-you-debug"><summary>C. SQL you debug</summary><div class="sbody">
+<h3>C1. NOT IN returns nothing</h3>
+<p><strong>Strong answer:</strong> <code>withdrawals.student_id</code> contains at least one <strong>NULL</strong>. <code>x NOT IN (..., NULL)</code> evaluates to unknown for every row, so nothing comes back. Fix:</p>
+<pre><code class="language-sql">SELECT s.student_id FROM students s
+WHERE NOT EXISTS (SELECT 1 FROM withdrawals w WHERE w.student_id = s.student_id);
+</code></pre>
+<p>Then ask why <code>withdrawals</code> has null student IDs. That's a data-quality problem worth a <code>not_null</code> test.</p>
+<p><strong>Study:</strong> "NOT IN NULL trap." Same behaviour in Oracle.</p>
+<h3>C2. LEFT JOIN that acts like an INNER JOIN</h3>
+<p><strong>Strong answer:</strong> the <code>WHERE h.created_at &gt;= ...</code> filter throws away the rows where <code>h</code> is null (schools with no passes), turning the LEFT JOIN into an inner join. Move the condition into the <code>ON</code>:</p>
+<pre><code class="language-sql">SELECT s.name, COUNT(h.pass_id) AS passes
+FROM schools s
+LEFT JOIN hall_passes h
+  ON h.school_id = s.school_id
+ AND h.created_at &gt;= DATEADD(day, -7, CURRENT_DATE)
+GROUP BY s.name;
+</code></pre>
+<ul>
+<li>Also: <code>COUNT(h.pass_id)</code> is right (it counts 0 for no match). <code>COUNT(*)</code> would count 1.</li>
+<li>Grouping by <code>name</code> merges two schools with the same name. Group by <code>school_id</code>.</li>
+</ul>
+<h3>C3. Missing October 31</h3>
+<p><strong>Strong answer:</strong> <code>'2026-10-31'</code> means <code>2026-10-31 00:00:00</code>, so everything after midnight on the 31st is excluded. Use a half-open range:</p>
+<pre><code class="language-sql">WHERE created_at &gt;= '2026-10-01' AND created_at &lt; '2026-11-01'
+</code></pre>
+<ul>
+<li><strong>Second issue:</strong> those are UTC boundaries. A school's October in local time is shifted by several hours. Say whose month it is.</li>
+</ul>
+<h3>C4. COUNT(*) vs COUNT(ended_at)</h3>
+<p><strong>Strong answer:</strong>
+- <code>COUNT(column)</code> skips nulls. The difference is the number of passes with no <code>ended_at</code>: still open, or never closed properly (a real product question, since passes that never end distort duration reports).
+- "How many passes were created" is <code>COUNT(*)</code> (or <code>COUNT(pass_id)</code>, since the key is never null).</p>
+<h3>C5. Two dashboards disagree on active students</h3>
+<p><strong>Strong answer:</strong> check in this order.
+1. <strong>Definition:</strong> <code>is_active</code> flag vs "had activity in 30 days" vs "rostered this year." Different filters are the usual cause.
+2. <strong>Source:</strong> raw table vs a mart, or different models.
+3. <strong>Timing:</strong> one is cached or stale. Check freshness and Metabase caching.
+4. <strong>Joins:</strong> fan-out in one of them.
+5. <strong>Duplicates:</strong> the same student at two schools after a transfer, or duplicate SIS records.
+6. <strong>Time zone and date boundaries.</strong></p>
+<p>Fix: one agreed definition, one tested model, both dashboards point at it, and the definition is documented.</p>
+<p><strong>Red flags:</strong> "I'd just pick the one that looks right."</p>
+<hr />
+</div></details><details class="sec" id="s-d-ai-wrote-this-review-tests"><summary>D. "AI wrote this" review tests</summary><div class="sbody">
+<h3>D1. The ARR query</h3>
+<p><strong>Problems:</strong>
+1. <strong>Fan-out:</strong> the join to <code>schools</code> repeats each contract once per school, so ARR is multiplied by the number of schools. This is the biggest bug.
+2. <strong>LEFT JOIN made inner:</strong> <code>s.is_active = TRUE</code> in WHERE drops districts with no active school.
+3. <strong>Wrong logic for ARR over time:</strong> grouping by the month the contract <em>started</em> gives new bookings by month, not ARR. ARR in a month = contracts active <em>in</em> that month (start ≤ month end, and end ≥ month end or open).
+4. <strong>Current status used for history:</strong> <code>status = 'active'</code> is today's status, so churned contracts vanish from past months and history rewrites itself.
+5. <strong>Currency:</strong> USD and CAD summed together.
+6. <strong>Grouping by name:</strong> two districts with the same name merge. Group by <code>district_id</code>.
+7. <strong>No time range:</strong> months with no new contracts vanish (no month spine).</p>
+<p><strong>Better version (sketch):</strong></p>
+<pre><code class="language-sql">WITH months AS (
+  SELECT DATEADD(month, ROW_NUMBER() OVER (ORDER BY SEQ4()) - 1, '2024-01-01'::DATE) AS month_start
+  FROM TABLE(GENERATOR(ROWCOUNT =&gt; 36))
+)
+SELECT c.district_id, m.month_start, c.currency,
+       SUM(c.annual_value) AS arr
+FROM months m
+JOIN contracts c
+  ON c.start_date &lt;= LAST_DAY(m.month_start)
+ AND (c.end_date IS NULL OR c.end_date &gt;= LAST_DAY(m.month_start))
+WHERE c.status &lt;&gt; 'void'                -- exclude contracts that never happened
+GROUP BY 1, 2, 3;
+</code></pre>
+<ul>
+<li>Then convert currency with a rate table, or report per currency.</li>
+<li><strong>Most important:</strong> before trusting any of it, <strong>agree the ARR definition with Ted and Finance</strong>.</li>
+</ul>
+<p><strong>What they're scoring:</strong> you found the fan-out and the "bookings, not ARR" logic error, and you didn't just tidy the syntax.</p>
+<p><strong>Study:</strong> B5 (fan-out), J1 (ARR definition). Docs: Snowflake <code>GENERATOR</code>.</p>
+<h3>D2. The dbt incremental model</h3>
+<p><strong>Problems:</strong>
+1. <strong><code>created_at</code> instead of <code>updated_at</code>:</strong> a pass that ends, or changes status, after it's loaded is never updated. Durations and statuses go stale.
+2. <strong>No lookback window:</strong> late-arriving rows with a timestamp slightly older than the max are skipped forever. Use something like <code>updated_at &gt; (select max(updated_at) - interval '3 days' ...)</code>. The <code>unique_key</code> merge handles the overlap.
+3. <strong><code>select *</code> from the source:</strong>
+   - <strong>Schema drift:</strong> a new column can break the model or silently add PII.
+   - <strong>No renaming or casting:</strong> this should be a staging model.
+   - <strong>PII flows straight through.</strong>
+4. <strong>Hard deletes are never handled</strong> (see F2).
+5. <strong>No tests and no docs.</strong>
+6. <strong>No plan for logic changes:</strong> changing an incremental model needs a <code>--full-refresh</code>. Consider <code>on_schema_change</code>.</p>
+<p><strong>Before approving, ask for:</strong>
+- Explicit columns and staging conventions.
+- Tests: <code>unique</code> and <code>not_null</code> on <code>pass_id</code>, <code>relationships</code>, <code>accepted_values</code> on status.
+- Source freshness.
+- A CI run.
+- A note on how deletes are handled.
+- Proof it matches a full rebuild on a sample (counts compared).</p>
+<p><strong>Study:</strong> Guide: dbt (materializations, tests, review workflow). Docs: dbt incremental models, <code>is_incremental</code>, <code>on_schema_change</code>.</p>
+<h3>D3. The Python loader</h3>
+<p><strong>Problems (roughly by severity):</strong>
+1. <strong>Secrets in code:</strong> an API token and a Snowflake password hard-coded. If this was ever committed, rotate both now.
+2. <strong><code>admin</code> user:</strong> the loader should be its own service user, with a role that can only write RAW, and key-pair auth.
+3. <strong>SQL built with f-strings:</strong> injection risk, and it breaks on <code>O'Brien</code>. Use bound parameters, or bulk load.
+4. <strong>Student names landing in raw:</strong> ask whether it's needed at all (data minimization), and if so, mask it.
+5. <strong>No pagination:</strong> only the first page is ever loaded.
+6. <strong>No timeout, no status check:</strong> <code>requests.get</code> can hang, and a 500 error page gets parsed as JSON.
+7. <strong><code>except Exception: pass</code> in <code>while True</code>:</strong> failures are swallowed silently, and the loop hammers the API with no sleep.
+8. <strong>Not incremental and not idempotent:</strong> it always pulls since 2026-01-01 and inserts again, duplicating rows every loop.
+9. <strong><code>datetime.utcnow()</code>:</strong> deprecated in 3.12, and naive. Use <code>datetime.now(timezone.utc)</code>.
+10. <strong><code>print</code> instead of logging:</strong> no counts in or out.
+11. <strong>Row-by-row inserts:</strong> slow. Stage and bulk load, then <code>MERGE</code>.</p>
+<p><strong>What they're scoring:</strong> you see the security problems first (secrets, admin, injection, PII), then reliability.</p>
+<p><strong>Study:</strong> Guide: Python (calling APIs, talking to databases, pipeline habits).</p>
+<h3>D4. "Add indexes"</h3>
+<p><strong>Strong answer:</strong>
+- <strong>That's wrong for Snowflake.</strong> Standard tables have no indexes. Snowflake prunes micro-partitions using min/max metadata. (Niche features like search optimization and hybrid tables exist, but they aren't the answer to a cost spike.)
+- <strong>Then investigate properly:</strong>
+  - <code>SNOWFLAKE.ACCOUNT_USAGE.METERING_DAILY_HISTORY</code>: is the increase in warehouses or serverless features?
+  - <code>WAREHOUSE_METERING_HISTORY</code> by warehouse and day: which one, and when did it start?
+  - <code>QUERY_HISTORY</code>: the most expensive queries, by user and warehouse.
+  - Recent changes: warehouse size, auto-suspend setting, sync frequency, new dashboards.
+- <strong>The point:</strong> AI is useful for drafting the queries, but a confident, unverified diagnosis gets checked against the platform's own usage data.</p>
+<p><strong>Study:</strong> Guide: Snowflake (no indexes / pruning; warehouses and cost).</p>
+<hr />
+</div></details><details class="sec" id="s-e-data-modelling"><summary>E. Data modelling</summary><div class="sbody">
+<h3>E1. Hall-pass reporting model</h3>
+<p><strong>Strong answer:</strong>
+- <strong><code>fct_hall_passes</code>, grain: one row per pass.</strong>
+  - Keys: pass_id, student_key, school_key, staff_key, date_key.
+  - Times: created_at (UTC), local date, ended_at.
+  - Measures and attributes: duration in minutes, pass_type, status.
+- <strong>Dimensions:</strong>
+  - <code>dim_school</code>: district, state or province, time zone, plan.
+  - <code>dim_student</code>: grade, school, active flag, <strong>no names</strong>.
+  - <code>dim_staff</code>, <code>dim_date</code> (with school-year and term).
+  - Pass type, if it has attributes.
+- <strong>PII:</strong> names, emails and SIS IDs live in a restricted table or schema (or are masked), and join only for roles that need them.
+- <strong>For dashboards:</strong> a pre-aggregated <code>fct_hall_passes_daily</code> (school × local day × pass type) keeps Metabase fast and cheap.
+- <strong>Say the grain out loud first.</strong> That's what interviewers listen for.</p>
+<p><strong>Study:</strong> Kimball star schema basics: grain, facts, dimensions. Guide: dbt (marts).</p>
+<h3>E2. Plan changes mid-year</h3>
+<p><strong>Strong answer:</strong>
+- This is a <strong>type 2 slowly changing dimension</strong>: keep a row per version, with <code>valid_from</code> and <code>valid_to</code>.
+- In dbt, a <strong>snapshot</strong> on the subscriptions table builds this automatically (<code>dbt_valid_from</code>, <code>dbt_valid_to</code>).
+- Revenue facts join on <code>fact_date BETWEEN valid_from AND COALESCE(valid_to, '9999-12-31')</code>.
+- Better still, if billing has a <strong>subscription-change history</strong> at the source, model that directly instead of snapshotting.</p>
+<p><strong>Red flags:</strong> overwriting the plan column (history lost), or copying the plan onto every fact row by hand.</p>
+<p><strong>Study:</strong> Guide: dbt (snapshots). "Kimball SCD type 2."</p>
+<h3>E3. Nested arrays in MongoDB documents</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Tables:</strong>
+  - <strong>Parent:</strong> <code>stg_students</code>, one row per student, scalar fields only.
+  - <strong>Children:</strong> <code>stg_student_guardians</code> and <code>stg_student_classes</code>, one row per array element. They carry <code>student_id</code> plus either the element's own ID or its array index.
+  - Built with <code>LATERAL FLATTEN</code> in staging. Keep the raw VARIANT in RAW.
+- <strong>Decisions to make:</strong>
+  - <strong>Keys:</strong> what identifies an array element? If it has no ID, the index changes when the order changes.
+  - <strong>History:</strong> do we need to know when a guardian was removed?
+  - <strong>Empty or missing arrays:</strong> use <code>OUTER =&gt; TRUE</code>.
+  - <strong>PII:</strong> guardian names, phones and emails are restricted data.
+  - <strong>Deeper nesting.</strong>
+- Say that you'd look at real documents first, because Mongo collections often hold several shapes over time.</p>
+<p><strong>Study:</strong> Guide: Snowflake (loading and JSON).</p>
+<h3>E4. Event model for the new platform</h3>
+<p><strong>Ask for in every event:</strong>
+- <code>event_id</code> (unique, for de-duplication).
+- <code>event_name</code> from an agreed list, with a naming convention (<code>hall_pass_created</code>, <code>object_action</code>).
+- <code>occurred_at</code> in UTC, plus <code>received_at</code> (server time).
+- Who and where: <code>user_id</code> (pseudonymous), <code>user_role</code> (student, teacher, admin), <code>school_id</code>, <code>district_id</code>.
+- <code>platform</code>, <code>app_version</code>, <code>schema_version</code>.
+- Typed, documented properties.</p>
+<p><strong>Push back on:</strong>
+- <strong>PII in properties:</strong> names, free-text notes, emails. Use IDs.
+- <strong>Vague events:</strong> "button_clicked".
+- <strong>Events no one will use:</strong> every event needs a question it answers and an owner.
+- <strong>Changing meanings without a version bump.</strong></p>
+<p><strong>Process:</strong> a tracking plan in git, reviewed like code, with tests in the pipeline that reject unknown events. The tenancy keys (<code>district_id</code>) also make the 90-day per-district deletion possible.</p>
+<p><strong>Connection:</strong> Paolo built Segment/Mixpanel event pipelines at Metalab. Ask him how they'd like to approach it.</p>
+<h3>E5. Reporting across legacy and new platforms during migration</h3>
+<p><strong>Strong answer:</strong>
+- Separate staging models per platform, feeding <strong>one conformed model</strong> with a <code>source_platform</code> column.
+- An <strong>ID crosswalk</strong> table (legacy ID → new ID) per entity.
+- A <strong>migration status</strong> table per customer, with a cutover date. For each customer and date, decide which platform is the source of truth, so the overlap period isn't double counted.
+- <strong>Reconciliation tests:</strong> counts and totals per school before and after cutover.
+- Dashboards that show the platform split while the migration is underway.</p>
+<p><strong>Your evidence:</strong> the VIU legacy modernization (about 90 apps, conversion guide, data and sign-on kept intact).</p>
+<hr />
+</div></details><details class="sec" id="s-f-pipelines-and-ingestion"><summary>F. Pipelines and ingestion</summary><div class="sbody">
+<h3>F1. Stitch says success, numbers look low</h3>
+<p><strong>Strong answer, in order:</strong>
+1. <strong>Freshness:</strong> <code>MAX(_sdc_batched_at)</code> and row counts per day in RAW, compared with a normal day.
+2. <strong>Stitch:</strong> rows replicated per table, any skipped tables, replication key or bookmark problems.
+3. <strong>The source itself:</strong> was there an app outage or a holiday? Check with Product or SRE.
+4. <strong>dbt:</strong> did the run finish, and did tests fail?
+5. <strong>Definitions and time:</strong> is "yesterday" UTC or local? Metabase cache? Dashboard filters?
+6. <strong>Tell people early:</strong> "Yesterday's numbers look low; I'm investigating; next update at 11."
+7. <strong>Afterwards:</strong> add a freshness test and a volume alert so the pipeline tells you next time, not a stakeholder.</p>
+<p><strong>Red flags:</strong> jumping to "rerun everything." Not telling stakeholders.</p>
+<h3>F2. Hard deletes with incremental loads</h3>
+<p><strong>Strong answer:</strong>
+- <strong>The gap:</strong> an incremental load based on <code>updated_at</code> only sees rows that still exist. A deleted document never shows up again, so it <strong>stays in the warehouse forever</strong>.
+- <strong>Why it matters at Minga:</strong>
+  - <strong>Wrong numbers:</strong> deleted students or passes still counted.
+  - <strong>Privacy commitments:</strong> Minga promises to delete or de-identify a district's data within 90 days of contract end, and students removed through SIS syncs should go too. Leftover copies in the warehouse break that promise.
+- <strong>Fixes:</strong>
+  - <strong>Log-based or change-stream replication</strong> (the MongoDB oplog or change streams) that captures delete events, if the loader supports it.
+  - <strong>Soft deletes in the app</strong> (<code>deleted_at</code>).
+  - <strong>Periodic key reconciliation:</strong> compare the full list of IDs in the source with the warehouse, and mark missing ones as deleted.
+  - Plus a documented <strong>deletion process</strong> that reaches every copy (see G4).</p>
+<p><strong>Study:</strong> Docs: Stitch replication methods (key-based incremental vs log-based). Search "hard deletes incremental ELT."</p>
+<h3>F3. Idempotency</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Definition:</strong> running a job twice gives the same result as running it once.
+- <strong>How:</strong>
+  - <code>MERGE</code> on a unique key.
+  - Delete-and-insert by partition (replace a whole day).
+  - Load to staging and swap.
+  - Use the run's logical date, not <code>now()</code>, so a rerun of Tuesday processes Tuesday.
+- <strong>Why:</strong> retries, backfills and overlapping incremental windows are routine, so every job must be safe to repeat.
+- <strong>Your example:</strong> CDWTool's per-period duplicate protection.</p>
+<p><strong>Study:</strong> Guide: Airflow (reliability), Python (pipeline habits).</p>
+<h3>F4. Schema drift</h3>
+<p><strong>Strong answer:</strong>
+- <strong>New field:</strong> loaders like Stitch usually add a column automatically. Fine in RAW. It shouldn't silently appear in marts (explicit columns in staging prevent that).
+- <strong>Type change (number → string):</strong> Stitch typically splits it into an extra column with a type suffix rather than failing. Check the Stitch docs for the exact naming. Staging models that cast explicitly will then show nulls or fail.
+- <strong>Desired behaviour:</strong>
+  - RAW accepts anything (VARIANT is fine).
+  - Staging casts explicitly and fails loudly through tests or dbt model contracts.
+  - An alert tells you.
+  - You talk to the product team, ideally <em>before</em> the change, through the event and data contract process (E4).</p>
+<h3>F5. Backfilling two years</h3>
+<p><strong>Strong answer:</strong>
+- Confirm the source still <em>has</em> two years of history (app database, exports, backups) and that the shape hasn't changed over time.
+- Load into a <strong>separate table</strong>, in chunks (by month), with each chunk idempotent.
+- Size the warehouse up temporarily, with a <strong>resource monitor</strong> on it.
+- Reconcile counts and totals per month against the source.
+- Then swap it in, using a zero-copy clone of the current table as a rollback point.
+- Don't disturb the daily loads.
+- <strong>Tell people that historical numbers will change</strong>, and when.</p>
+<hr />
+</div></details><details class="sec" id="s-g-snowflake"><summary>G. Snowflake</summary><div class="sbody">
+<h3>G1. Bill up 60%</h3>
+<p><strong>Strong answer:</strong>
+- <code>ACCOUNT_USAGE.METERING_DAILY_HISTORY</code>: which service (warehouses, or serverless like automatic clustering and Snowpipe)?
+- <code>WAREHOUSE_METERING_HISTORY</code>: which warehouse, and from what date?
+- <code>QUERY_HISTORY</code> (with query tags if they're set): which users, tools and queries?
+- <strong>Common causes:</strong> a warehouse resized and never sized back, auto-suspend raised, a new or more frequent sync, a dashboard auto-refreshing, a full rebuild that used to be incremental, a runaway query.
+- <strong>Storage</strong> is billed separately: check for Time Travel growth.
+- Account usage views can lag by up to a few hours.
+- <strong>Then fix the cause, and prevent it:</strong> resource monitors and budgets, a warehouse per workload, and query tags on dbt and Metabase.</p>
+<p><strong>Study:</strong> Guide: Snowflake (warehouses and cost). Docs: resource monitors, <code>ACCOUNT_USAGE</code> views.</p>
+<h3>G2. Role design</h3>
+<p><strong>Strong answer:</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Role</th>
+<th style="text-align: left;">Can do</th>
+<th style="text-align: left;">Warehouse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>LOADER</code> (Stitch / custom loaders)</td>
+<td style="text-align: left;">Write RAW only</td>
+<td style="text-align: left;"><code>LOAD_WH</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TRANSFORMER</code> (dbt)</td>
+<td style="text-align: left;">Read RAW, write STAGING / MARTS</td>
+<td style="text-align: left;"><code>TRANSFORM_WH</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>REPORTER</code> (Metabase service user)</td>
+<td style="text-align: left;">Read MARTS, PII masked</td>
+<td style="text-align: left;"><code>BI_WH</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ANALYST</code> (RevOps etc.)</td>
+<td style="text-align: left;">Read MARTS, write own sandbox schema, PII masked</td>
+<td style="text-align: left;"><code>ANALYST_WH</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>PII_READER</code></td>
+<td style="text-align: left;">Unmasked student fields, granted narrowly and reviewed</td>
+<td style="text-align: left;">(added on top)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data engineer (you)</td>
+<td style="text-align: left;">Builds everything; ACCOUNTADMIN only as break-glass with MFA</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Service users use <strong>key-pair auth</strong>, not passwords.</li>
+<li>Grant <strong>future grants</strong> so new tables follow the rules.</li>
+<li>Nothing granted to <code>PUBLIC</code>.</li>
+<li>Review grants each quarter.</li>
+<li><strong>Who sees names:</strong> only <code>PII_READER</code>, through masking policies.</li>
+</ul>
+<p><strong>Study:</strong> Guide: Snowflake (access and PII). Docs: Snowflake access control, functional vs access roles.</p>
+<h3>G3. Masking policy SQL</h3>
+<p><strong>Strong answer:</strong></p>
+<pre><code class="language-sql">CREATE MASKING POLICY governance.policies.mask_student_name
+  AS (val STRING) RETURNS STRING -&gt;
+  CASE
+    WHEN IS_ROLE_IN_SESSION('PII_READER') THEN val
+    ELSE '***'
+  END;
+
+ALTER TABLE analytics.marts.dim_students
+  MODIFY COLUMN last_name SET MASKING POLICY governance.policies.mask_student_name;
+</code></pre>
+<ul>
+<li><strong>Needs Enterprise edition or higher.</strong> Ask which edition they're on.</li>
+<li><code>IS_ROLE_IN_SESSION</code> respects role hierarchy. <code>CURRENT_ROLE() = 'PII_READER'</code> only matches that exact role.</li>
+<li><strong>At scale:</strong> attach the policy to a <strong>tag</strong> (<code>pii = 'student_name'</code>) and tag the columns, so new columns get masked by tagging.</li>
+</ul>
+<p><strong>Study:</strong> Docs: Snowflake masking policies, tag-based masking.</p>
+<h3>G4. "Deleted" isn't gone yet</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Time Travel:</strong> dropped or deleted data can be recovered for the retention period (1 day by default, up to 90 on Enterprise).
+- <strong>Fail-safe:</strong> 7 more days for permanent tables, recoverable only by Snowflake support. You can't purge it early.
+- <strong>Other copies:</strong>
+  - <strong>Clones</strong> made earlier still hold the data.
+  - Copies in other schemas, dev and CI schemas, analyst sandboxes.
+  - <strong>Metabase caches and CSV downloads.</strong>
+  - Exports, Stitch staging, and any backups.
+- <strong>What to do:</strong>
+  - Keep an inventory of where student data lives.
+  - Use shorter <code>DATA_RETENTION_TIME_IN_DAYS</code> on PII tables (or transient tables, which skip Fail-safe, where it's safe).
+  - De-identify where the policy allows.
+  - Log each deletion with dates, so you can show the 90-day commitment was met, counting Time Travel and Fail-safe.</p>
+<p><strong>Study:</strong> Guide: Snowflake (Time Travel and clones).</p>
+<h3>G5. Warehouse that never sleeps</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Why:</strong> every query resets the auto-suspend timer. Loads every 30 minutes, plus dashboards refreshing every few minutes, can keep a warehouse running all day and night. Each resume also bills at least 60 seconds.
+- <strong>Fixes:</strong>
+  - <strong>Separate warehouses</strong> for loading and BI, so you can see who's spending.
+  - <strong>Short auto-suspend</strong> (about 60 seconds).
+  - <strong>Sync only as often as the business needs:</strong> hourly or nightly is usually fine for revenue data.
+  - <strong>Metabase caching</strong> and less frequent refresh.
+  - Build marts as <strong>tables</strong>, so dashboard queries are cheap.</p>
+<hr />
+</div></details><details class="sec" id="s-h-dbt"><summary>H. dbt</summary><div class="sbody">
+<h3>H1. Day-one tests</h3>
+<p><strong>Strong answer:</strong>
+- <strong><code>fct_hall_passes</code>:</strong>
+  - <code>unique</code> and <code>not_null</code> on <code>pass_id</code>.
+  - <code>not_null</code> on <code>school_id</code>, <code>student_id</code>, <code>created_at</code>.
+  - <code>relationships</code> to <code>dim_school</code> and <code>dim_student</code>.
+  - <code>accepted_values</code> on <code>status</code> and <code>pass_type</code>.
+  - A custom test: <code>ended_at &gt;= created_at</code> when <code>ended_at</code> is not null.
+- <strong>Source freshness</strong> on the raw table.
+- <strong><code>dim_students</code>:</strong>
+  - <code>unique</code> and <code>not_null</code> on <code>student_id</code>.
+  - <code>relationships</code> to <code>dim_school</code>.
+  - <code>accepted_values</code> or a range check on <code>grade</code>.
+  - Maybe uniqueness of <code>(school_id, sis_id)</code>.
+- <strong>Approach:</strong> start with the tests that would have caught real past incidents (ask Ted what went wrong before), and don't drown in low-value tests.</p>
+<p><strong>Study:</strong> Guide: dbt (tests and freshness).</p>
+<h3>H2. Layers</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Staging (<code>stg_</code>):</strong> one model per source table. Rename, cast, light cleaning. No joins. The only models that read <code>source()</code>.
+- <strong>Intermediate (<code>int_</code>):</strong> joins and business logic building blocks. Not exposed to BI.
+- <strong>Marts (<code>fct_</code> / <code>dim_</code>):</strong> business-facing, documented, tested, what Metabase and analysts use.
+- <strong>Why:</strong> each rule lives in one place, and analysts know where to build.</p>
+<h3>H3. An analyst's change reaching production</h3>
+<p><strong>Strong answer:</strong>
+1. Branch.
+2. Build in their own dev schema (<code>dbt build</code> against the dev target).
+3. Open a PR using a template: what changed, why, how it was tested.
+4. <strong>CI (slim CI):</strong> build only modified models and what depends on them (<code>state:modified+</code>, with <code>--defer</code> to production for the rest), plus tests.
+5. Review: you check the logic, CI checks the mechanics.
+6. Merge.
+7. The production job deploys.
+8. Docs are updated.</p>
+<p>Make the path fast so analysts don't route around it.</p>
+<p><strong>Study:</strong> Guide: dbt (the review workflow).</p>
+<h3>H4. Incremental models</h3>
+<p><strong>Strong answer:</strong>
+- <strong>When:</strong> large, append-heavy tables (events, passes) where a full rebuild is slow or expensive.
+- <strong>Risks:</strong>
+  - Late-arriving data is missed without a lookback window.
+  - Deletes aren't handled.
+  - A logic change needs a <code>--full-refresh</code>.
+  - The incremental table can drift from what a full rebuild would produce, so schedule a periodic full refresh or a comparison.
+- Don't make small tables incremental. The complexity isn't worth it.</p>
+<hr />
+</div></details><details class="sec" id="s-i-privacy-and-governance"><summary>I. Privacy and governance</summary><div class="sbody">
+<h3>I1. CX wants student names</h3>
+<p><strong>Strong answer:</strong>
+- First ask <strong>what they're trying to do.</strong> For churn risk, CX contacts <em>schools and staff</em>, not students.
+- Offer school- and teacher-level usage instead (active staff, passes per week, features used).
+- <strong>Data minimization:</strong> student names aren't needed for this.
+- If there's a genuine need, it goes through an approval process, with least privilege and no exports.
+- Say no kindly: "Let's get you what you need to talk to the school. Student names won't help with that, and keeping them out protects us both."</p>
+<h3>I2. Canadian data in a US warehouse</h3>
+<p><strong>Strong answer (careful phrasing; you're raising a question, not accusing):</strong>
+- <strong>The observation:</strong> the privacy policy says Canadian districts' data is primarily stored in Canada and not transferred out without consent. The published subprocessor list shows Snowflake in the USA.
+- <strong>Questions:</strong>
+  - Does Canadian district data reach Snowflake today?
+  - Is it identified or aggregated?
+  - What do the Canadian contracts and data agreements allow?
+  - Who owns privacy decisions at Minga?
+- <strong>Options:</strong>
+  - Exclude Canadian student-level data from the warehouse.
+  - De-identify or aggregate it before it leaves Canada.
+  - A second Snowflake account in a Canadian region (Snowflake offers Canadian regions on AWS and Azure).
+  - Consent where the contracts allow it.
+- <strong>How:</strong> raise it privately with Paolo or the privacy owner, as "I'd want to verify this," not in a meeting as a gotcha.</p>
+<p><strong>Why it scores well:</strong> it shows you read their privacy policy and think about data residency. It's a real senior-level question. Only ask it if it comes up naturally, or save it for later rounds.</p>
+<h3>I3. Public Metabase link with student data</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Now:</strong>
+  - Disable the public link immediately.
+  - Find out what was exposed and for how long. Check access logs if available.
+  - Tell your manager and the privacy or security owner right away, following the incident process. Whether it's a reportable breach (FERPA, state laws, PIPEDA) is their call with legal, not yours.
+  - Write down the timeline.
+- <strong>Prevent it:</strong>
+  - Turn off public sharing in Metabase admin settings.
+  - Set group-based permissions and keep student-level data in restricted collections.
+  - Make sure the Metabase service role sees <strong>masked</strong> data in Snowflake, so even a mistake can't show names.</p>
+<h3>I4. One-paragraph PII standard</h3>
+<p><strong>Example:</strong> "Student and staff personal data (names, emails, SIS IDs, guardian details, free-text notes) lives only in the restricted PII schema and is masked everywhere else. Analysts work with IDs, not names. If a task seems to need names, ask the data team first, and we'll find another way or get approval. Never export student-level data to spreadsheets, email or AI tools. Dashboards show aggregates, at least school-level, unless approved. If you see personal data somewhere it shouldn't be, report it to the data team the same day. No blame for reporting."</p>
+<p><strong>Scoring:</strong> short, concrete, says what to <em>do</em>, and has a no-blame reporting path.</p>
+<h3>I5. What AI should never do [Human driving]</h3>
+<p><strong>Strong answer:</strong>
+- <strong>No write access to production,</strong> and no access to unmasked student data. If AI connects to data, it's read-only, row-limited, through a masked role. Your Oracle MCP server is the example: read and write separated, row limits enforced.
+- <strong>No student records pasted into prompts</strong> unless the tool is approved for that data under Minga's policy.
+- <strong>No unreviewed merges:</strong> a human reads every line.
+- <strong>No deciding metric definitions</strong> or answering stakeholders with unverified numbers.
+- <strong>No holding credentials.</strong></p>
+<hr />
+</div></details><details class="sec" id="s-j-revops-and-stakeholders"><summary>J. RevOps and stakeholders</summary><div class="sbody">
+<h3>J1. ARR, churn, NRR</h3>
+<p><strong>Strong answer:</strong>
+- <strong>ARR (annual recurring revenue):</strong> the annualized value of active recurring subscriptions at a point in time.
+  - <strong>Include:</strong> recurring subscription fees, net of recurring discounts.
+  - <strong>Exclude:</strong> one-time fees (implementation, training, hardware), and usage that isn't contracted.
+- <strong>Churn:</strong>
+  - <strong>Logo churn:</strong> customers lost ÷ customers at the start.
+  - <strong>Revenue churn:</strong> ARR lost ÷ starting ARR.
+- <strong>NRR (net revenue retention):</strong> for customers who existed at the start of the period, (starting ARR + expansion − contraction − churn) ÷ starting ARR. Usually measured over 12 months. New customers are excluded.
+- <strong>GRR (gross revenue retention):</strong> the same, without expansion. It can't exceed 100%.
+- <strong>K-12 point:</strong> renewals cluster around the school fiscal year (often July 1), so monthly churn is lumpy. Annual views matter more.</p>
+<p><strong>Study:</strong> search "SaaS metrics ARR NRR GRR definitions." Ted lives in these. Get the formulas right.</p>
+<h3>J2. HubSpot vs Finance ARR</h3>
+<p><strong>Strong answer:</strong>
+- Trace both numbers down to records and list the differences:
+  - <strong>Timing:</strong> HubSpot deal close date vs contract start.
+  - <strong>One-time fees</strong> included in one.
+  - <strong>Currency.</strong>
+  - <strong>Multi-year deals:</strong> total contract value vs annual.
+  - <strong>Churned customers</strong> still marked active in the CRM.
+- <strong>The business decides the definition:</strong> Finance owns reported revenue, RevOps owns pipeline. Agree it with Ted and Finance in writing.
+- <strong>You implement it once,</strong> in a tested model, and both dashboards use it.
+- Build a reconciliation report so differences show up early.</p>
+<h3>J3. Four requests on Monday</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Triage by impact and deadline,</strong> and make it visible.
+- <strong>CX broken dashboard:</strong> look first, for about 30 minutes. If the data is wrong, it may affect everyone.
+- <strong>Finance board number by Friday:</strong> a fixed, high-stakes deadline. Protect time for it.
+- <strong>RevOps by Wednesday:</strong> confirm what's actually needed. Maybe a first version Wednesday, finished later.
+- <strong>Product event data:</strong> ask when the launch is and whether there's a spec. Often it needs their input first.
+- <strong>Put all four in the queue with dates.</strong> Tell each requester what to expect.
+- <strong>If two can't both happen,</strong> take the trade-off to Ted or Paolo rather than deciding silently.</p>
+<p><strong>Red flags:</strong> "I'd just work late and do all four." It sounds keen but means no system.</p>
+<h3>J4. Saying no kindly (role-play)</h3>
+<p><strong>Example:</strong> "I see why you want it fresh. Can you tell me what decision it's for? A table rebuilt every five minutes keeps the warehouse running all day, and that's real money. If the decision is daily, I can give you an hourly or daily version today, and if it turns out you need it faster, we'll look at it together."</p>
+<p><strong>Scoring:</strong>
+- Ask about the goal.
+- Explain the cost plainly.
+- Offer an alternative right away.
+- Leave the door open.</p>
+<h3>J5. A dbt test in 30 seconds [Human driving]</h3>
+<p><strong>Example:</strong> "A dbt test is an automatic check that runs every time the data refreshes, like spell-check for numbers. For example: every hall pass must belong to a school, and no student appears twice. If a check fails, we find out before the dashboard shows a wrong number, not when you're presenting it to the board."</p>
+<p><strong>Scoring:</strong> no jargon, a concrete example, and why Ted should care.</p>
+<h3>J6. Is the platform helping RevOps?</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Ask Ted first</strong> what decisions he needs to make faster.
+- <strong>Then measure:</strong>
+  - Time from request to answer.
+  - Share of questions analysts answer themselves.
+  - Data issues caught by tests vs reported by people.
+  - Dashboard usage.
+  - Freshness targets met.
+  - A short trust survey each quarter.
+  - Snowflake cost relative to usage.</p>
+<hr />
+</div></details><details class="sec" id="s-k-system-design"><summary>K. System design</summary><div class="sbody">
+<h3>K1. The 12-month platform</h3>
+<p><strong>Strong answer (draw left to right):</strong>
+- <strong>Sources:</strong> app (MongoDB), HubSpot, billing, Intercom, PostHog/UserPilot events, SIS roster data.
+- <strong>Ingestion:</strong> a managed tool (Stitch, or a replacement if it's flaky) plus small custom Python loaders for gaps. Everything lands in RAW with load metadata.
+- <strong>Snowflake layers:</strong>
+  - <strong>RAW:</strong> per source, VARIANT where nested.
+  - <strong>STAGING.</strong>
+  - <strong>INTERMEDIATE.</strong>
+  - <strong>MARTS:</strong> revenue, product usage, customer health.
+  - <strong>PII:</strong> a restricted schema.
+  - <strong>Analyst sandboxes.</strong>
+- <strong>Transformation:</strong> dbt in git, with slim CI.
+- <strong>Orchestration:</strong> something that runs dbt after loads finish and alerts on failure. The choice depends on Minga (dbt Cloud jobs for simplicity; Dagster or Airflow, possibly Cloud Composer on GCP, if workflows grow).
+- <strong>BI:</strong> Metabase reads marts only, through a masked reporter role.
+- <strong>Governance:</strong> roles, tag-based masking, retention and deletion jobs, access reviews.
+- <strong>Monitoring:</strong> freshness, tests, volume alerts, cost monitors, alerts to Slack, runbooks.
+- <strong>Say what you'd do first and what can wait.</strong> Sequencing is what Paolo is listening for.</p>
+<h3>K2. 50 SIS roster feeds</h3>
+<p><strong>Strong answer:</strong>
+- <strong>First ask:</strong> does the warehouse need to own this, or does MingaSync (the product's rostering sync, with Ednition) already normalize it? Ideally the warehouse copies the <em>normalized</em> output, not 50 raw formats.
+- <strong>If ingesting:</strong>
+  - Land each feed raw with metadata: district, feed type, file name, received_at, row count.
+  - Normalize into a OneRoster-shaped staging model.
+- <strong>Per-district monitoring:</strong>
+  - <strong>Expected cadence:</strong> nightly, so alert if a district's feed is more than about 30 hours late.
+  - <strong>Volume change:</strong> rows down more than 20%.
+  - <strong>Schema validation.</strong>
+  - Send alerts to the integrations team.
+- A dashboard of feed health by district.</p>
+<h3>K3. Migration mapping tool</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Mapping spec:</strong> per entity (legacy field → new field, with rules), versioned in git.
+- <strong>Deterministic transform,</strong> with dry-run mode and reruns that are safe to repeat.
+- <strong>ID crosswalk</strong> table.
+- <strong>Reconciliation:</strong>
+  - Counts per entity per school.
+  - Sums (points, passes).
+  - Record-level comparison using hashes of normalized fields.
+  - A list of every record that didn't map, with the reason.
+- <strong>A sign-off report per customer,</strong> plus an audit log.
+- PII stays in controlled environments.</p>
+<p><strong>Your evidence:</strong> the VIU conversion guide and legacy catalogue.</p>
+<hr />
+</div></details><details class="sec" id="s-l-python"><summary>L. Python</summary><div class="sbody">
+<h3>L1. Paginated API with retries</h3>
+<p><strong>Strong answer:</strong> see the HubSpot loader in the Python guide ("Calling APIs").
+- Cursor loop on <code>paging.next.after</code>.
+- <code>requests.Session</code>.
+- A timeout on every call.
+- Retry only 429 and 5xx, with exponential backoff.
+- <code>raise_for_status</code> for other errors.
+- <code>yield</code> results.
+- Token from an environment variable.</p>
+<h3>L2. Flatten a nested dict</h3>
+<p><strong>Strong answer:</strong> a recursive function. See the Python guide ("JSON and nested documents"). Mention that lists are the hard part (they become child tables) and that you'd usually flatten in Snowflake instead.</p>
+<h3>L3. Missing IDs both ways</h3>
+<p><strong>Strong answer:</strong> sets.</p>
+<pre><code class="language-python">sis, minga = set(sis_ids), set(minga_ids)
+missing_in_minga = sis - minga
+extra_in_minga = minga - sis
+</code></pre>
+<p>Mention normalizing IDs first: strip spaces, consistent type and case.</p>
+<hr />
+</div></details><details class="sec" id="s-m-estimation-and-curveballs"><summary>M. Estimation and curveballs</summary><div class="sbody">
+<h3>M1. Hall-pass volume</h3>
+<p><strong>Strong answer (state your assumptions):</strong>
+- 2,000 schools × about 700 students ≈ 1.4 million students.
+- About 0.5 to 1 pass per student per school day × 180 school days ≈ <strong>125 to 250 million rows per year</strong>.
+- Other events (behaviour, check-ins, app events) might add up to around a billion rows a year.
+- <strong>Is it big data?</strong> No, not for Snowflake, which handles billions of rows routinely.
+- <strong>So design for correctness, privacy and cost, not raw scale:</strong>
+  - Incremental models for event tables.
+  - Date-based pruning.
+  - Small warehouses.
+  - Pre-aggregated marts for dashboards.</p>
+<p><strong>Scoring:</strong> clear assumptions and sensible conclusions matter more than the exact number.</p>
+<h3>M2. Shared Stitch password in Slack</h3>
+<p><strong>Strong answer:</strong>
+- No drama, no blame.
+- Tell your manager privately.
+- Rotate the password.
+- Move to individual or service accounts with least privilege, and key-pair auth where possible.
+- Store credentials in a password manager or secrets manager.
+- Delete the Slack message (and remember Slack may retain it).
+- Check access logs for anything odd.
+- Document the fix.
+- Frame it as "here's what I fixed," not "look what I found."</p>
+<h3>M3. A messy dbt project at three months</h3>
+<p><strong>Signs:</strong>
+- Build times creeping up.
+- Failing tests being ignored.
+- Duplicate models computing the same thing.
+- <code>source()</code> used outside staging.
+- Missing docs.
+- Analysts asking where to put things.
+- Slow CI.</p>
+<p><strong>Actions:</strong>
+- A short style guide.
+- Run the <code>dbt_project_evaluator</code> package to find structural problems.
+- Remove unused models (check Metabase usage and exposures).
+- Name owners per area.
+- A small refactor plan, done in pieces.</p>
+<hr />
+</div></details><details class="sec" id="s-n-ai-in-practice-human-driving"><summary>N. AI in practice [Human driving]</summary><div class="sbody">
+<h3>N1. Review checklist for AI-written SQL</h3>
+<p><strong>Strong answer:</strong>
+1. <strong>Grain:</strong> what is one row? Is that what was asked?
+2. <strong>Joins:</strong> any fan-out? Are LEFT JOINs still left (no WHERE on the right table)?
+3. <strong>Filters and dates:</strong> half-open ranges, time zones, current vs historical status.
+4. <strong>Nulls:</strong> <code>NOT IN</code>, <code>COUNT(col)</code>, division by zero.
+5. <strong>Definitions:</strong> does it match the agreed metric definition?
+6. <strong>Security:</strong> no PII in marts, no secrets, parameters not string-building.
+7. <strong>Tests:</strong> unique and not-null on the grain key, plus a test for the specific logic.
+8. <strong>Reconciliation:</strong> compare the totals with a known number or the source.
+9. <strong>Cost:</strong> full scans of big tables, incremental where it matters.
+10. <strong>Explainability:</strong> can the reviewer explain every line? If not, it doesn't merge.</p>
+<h3>N2. Narrating "tardies per student per week" with Claude</h3>
+<p><strong>Strong answer (talk while you do it):</strong>
+1. <strong>Write the spec first:</strong>
+   - Grain is student × week.
+   - Which day does a week start (check Snowflake's <code>WEEK_START</code>)?
+   - School time zone? (<code>tardy_date</code> is already a date, so mostly fine.)
+   - Do we need weeks with zero tardies?
+   - What happens when a student transfers mid-week?
+2. <strong>Give Claude the schema and the spec,</strong> not just the sentence.
+3. <strong>Read the SQL line by line</strong> and say what each part does.
+4. <strong>Run it on a small sample with a known answer:</strong> pick one student and count by hand.
+5. <strong>Check edge cases:</strong> week boundaries, duplicates, transfers.
+6. <strong>Add tests,</strong> and compare the total with <code>COUNT(*)</code> from <code>tardies</code>.</p>
+<p><strong>What they're scoring:</strong> you drive with a spec and verification, and you say "I don't trust this until..." out loud.</p>
+<h3>N3. Spotting confidently wrong AI answers</h3>
+<p><strong>Strong answer:</strong>
+- <strong>Warning signs:</strong>
+  - Functions or columns that don't exist.
+  - Syntax from the wrong database (PostgreSQL or Oracle syntax in Snowflake).
+  - Advice from another platform (indexes in Snowflake, as in D4).
+  - Numbers with no source.
+  - Too-neat explanations.
+- <strong>How to verify:</strong>
+  - Run it.
+  - Check the official docs.
+  - Reconcile against the source.
+  - Test small cases with known answers.
+  - Ask it for the doc reference, then actually read it.</p>
+<h3>N4. Explain the query without AI</h3>
+<p><strong>Strong answer:</strong>
+- <strong>What it does:</strong> per school, it counts distinct students who have <em>any</em> pass, all time, and divides all passes by that number.
+- <strong>Issues:</strong>
+  1. <strong>The denominator</strong> only includes students who used a pass at least once. Students with zero passes are missing, so it's "passes per student who used passes," not per enrolled student. Use active enrolment from <code>students</code> if that's the question.
+  2. <strong>No date range:</strong> it's all time, so it mixes school years.
+  3. <strong>Division behaviour depends on the database.</strong> In PostgreSQL or SQL Server, integer ÷ integer truncates (7/2 = 3). Snowflake returns a decimal. Mention this; it shows you know platforms differ.
+  4. <strong>Transfers:</strong> <code>school_id</code> is the pass's school, so a student who transferred counts at both schools. Probably fine, but say it.</p>
+<p><strong>Scoring:</strong> a plain explanation first, then the denominator issue. That's the one they're looking for.</p>
+<hr />
+</div></details><details class="sec" id="s-study-plan-by-weakness"><summary>Study plan by weakness</summary><div class="sbody">
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">If you struggled with</th>
+<th style="text-align: left;">Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Window functions, QUALIFY, joins</td>
+<td style="text-align: left;">Snowflake docs: window functions, <code>QUALIFY</code>; practice B1, B3, B5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Time zones</td>
+<td style="text-align: left;">Snowflake docs: <code>CONVERT_TIMEZONE</code>; Python guide: dates and time zones</td>
+</tr>
+<tr>
+<td style="text-align: left;">JSON</td>
+<td style="text-align: left;">Snowflake guide: loading and JSON; docs: <code>FLATTEN</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cost</td>
+<td style="text-align: left;">Snowflake guide: warehouses and cost; docs: resource monitors, <code>ACCOUNT_USAGE</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Access and PII</td>
+<td style="text-align: left;">Snowflake guide: access and PII; docs: masking policies, tag-based masking, access control</td>
+</tr>
+<tr>
+<td style="text-align: left;">dbt</td>
+<td style="text-align: left;">dbt guide: all sections; docs: tests, incremental models, snapshots, state selection</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pipelines</td>
+<td style="text-align: left;">Airflow guide: reliability; Python guide: pipeline habits</td>
+</tr>
+<tr>
+<td style="text-align: left;">RevOps metrics</td>
+<td style="text-align: left;">Search "SaaS metrics ARR NRR GRR"; practice J1 out loud</td>
+</tr>
+<tr>
+<td style="text-align: left;">Modelling</td>
+<td style="text-align: left;">Kimball star schema basics; dbt guide: layers</td>
+</tr>
+</tbody>
+</table></div></div></details>
+</div>
+<script>
+(function () {
+  function openTo(id) { var el = document.getElementById(id); if (!el) return; if (el.tagName === "DETAILS") el.open = true; el.scrollIntoView({ block: "start" }); }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute("href").slice(1); if (!document.getElementById(id)) return;
+    e.preventDefault(); openTo(id);
+  });
+  document.getElementById("open-all").addEventListener("click", function () { document.querySelectorAll("details.sec").forEach(function (d) { d.open = true; }); });
+  document.getElementById("close-all").addEventListener("click", function () { document.querySelectorAll("details.sec").forEach(function (d) { d.open = false; }); });
+})();
+</script>
